@@ -93,7 +93,7 @@ index 003ba96f3924952be5f683fe1486cfb1be8b0f62..3157d9c15d5a4598f8a4cdcc03ad2dda
      public PlayerChunkMap(WorldServer worldserver) {
          this.world = worldserver;
 -        this.a(worldserver.spigotConfig.viewDistance); // Spigot
-+        this.a(com.github.ruviolence.reaper.ReaperConfig.dynamicViewDistance ? 3 : worldserver.spigotConfig.viewDistance); // Spigot // Reaper - Dynamic view distance
++        this.a(com.github.ruviolence.reaper.ReaperConfig.dynamicViewDistance ? 1 : worldserver.spigotConfig.viewDistance); // Spigot // Reaper - Dynamic view distance
      }
  
      public WorldServer getWorld() {
