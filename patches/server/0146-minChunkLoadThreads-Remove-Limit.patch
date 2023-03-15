@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Fri, 3 Feb 2023 16:24:33 +0500
+Subject: [PATCH] minChunkLoadThreads-Remove-Limit
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperConfig.java b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+index 3d6e09907b9d416fc011c5d434903baede20ab49..3ebc80096b274c67ee5b121f617079366af2c4b8 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperConfig.java
+@@ -201,9 +201,9 @@ public class PaperConfig {
+                 " - Length: " + timeSummary(Timings.getHistoryLength() / 20));
+     }
+ 
+-    public static int minChunkLoadThreads = 2;
++    public static int minChunkLoadThreads = 3;
+     private static void chunkLoadThreads() {
+-        minChunkLoadThreads = Math.min(6, getInt("settings.min-chunk-load-threads", 2)); // Keep people from doing stupid things with max of 6
++        minChunkLoadThreads = getInt("settings.min-chunk-load-threads", 3);
+     }
+ 
+     public static boolean enableFileIOThreadSleep;

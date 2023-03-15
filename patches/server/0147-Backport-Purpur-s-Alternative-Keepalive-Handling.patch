@@ -1,0 +1,80 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 9 Feb 2023 00:39:00 +0500
+Subject: [PATCH] Backport-Purpur-s-Alternative-Keepalive-Handling
+
+
+diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+index b9e0ec8066abab58c38886b6a1f9434740537a6e..d50b6b8890ce37c9699b7c66bba511be456be823 100644
+--- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
++++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+@@ -146,6 +146,11 @@ public class ReaperConfig {
+         portalTravelInstantExpire = getBoolean("portal-travel.instant-expire", false);
+     }
+ 
++    public static boolean useAlternateKeepAlive = true;
++    private static void useAlternateKeepAlive() {
++        useAlternateKeepAlive = getBoolean("use-alternate-keepalive", useAlternateKeepAlive);
++    }
++
+     public static boolean delayedChunksEnabled;
+     public static int delayedChunksLimit;
+     private static void delayedChunks() {
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index ed7352cb23bcbfefb4b25627d8a8f0145e17079c..ac36a780629cbe066b790a8fc0a88cb6f2c46fe4 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -1,5 +1,6 @@
+ package net.minecraft.server;
+ 
++import com.github.ruviolence.reaper.ReaperConfig;
+ import com.google.common.collect.Lists;
+ import com.google.common.primitives.Doubles;
+ import com.google.common.primitives.Floats;
+@@ -103,7 +104,7 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+     private int processedMovePackets;
+     private AutoRecipe H = new AutoRecipe();
+     private static final long KEEPALIVE_LIMIT = Long.getLong("paper.playerconnection.keepalive", 30) * 1000; // Paper - provide property to set keepalive limit
+-
++    private java.util.List<Long> keepAlives = new java.util.ArrayList<>(); // Purpur
+     public PlayerConnection(MinecraftServer minecraftserver, NetworkManager networkmanager, EntityPlayer entityplayer) {
+         this.minecraftServer = minecraftserver;
+         this.networkManager = networkmanager;
+@@ -186,6 +187,20 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+         // This should effectively place the keepalive handling back to "as it was" before 1.12.2
+         long currentTime = this.getCurrentMillis();
+         long elapsedTime = currentTime - this.getLastPing();
++        // Purpur start
++        if (ReaperConfig.useAlternateKeepAlive) {
++            if (elapsedTime >= 1000L) { // 1 second
++                if (!processedDisconnect && keepAlives.size() > KEEPALIVE_LIMIT) {
++                    LOGGER.warn("{} was kicked due to keepalive timeout!", player.getName());
++                    this.disconnect(new ChatMessage("disconnect.timeout"));
++                } else {
++                    this.setLastPing(currentTime); // hijack this field for 1 second intervals
++                    keepAlives.add(currentTime); // currentTime is ID
++                    this.sendPacket(new PacketPlayOutKeepAlive(currentTime));
++                }
++            }
++        } else
++            // Purpur end
+         if (this.isPendingPing()) {
+             // We're pending a ping from the client
+             if (!this.processedDisconnect && elapsedTime >= KEEPALIVE_LIMIT) { // check keepalive limit, don't fire if already disconnected
+@@ -2310,6 +2325,16 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+     }
+ 
+     public void a(PacketPlayInKeepAlive packetplayinkeepalive) {
++        // Purpur start
++        if (ReaperConfig.useAlternateKeepAlive) {
++            long id = packetplayinkeepalive.a(); // .getId()
++            if (keepAlives.size() > 0 && keepAlives.contains(id)) {
++                int ping = (int) (this.getCurrentMillis() - id);
++                this.player.ping = (this.player.ping * 3 + ping) / 4;
++                keepAlives.clear(); // we got a valid response, lets roll with it and forget the rest
++            }
++        } else
++        // Purpur end
+         //PlayerConnectionUtils.ensureMainThread(packetplayinkeepalive, this, this.player.x()); // CraftBukkit // Paper - This shouldn't be on the main thread
+         if (this.g && packetplayinkeepalive.a() == this.h) {
+             int i = (int) (this.d() - this.f);
