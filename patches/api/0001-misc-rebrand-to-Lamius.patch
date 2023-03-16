@@ -60,7 +60,7 @@ index 6bb7607dde6c3f20f2f2b9b8b5dad877f84f6646..4fb24db889f77909380b7a8061adc03e
 -            return getFromRepo("PaperMC/Paper", verInfo);
 -        }
 +        verInfo = verInfo.replace("\"", "");
-+        return getFromRepo("ruViolence/Lamius", verInfo);
++        return getFromRepo("ImNotSoftik/Lamius", verInfo);
              /*
              BufferedReader reader = Resources.asCharSource(
                      new URL("https://hub.spigotmc.org/stash/rest/api/1.0/projects/SPIGOT/repos/" + repo + "/commits?since=" + URLEncoder.encode(hash, "UTF-8") + "&withCounts=true"),
