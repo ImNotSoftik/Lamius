@@ -3,6 +3,8 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Tue, 31 Jan 2023 15:52:24 +0500
 Subject: [PATCH] Prevent-chunks-from-loading-past-world-border
 
+Credits to Papaya: https://github.com/moom0o/Papaya/blob/master/Spigot-Server-Patches/0393-Prevent-chunks-from-loading-option.patch
+
 
 diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index b9e0ec8066abab58c38886b6a1f9434740537a6e..5baf12b83d9a4fbf6563401935e01381c9d9e78d 100644
