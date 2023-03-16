@@ -3,6 +3,7 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Tue, 31 Jan 2023 17:22:36 +0500
 Subject: [PATCH] Fix-book-meta-speed-for-enchantments
 
+Credits to Dionysus: https://github.com/nopjmp/Dionysus/blob/dev/patches/server/0045-Fix-book-meta-speed-for-enchantments.patch
 
 diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
 index decdccdc76a09c1da62aef6d4d4542b92242788b..f49f7006ce06ff78b8c8013817b1b64132844718 100644
