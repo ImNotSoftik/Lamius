@@ -5,10 +5,10 @@ Subject: [PATCH] feat: configurable portal exit chunks generation
 
 Allows to disable chunk generation when searching for an exit nether portal. Since the chunks in that scenario are generated synchronously, this saves a lot of performance when exiting to ungenerated area.
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index 97d95ad1b736ca9b61204c36c55a5f32377f13b6..d2d473a50e114d5283f5ba5b71f675488ad36161 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -290,6 +290,11 @@ public class LamiusConfig {
          dropUsePacketsInInventory = getBoolean("drop-use-packets-in-inventory", false);
      }
@@ -29,7 +29,7 @@ index 897a92d1c193c3b33a679fbd4cded878710e1ed7..18124f264ca7fa74df1ea9376abe6614
          } else {
              BlockPosition blockposition = new BlockPosition(x, y, z); // CraftBukkit
  
-+            java.util.Set<ChunkCoordIntPair> notGeneratedChunks = com.github.ruviolence.Lamius.LamiusConfig.generatePortalExitChunks ? null : new HashSet<>(); // Lamius
++            java.util.Set<ChunkCoordIntPair> notGeneratedChunks = this.core.lamius.Lamius.LamiusConfig.generatePortalExitChunks ? null : new HashSet<>(); // Lamius
              for (int l = -radius; l <= radius; ++l) {
                  BlockPosition blockposition1;
  

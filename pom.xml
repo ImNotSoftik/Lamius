@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.github.ruviolence</groupId>
+    <groupId>this.core.lamius</groupId>
     <artifactId>Lamius-parent</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>pom</packaging>

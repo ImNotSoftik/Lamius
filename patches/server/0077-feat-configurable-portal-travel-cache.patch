@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 08:16:09 +0500
 Subject: [PATCH] feat: configurable portal travel cache
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index 3b1e41110390cf1579f4161facf7fa040dc834bc..2451fd9be55fd143150e67682167ec4e2cdae4e0 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -128,4 +128,11 @@ public class LamiusConfig {
      private static void dynamicViewDistance() {
          dynamicViewDistance = getBoolean("dynamic-view-distance", true);
@@ -28,13 +28,13 @@ index 5deae342ad17166b41d88e58f4da7d30d7250449..efd57833662ec1f3cb69b6ac82c66e3e
              blockportal_shape = new BlockPortal.Shape(world, blockposition, EnumDirection.EnumAxis.X);
              if (!blockportal_shape.d() || blockportal_shape.e < blockportal_shape.width * blockportal_shape.height) {
                  world.setTypeUpdate(blockposition, Blocks.AIR.getBlockData());
-+                if (com.github.ruviolence.Lamius.LamiusConfig.portalTravelInstantExpire) ((WorldServer) world).getTravelAgent().expirePortal(blockposition); // Lamius - Configurable portal travel cache
++                if (this.core.lamius.Lamius.LamiusConfig.portalTravelInstantExpire) ((WorldServer) world).getTravelAgent().expirePortal(blockposition); // Lamius - Configurable portal travel cache
              }
          } else if (enumdirection_enumaxis == EnumDirection.EnumAxis.Z) {
              blockportal_shape = new BlockPortal.Shape(world, blockposition, EnumDirection.EnumAxis.Z);
              if (!blockportal_shape.d() || blockportal_shape.e < blockportal_shape.width * blockportal_shape.height) {
                  world.setTypeUpdate(blockposition, Blocks.AIR.getBlockData());
-+                if (com.github.ruviolence.Lamius.LamiusConfig.portalTravelInstantExpire) ((WorldServer) world).getTravelAgent().expirePortal(blockposition); // Lamius - Configurable portal travel cache
++                if (this.core.lamius.Lamius.LamiusConfig.portalTravelInstantExpire) ((WorldServer) world).getTravelAgent().expirePortal(blockposition); // Lamius - Configurable portal travel cache
              }
          }
  
@@ -47,7 +47,7 @@ index 3c6f6f11312632a29a20c8278d1680d63babb0d8..897a92d1c193c3b33a679fbd4cded878
      public void a(long i) {
          if (i % 100L == 0L) {
 -            long j = i - 300L;
-+            long j = i - com.github.ruviolence.Lamius.LamiusConfig.portalTravelCacheLife; // Lamius - Configurable portal travel cache
++            long j = i - this.core.lamius.Lamius.LamiusConfig.portalTravelCacheLife; // Lamius - Configurable portal travel cache
              ObjectIterator objectiterator = this.c.values().iterator();
  
              while (objectiterator.hasNext()) {

@@ -14,7 +14,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
      <modelVersion>4.0.0</modelVersion>
 -    <groupId>com.destroystokyo.paper</groupId>
 -    <artifactId>paper</artifactId>
-+    <groupId>com.github.ruviolence</groupId>
++    <groupId>this.core.lamius</groupId>
 +    <artifactId>Lamius</artifactId>
      <packaging>jar</packaging>
      <version>1.12.2-R0.1-SNAPSHOT</version>
@@ -31,7 +31,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
      <parent>
 -        <groupId>com.destroystokyo.paper</groupId>
 -        <artifactId>paper-parent</artifactId>
-+        <groupId>com.github.ruviolence</groupId>
++        <groupId>this.core.lamius</groupId>
 +        <artifactId>Lamius-parent</artifactId>
          <version>dev-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
@@ -42,7 +42,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
          <dependency>
 -            <groupId>com.destroystokyo.paper</groupId>
 -            <artifactId>paper-api</artifactId>
-+            <groupId>com.github.ruviolence</groupId>
++            <groupId>this.core.lamius</groupId>
 +            <artifactId>Lamius-api</artifactId>
              <version>${project.version}</version>
              <scope>compile</scope>
@@ -128,7 +128,7 @@ index 674096cab190d62622f9947853b056f57d43a2a5..63166c2a2381e75da31216483ce2be04
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.github.ruviolence/Lamius-api/pom.properties"); // Lamius
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/this.core.lamius/Lamius-api/pom.properties"); // Lamius
          Properties properties = new Properties();
  
          if (stream != null) {

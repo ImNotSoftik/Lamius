@@ -4,13 +4,13 @@ Date: Fri, 3 Jun 2022 02:58:13 +0500
 Subject: [PATCH] feat: add TileEntityTickEvent
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/event/block/TileEntityTickEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/block/TileEntityTickEvent.java
+diff --git a/src/main/java/this/core/lamius/Lamius/event/block/TileEntityTickEvent.java b/src/main/java/this/core/lamius/Lamius/event/block/TileEntityTickEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..e4c48dd4fe6822e7db591d45330fe9222f9d96ce
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/event/block/TileEntityTickEvent.java
++++ b/src/main/java/this/core/lamius/Lamius/event/block/TileEntityTickEvent.java
 @@ -0,0 +1,40 @@
-+package com.github.ruviolence.Lamius.event.block;
++package this.core.lamius.Lamius.event.block;
 +
 +import org.bukkit.block.Block;
 +import org.bukkit.event.Cancellable;

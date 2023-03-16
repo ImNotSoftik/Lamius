@@ -22,13 +22,13 @@ index 1898ab897ce0004e297ed81629c5aa54d8ae4dc1..5615a019962dc08ee2aa9833e46504d1
                          sender.sendMessage(ChatColor.RED + "No entities found.");
                          return;
                      }
-diff --git a/src/main/java/com/github/ruviolence/Lamius/IdentityStrategy.java b/src/main/java/com/github/ruviolence/Lamius/IdentityStrategy.java
+diff --git a/src/main/java/this/core/lamius/Lamius/IdentityStrategy.java b/src/main/java/this/core/lamius/Lamius/IdentityStrategy.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..b3848b1eb027731b2a8adcdcbdb1967c54eab6be
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/IdentityStrategy.java
++++ b/src/main/java/this/core/lamius/Lamius/IdentityStrategy.java
 @@ -0,0 +1,15 @@
-+package com.github.ruviolence.Lamius;
++package this.core.lamius.Lamius;
 +
 +import it.unimi.dsi.fastutil.Hash;
 +
@@ -656,7 +656,7 @@ index 6832a19af69cc1d495e809eae1ded9237bf136dc..93dfcc3eeb58f93db5fc551e2ccb9622
  // CraftBukkit end
  
 +// Lamius start - FastUtil optimization
-+import com.github.ruviolence.Lamius.IdentityStrategy;
++import this.core.lamius.Lamius.IdentityStrategy;
 +import it.unimi.dsi.fastutil.objects.Object2IntMap;
 +import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 +// Lamius end
@@ -9152,7 +9152,7 @@ index 03894df54cdeafc98e7b5abed24b04536c1fee48..ec70480b39dc524762c77ab7a7ada533
  import javax.annotation.Nullable;
  
 +// Lamius start - FastUtil optimization
-+import com.github.ruviolence.Lamius.IdentityStrategy;
++import this.core.lamius.Lamius.IdentityStrategy;
 +import it.unimi.dsi.fastutil.objects.Object2IntMap;
 +import it.unimi.dsi.fastutil.objects.Object2IntOpenCustomHashMap;
 +// Lamius end

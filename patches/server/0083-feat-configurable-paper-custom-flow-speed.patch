@@ -5,10 +5,10 @@ Subject: [PATCH] feat: configurable paper custom flow speed
 
 Creates an unnecessary load, even when most people don't need custom flow speed
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index ebc8f7c97aabe9073dfbdfd6c5fb975bf0902cd3..d906587c1a68a65f5308a948f009a05ec270b299 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -176,4 +176,9 @@ public class LamiusConfig {
      private static void halloweenMobFeature() {
          halloweenMobFeature = getBoolean("halloween-mob-feature", true);
@@ -27,7 +27,7 @@ index ff90e08ebebf536c13ec8c67c205f0f593a8c0e1..e09ae0cf9eb6d967a3dc63f9d974fd51
       * Paper - Get flow speed. Throttle if its water and flowing adjacent to lava
       */
      public int getFlowSpeed(World world, BlockPosition blockposition) {
-+        if (!com.github.ruviolence.Lamius.LamiusConfig.paperCustomFlowSpeed) return super.a(world); // Lamius
++        if (!this.core.lamius.Lamius.LamiusConfig.paperCustomFlowSpeed) return super.a(world); // Lamius
          if (this.material == Material.LAVA) {
              return world.worldProvider.isSkyMissing() ? world.paperConfig.lavaFlowSpeedNether : world.paperConfig.lavaFlowSpeedNormal;
          }

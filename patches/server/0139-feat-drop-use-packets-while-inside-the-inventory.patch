@@ -6,10 +6,10 @@ Subject: [PATCH] feat: drop use packets while inside the inventory
 Will help to get rid of the desynchronization of the number of numPlayersUsing in chests/shulkers.
 However, it modifies vanilla logic and could lead to problems with some plugins.
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index b72f6aa70d2fd54a420254c2f4058a690908a61f..97d95ad1b736ca9b61204c36c55a5f32377f13b6 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -285,6 +285,11 @@ public class LamiusConfig {
          mapDecorationsLimit = getInt("map-decorations-limit", 10);
      }
@@ -30,7 +30,7 @@ index ed7352cb23bcbfefb4b25627d8a8f0145e17079c..7660e2c32cf5cf12108744cf7c71fe74
          PlayerConnectionUtils.ensureMainThread(packetplayinuseitem, this, this.player.x());
          if (this.player.isFrozen()) return; // CraftBukkit
          if (!checkLimit(packetplayinuseitem.timestamp)) return; // Spigot - check limit
-+        if (player.activeContainer != player.defaultContainer && com.github.ruviolence.Lamius.LamiusConfig.dropUsePacketsInInventory) return; // Lamius
++        if (player.activeContainer != player.defaultContainer && this.core.lamius.Lamius.LamiusConfig.dropUsePacketsInInventory) return; // Lamius
          WorldServer worldserver = this.minecraftServer.getWorldServer(this.player.dimension);
          EnumHand enumhand = packetplayinuseitem.c();
          ItemStack itemstack = this.player.b(enumhand);

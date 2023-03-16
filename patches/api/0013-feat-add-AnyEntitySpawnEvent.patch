@@ -4,13 +4,13 @@ Date: Thu, 2 Jun 2022 23:27:42 +0500
 Subject: [PATCH] feat: add AnyEntitySpawnEvent
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/event/entity/AnyEntitySpawnEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/entity/AnyEntitySpawnEvent.java
+diff --git a/src/main/java/this/core/lamius/Lamius/event/entity/AnyEntitySpawnEvent.java b/src/main/java/this/core/lamius/Lamius/event/entity/AnyEntitySpawnEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..ab25e83417f0872cfa773780109616ab7936846d
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/event/entity/AnyEntitySpawnEvent.java
++++ b/src/main/java/this/core/lamius/Lamius/event/entity/AnyEntitySpawnEvent.java
 @@ -0,0 +1,64 @@
-+package com.github.ruviolence.Lamius.event.entity;
++package this.core.lamius.Lamius.event.entity;
 +
 +import org.bukkit.Location;
 +import org.bukkit.entity.Entity;

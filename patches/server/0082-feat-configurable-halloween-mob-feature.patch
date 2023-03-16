@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 10:57:30 +0500
 Subject: [PATCH] feat: configurable halloween mob feature
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index ef2b7bc818ec5fbd0b901a93695f0aa39a22fe54..ebc8f7c97aabe9073dfbdfd6c5fb975bf0902cd3 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -171,4 +171,9 @@ public class LamiusConfig {
          shapeCheckEndPortal = getBoolean("shape-check.end-portal", true);
          shapeCheckNetherPortal = getBoolean("shape-check.nether-portal", true);
@@ -27,7 +27,7 @@ index 72efa158e1c0cbd62fecfd721c05413dc5036456..94f68e8c6dbf25179b2c5f6b93fe7791
              byte b0 = 4;
  
 -            if (this.a(this.world.ae())) {
-+            if (com.github.ruviolence.Lamius.LamiusConfig.halloweenMobFeature && this.a(this.world.ae())) { // Lamius
++            if (this.core.lamius.Lamius.LamiusConfig.halloweenMobFeature && this.a(this.world.ae())) { // Lamius
                  b0 = 7;
              } else if (this.random.nextBoolean()) {
                  return false;
@@ -40,7 +40,7 @@ index f51640d1da21daeeb5fd78c2dc14567939f54821..ee8376aef967349cfb4246b7a936ebe6
          this.dm();
          this.m(this.random.nextFloat() < 0.55F * difficultydamagescaler.d());
 -        if (this.getEquipment(EnumItemSlot.HEAD).isEmpty()) {
-+        if (com.github.ruviolence.Lamius.LamiusConfig.halloweenMobFeature && this.getEquipment(EnumItemSlot.HEAD).isEmpty()) { // Lamius
++        if (this.core.lamius.Lamius.LamiusConfig.halloweenMobFeature && this.getEquipment(EnumItemSlot.HEAD).isEmpty()) { // Lamius
              Calendar calendar = this.world.ae();
  
              if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.random.nextFloat() < 0.25F) {
@@ -53,7 +53,7 @@ index 9d9b58def1f8aa1679ae9e3804113b216e3e5691..8091049992b6d822eb705df8616c49e6
          this.a(difficultydamagescaler);
          this.b(difficultydamagescaler);
 -        if (this.getEquipment(EnumItemSlot.HEAD).isEmpty()) {
-+        if (com.github.ruviolence.Lamius.LamiusConfig.halloweenMobFeature && this.getEquipment(EnumItemSlot.HEAD).isEmpty()) { // Lamius
++        if (this.core.lamius.Lamius.LamiusConfig.halloweenMobFeature && this.getEquipment(EnumItemSlot.HEAD).isEmpty()) { // Lamius
              Calendar calendar = this.world.ae();
  
              if (calendar.get(2) + 1 == 10 && calendar.get(5) == 31 && this.random.nextFloat() < 0.25F) {

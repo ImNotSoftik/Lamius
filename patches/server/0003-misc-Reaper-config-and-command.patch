@@ -4,13 +4,13 @@ Date: Thu, 26 May 2022 08:09:06 +0500
 Subject: [PATCH] misc: Lamius config and command
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusCommand.java b/src/main/java/this/core/lamius/Lamius/LamiusCommand.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..66099259d578cc6addd0342eba19ab2dac275bf9
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusCommand.java
 @@ -0,0 +1,61 @@
-+package com.github.ruviolence.Lamius;
++package this.core.lamius.Lamius;
 +
 +import net.minecraft.server.CommandAbstract;
 +import net.minecraft.server.MinecraftServer;
@@ -71,13 +71,13 @@ index 0000000000000000000000000000000000000000..66099259d578cc6addd0342eba19ab2d
 +        Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Lamius config reload complete.");
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..aac88cdc33ce89b418a554c66568e0aec3fdc05d
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -0,0 +1,115 @@
-+package com.github.ruviolence.Lamius;
++package this.core.lamius.Lamius;
 +
 +import com.google.common.base.Throwables;
 +import net.minecraft.server.MinecraftServer;
@@ -200,7 +200,7 @@ index 6a8292ce4537392bc511419df565e238ac04acb1..9308ccc85f6243193e49c9a4dd8762ab
              com.destroystokyo.paper.PaperConfig.registerCommands();
              com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
              // Paper end
-+            com.github.ruviolence.Lamius.LamiusConfig.registerCommands(); // Lamius
++            this.core.lamius.Lamius.LamiusConfig.registerCommands(); // Lamius
  
              DedicatedServer.LOGGER.info("Generating keypair");
              this.a(MinecraftEncryption.b());
@@ -212,7 +212,7 @@ index d295fa4ceb6864a282634f33778b0e203d9b3569..eb01435894143000a26cfee4c9d9287f
      }
  
      public static void main(final OptionSet options) { // CraftBukkit - replaces main(String[] astring)
-+        com.github.ruviolence.Lamius.LamiusConfig.init((File) options.valueOf("Lamius-settings")); // Lamius
++        this.core.lamius.Lamius.LamiusConfig.init((File) options.valueOf("Lamius-settings")); // Lamius
          DispenserRegistry.c();
  
          try {
@@ -224,7 +224,7 @@ index 3c57166598bad6907eb4b2f6a8a9e7f0b284d5d1..5deaf370fe7ba18cda3a002b864b0c51
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
-+        com.github.ruviolence.Lamius.LamiusConfig.init((File) console.options.valueOf("Lamius-settings")); // Lamius
++        this.core.lamius.Lamius.LamiusConfig.init((File) console.options.valueOf("Lamius-settings")); // Lamius
          for (WorldServer world : console.worlds) {
              world.worldData.setDifficulty(difficulty);
              world.setSpawnFlags(monsters, animals);
@@ -234,7 +234,7 @@ index 3c57166598bad6907eb4b2f6a8a9e7f0b284d5d1..5deaf370fe7ba18cda3a002b864b0c51
  
 +        @Override
 +        public YamlConfiguration getLamiusConfig() {
-+            return com.github.ruviolence.Lamius.LamiusConfig.config;
++            return this.core.lamius.Lamius.LamiusConfig.config;
 +        }
 +
          @Override

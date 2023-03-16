@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 09:55:35 +0500
 Subject: [PATCH] feat: delayed chunk send
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusCommand.java b/src/main/java/this/core/lamius/Lamius/LamiusCommand.java
 index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf03ecb787 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusCommand.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusCommand.java
 @@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
  import org.bukkit.Location;
  import org.bukkit.command.Command;
@@ -69,12 +69,12 @@ index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf
 +        }
 +    }
  }
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index 2451fd9be55fd143150e67682167ec4e2cdae4e0..92637c77c1cf9e2f4647b4fb4a0d53bc6ca87909 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -1,6 +1,9 @@
- package com.github.ruviolence.Lamius;
+ package this.core.lamius.Lamius;
  
  import com.google.common.base.Throwables;
 +import net.minecraft.server.DispenserRegistry;
@@ -155,9 +155,9 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
 +    }
 +
 +    public void initDelayedChunksList() {
-+        if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
++        if (this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled) {
 +            delayedChunks = new ArrayList<>();
-+            chunkSendLimit = com.github.ruviolence.Lamius.LamiusConfig.delayedChunksLimit;
++            chunkSendLimit = this.core.lamius.Lamius.LamiusConfig.delayedChunksLimit;
 +        } else {
 +            delayedChunks = null;
 +            chunkSendLimitLeft = 0;
@@ -170,7 +170,7 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
 +    }
 +
 +    public void setChunkSendLimit(int limit) {
-+        if (!com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) return;
++        if (!this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled) return;
 +        this.chunkSendLimit = limit > 0 ? limit : 1;
 +    }
 +    // Lamius end
@@ -202,11 +202,11 @@ index 01c29a59d77c205bb31a5c90242eabc2f6b27303..8f3fd88f52494bd4e949f209735dae20
 +++ b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
 @@ -511,7 +511,8 @@ public class EntityTrackerEntry {
          // Lamius end
-         int i = Math.min(this.e, com.github.ruviolence.Lamius.LamiusConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Lamius - Dynamic view distance
+         int i = Math.min(this.e, this.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Lamius - Dynamic view distance
  
 -        return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer);
 +        return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer)
-+                && (!com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled || !entityplayer.getDelayedChunks().contains(new ChunkCoordIntPair(this.tracker.ab, this.tracker.ad))); // Lamius - Delayed chunks
++                && (!this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled || !entityplayer.getDelayedChunks().contains(new ChunkCoordIntPair(this.tracker.ab, this.tracker.ad))); // Lamius - Delayed chunks
      }
  
      private boolean e(EntityPlayer entityplayer) {
@@ -257,7 +257,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
          }
  
 +        // Lamius start - Delayed chunks
-+        if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
++        if (this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled) {
 +            for (int h = 0; h < chunkList.size(); h++) {
 +                ChunkCoordIntPair pair = chunkList.get(h);
 +                entityplayer.addDelayedChunk(pair.x, pair.z);
@@ -278,7 +278,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
          for (int k = i - viewDistance; k <= i + viewDistance; ++k) {
              for (int l = j - viewDistance; l <= j + viewDistance; ++l) {
                  // Paper end
-+                if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(k, l)) continue; // Lamius - Delayed chunks
++                if (this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(k, l)) continue; // Lamius - Delayed chunks
                  PlayerChunk playerchunk = this.getChunk(k, l);
  
                  if (playerchunk != null) {
@@ -292,7 +292,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
 +                        int x = l1 - j1;
 +                        int z = i2 - k1;
 +                        if (!this.a(x, z, i, j, i1)) {
-+                            if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(x, z)) continue;
++                            if (this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(x, z)) continue;
 +                            PlayerChunk playerchunk = this.getChunk(x, z);
 +                            // Lamius end
  
@@ -303,7 +303,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
                  entityplayer.e = entityplayer.locZ;
                  this.e();
 +                // Lamius start - Delayed chunks
-+                if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
++                if (this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled) {
 +                    for (int h = 0; h < chunksToLoad.size(); h++) {
 +                        ChunkCoordIntPair pair = chunksToLoad.get(h);
 +                        entityplayer.addDelayedChunk(pair.x, pair.z);
@@ -320,7 +320,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
              // Lamius end
              int i1;
              int j1;
-+            boolean delayedChunksEnabled = com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled; // Lamius
++            boolean delayedChunksEnabled = this.core.lamius.Lamius.LamiusConfig.delayedChunksEnabled; // Lamius
  
              if (j > 0) {
                  for (i1 = k - i; i1 <= k + i; ++i1) {

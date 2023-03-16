@@ -4,13 +4,13 @@ Date: Wed, 1 Jun 2022 06:58:07 +0500
 Subject: [PATCH] misc: add Lamius metrics
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/Metrics.java b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
+diff --git a/src/main/java/this/core/lamius/Lamius/Metrics.java b/src/main/java/this/core/lamius/Lamius/Metrics.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941edf0b40924
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
++++ b/src/main/java/this/core/lamius/Lamius/Metrics.java
 @@ -0,0 +1,450 @@
-+package com.github.ruviolence.Lamius;
++package this.core.lamius.Lamius;
 +
 +import com.google.gson.JsonArray;
 +import com.google.gson.JsonObject;
@@ -460,10 +460,10 @@ index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941ed
 +        }
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index aac88cdc33ce89b418a554c66568e0aec3fdc05d..726b89f392de6351484e56a3799ffc588ab176a4 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -28,6 +28,7 @@ public class LamiusConfig {
      static int version;
      static Map<String, Command> commands;

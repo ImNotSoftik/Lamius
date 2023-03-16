@@ -37,11 +37,11 @@ index df0d975c8dcd88ed16e085d5ba810929f22d1484..966a8df509e96fe076608801c9049e61
  
      public MinecraftServer(OptionSet options, Proxy proxy, DataConverterManager dataconvertermanager, YggdrasilAuthenticationService yggdrasilauthenticationservice, MinecraftSessionService minecraftsessionservice, GameProfileRepository gameprofilerepository, UserCache usercache) {
 @@ -905,6 +907,8 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
-         hasEntityMoveEvent = com.github.ruviolence.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
-         hasEntityTickEvent = com.github.ruviolence.Lamius.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
-         hasTileEntityTickEvent = com.github.ruviolence.Lamius.event.block.TileEntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        hasEntityTrackedEvent = com.github.ruviolence.Lamius.event.player.EntityTrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        hasEntityUntrackedEvent = com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasEntityMoveEvent = this.core.lamius.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasEntityTickEvent = this.core.lamius.Lamius.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasTileEntityTickEvent = this.core.lamius.Lamius.event.block.TileEntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
++        hasEntityTrackedEvent = this.core.lamius.Lamius.event.player.EntityTrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
++        hasEntityUntrackedEvent = this.core.lamius.Lamius.event.player.EntityUntrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
          // Lamius end
  
          int i;
@@ -50,11 +50,11 @@ index c04504623c38bc77ea7589f33020c33bcc112537..8d3afe3b6819e080d646b10020d852d2
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -78,6 +78,8 @@ public class CraftEventFactory {
-     private static final com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent(null);
-     private static final com.github.ruviolence.Lamius.event.entity.EntityTickEvent entityTickEvent = new com.github.ruviolence.Lamius.event.entity.EntityTickEvent(null);
-     private static final com.github.ruviolence.Lamius.event.block.TileEntityTickEvent tileEntityTickEvent = new com.github.ruviolence.Lamius.event.block.TileEntityTickEvent(null);
-+    private static final com.github.ruviolence.Lamius.event.player.EntityTrackedEvent entityTrackedEvent = new com.github.ruviolence.Lamius.event.player.EntityTrackedEvent(null);
-+    private static final com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent entityUntrackedEvent = new com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent(null);
+     private static final this.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new this.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent(null);
+     private static final this.core.lamius.Lamius.event.entity.EntityTickEvent entityTickEvent = new this.core.lamius.Lamius.event.entity.EntityTickEvent(null);
+     private static final this.core.lamius.Lamius.event.block.TileEntityTickEvent tileEntityTickEvent = new this.core.lamius.Lamius.event.block.TileEntityTickEvent(null);
++    private static final this.core.lamius.Lamius.event.player.EntityTrackedEvent entityTrackedEvent = new this.core.lamius.Lamius.event.player.EntityTrackedEvent(null);
++    private static final this.core.lamius.Lamius.event.player.EntityUntrackedEvent entityUntrackedEvent = new this.core.lamius.Lamius.event.player.EntityUntrackedEvent(null);
      // Lamius end
  
      // helper methods
@@ -64,7 +64,7 @@ index c04504623c38bc77ea7589f33020c33bcc112537..8d3afe3b6819e080d646b10020d852d2
      }
 +
 +    public static void callEntityTrackedEvent(EntityHuman player, Entity entity) {
-+        com.github.ruviolence.Lamius.event.player.EntityTrackedEvent event = CraftEventFactory.entityTrackedEvent;
++        this.core.lamius.Lamius.event.player.EntityTrackedEvent event = CraftEventFactory.entityTrackedEvent;
 +
 +        event.setData((Player) player.getBukkitEntity(), entity.getBukkitEntity());
 +
@@ -72,7 +72,7 @@ index c04504623c38bc77ea7589f33020c33bcc112537..8d3afe3b6819e080d646b10020d852d2
 +    }
 +
 +    public static void callEntityUntrackedEvent(EntityHuman player, Entity entity) {
-+        com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent event = CraftEventFactory.entityUntrackedEvent;
++        this.core.lamius.Lamius.event.player.EntityUntrackedEvent event = CraftEventFactory.entityUntrackedEvent;
 +
 +        event.setData((Player) player.getBukkitEntity(), entity.getBukkitEntity());
 +

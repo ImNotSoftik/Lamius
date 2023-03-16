@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 21:35:52 +0500
 Subject: [PATCH] feat: old combat system
 
 
-diff --git a/src/main/java/com/github/ruviolence/Lamius/Metrics.java b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
+diff --git a/src/main/java/this/core/lamius/Lamius/Metrics.java b/src/main/java/this/core/lamius/Lamius/Metrics.java
 index 04ee268ec9eb44990cb440bcf24941edf0b40924..6523836ff67fe05ab92113c89a4babcb95dc0ce4 100644
---- a/src/main/java/com/github/ruviolence/Lamius/Metrics.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
+--- a/src/main/java/this/core/lamius/Lamius/Metrics.java
++++ b/src/main/java/this/core/lamius/Lamius/Metrics.java
 @@ -32,6 +32,8 @@ public class Metrics {
      public Metrics(String serverUUID) {
          this.serverUUID = serverUUID;
@@ -17,13 +17,13 @@ index 04ee268ec9eb44990cb440bcf24941edf0b40924..6523836ff67fe05ab92113c89a4babcb
          startSubmitting();
      }
  
-diff --git a/src/main/java/com/github/ruviolence/Lamius/OldCombatHelper.java b/src/main/java/com/github/ruviolence/Lamius/OldCombatHelper.java
+diff --git a/src/main/java/this/core/lamius/Lamius/OldCombatHelper.java b/src/main/java/this/core/lamius/Lamius/OldCombatHelper.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..d73ef7652b67c97987ea973b129b771db54a5921
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/Lamius/OldCombatHelper.java
++++ b/src/main/java/this/core/lamius/Lamius/OldCombatHelper.java
 @@ -0,0 +1,30 @@
-+package com.github.ruviolence.Lamius;
++package this.core.lamius.Lamius;
 +
 +import net.minecraft.server.Item;
 +import net.minecraft.server.ItemAxe;
@@ -53,10 +53,10 @@ index 0000000000000000000000000000000000000000..d73ef7652b67c97987ea973b129b771d
 +        throw new IllegalArgumentException("Unexpected item: " + item);
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 index 0738b4d7907d850c520cc89f35ba0e74515ca5de..d02e86391bc0b2321b4d3fa040efa7224976f60e 100644
---- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
-+++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+--- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
 @@ -18,6 +18,7 @@ import java.lang.reflect.Modifier;
  import java.util.HashMap;
  import java.util.List;
@@ -110,7 +110,7 @@ index f764e59177acc358baf6d408c6cfcd74adb4e648..6978bb52f5ddf9b8d6a0aa2692f42e91
      public void a(World world, EntityHuman entityhuman, BlockPosition blockposition, IBlockData iblockdata, @Nullable TileEntity tileentity, ItemStack itemstack) {
          entityhuman.b(StatisticList.a(this));
 -        entityhuman.applyExhaustion(0.005F);
-+        entityhuman.applyExhaustion(com.github.ruviolence.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
++        entityhuman.applyExhaustion(this.core.lamius.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
          if (this.n() && EnchantmentManager.getEnchantmentLevel(Enchantments.SILK_TOUCH, itemstack) > 0) {
              ItemStack itemstack1 = this.u(iblockdata);
  
@@ -123,7 +123,7 @@ index 7bb4443f3f6aaa1dcb84094c92d21a46c348e251..2861a808af5dbfd25776c15e1495b2e3
      public void a(World world, EntityHuman entityhuman, BlockPosition blockposition, IBlockData iblockdata, @Nullable TileEntity tileentity, ItemStack itemstack) {
          entityhuman.b(StatisticList.a((Block) this));
 -        entityhuman.applyExhaustion(0.005F);
-+        entityhuman.applyExhaustion(com.github.ruviolence.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
++        entityhuman.applyExhaustion(this.core.lamius.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
          if (this.n() && EnchantmentManager.getEnchantmentLevel(Enchantments.SILK_TOUCH, itemstack) > 0) {
              a(world, blockposition, this.u(iblockdata));
          } else {
@@ -136,7 +136,7 @@ index be2ab3fb722c689d6d2db261611cc46be54bc11d..c6fceed4889f2a8896473a363dd7937c
          if (tileentity instanceof INamableTileEntity && ((INamableTileEntity) tileentity).hasCustomName()) {
              entityhuman.b(StatisticList.a((Block) this));
 -            entityhuman.applyExhaustion(0.005F);
-+            entityhuman.applyExhaustion(com.github.ruviolence.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
++            entityhuman.applyExhaustion(this.core.lamius.Lamius.OldCombatHelper.EXHAUSTION_BLOCK_BREAK); // Lamius - Old combat
              if (false) { // Lamius - Remove isClientSide check
                  return;
              }
@@ -149,7 +149,7 @@ index 9cc19868b36a36d9447b6751ffbefa3464ee9304..455119e26a0d5b04507c48aba54bac36
      private boolean w;
      private boolean x;
 -    private float y = 0.1F;
-+    private float y = com.github.ruviolence.Lamius.OldCombatHelper.EXHAUSTION_HURT; // Lamius - Old combat
++    private float y = this.core.lamius.Lamius.OldCombatHelper.EXHAUSTION_HURT; // Lamius - Old combat
      private boolean z;
      private boolean A;
      private boolean B;
@@ -162,7 +162,7 @@ index 9d3f2c6c2e8e29d290b5594948e87359c92dc8fe..d6ecadf9f4a00a86f002bd18706564e8
  
      public static int a(Iterable<ItemStack> iterable, DamageSource damagesource) {
 +        // Lamius start - Old combat
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) {
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) {
 +            EnchantmentManager.a.a = 0;
 +            EnchantmentManager.a.b = damagesource;
 +            a(EnchantmentManager.a, iterable);
@@ -172,7 +172,7 @@ index 9d3f2c6c2e8e29d290b5594948e87359c92dc8fe..d6ecadf9f4a00a86f002bd18706564e8
 +            } else if (EnchantmentManager.a.a < 0) {
 +                EnchantmentManager.a.a = 0;
 +            }
-+            return (EnchantmentManager.a.a + 1 >> 1) + com.github.ruviolence.Lamius.LamiusConfig.oldCombatRandom.nextInt((EnchantmentManager.a.a >> 1) + 1);
++            return (EnchantmentManager.a.a + 1 >> 1) + this.core.lamius.Lamius.LamiusConfig.oldCombatRandom.nextInt((EnchantmentManager.a.a >> 1) + 1);
 +        }
 +        // Lamius end
          EnchantmentManager.a.a = 0;
@@ -187,7 +187,7 @@ index 511ef48960d4213dfde89f29f8df6203d28d447f..a53c08794777198bdba34ae27337d661
  
      public int a(int i, DamageSource damagesource) {
 +        // Lamius start - Old combat
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) {
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) {
 +            if (damagesource.ignoresInvulnerability()) return 0;
 +            float lvl = (6 + i * i) / 3.0F;
 +            if (this.a == EnchantmentProtection.DamageType.ALL) {
@@ -214,7 +214,7 @@ index 6b3f13d4b14a22b9e2ba7c8ab9df6e551383fb6d..0dbf25d62e5ed2a6e88ca59565ace278
      }
  
      public float a(int i, EnumMonsterType enummonstertype) {
-+        if (this.a == 0 && com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) return i * 1.25F; // Lamius - Old pvp
++        if (this.a == 0 && this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) return i * 1.25F; // Lamius - Old pvp
          return this.a == 0 ? 1.0F + (float) Math.max(0, i - 1) * 0.5F : (this.a == 1 && enummonstertype == EnumMonsterType.UNDEAD ? (float) i * 2.5F : (this.a == 2 && enummonstertype == EnumMonsterType.ARTHROPOD ? (float) i * 2.5F : 0.0F));
      }
  
@@ -227,7 +227,7 @@ index d0070ccd2ba1bf9bfcc482ab0233ccd2e09cb5af..16ffeced2dd31dae87e5fc51ce8c99de
                          }
                          // CraftBukkit end
 -                    }
-+                    } else if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatFireCombust) this.setOnFire(8); // Lamius - Old combat
++                    } else if (this.core.lamius.Lamius.LamiusConfig.oldCombatFireCombust) this.setOnFire(8); // Lamius - Old combat
                  }
              } else if (this.fireTicks <= 0) {
                  this.fireTicks = -this.getMaxFireTicks();
@@ -240,7 +240,7 @@ index c7b2b4bedd31e30dc0444ffbfd33aaa0cd4f2952..377b6d21fb6c2dce4645cd174a044b39
              org.bukkit.craftbukkit.event.CraftEventFactory.callProjectileHitEvent(this, movingobjectposition); // Craftbukkit - Call event
              if (movingobjectposition.type == MovingObjectPosition.EnumMovingObjectType.ENTITY) {
 +                // Lamius start - Old combat
-+                if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatFishingHooksKnockback) {
++                if (this.core.lamius.Lamius.LamiusConfig.oldCombatFishingHooksKnockback) {
 +                    movingobjectposition.entity.damageEntity(DamageSource.projectile(this, this.owner), 0.0F);
 +                }
 +                // Lamius end
@@ -256,12 +256,12 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
                  }
  
 -                float f2 = this.n(0.5F);
-+                float f2 = com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled ? 1 : this.n(0.5F); // Lamius - Old combat
++                float f2 = this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled ? 1 : this.n(0.5F); // Lamius - Old combat
  
 -                f *= 0.2F + f2 * f2 * 0.8F;
 -                f1 *= f2;
 +                // Lamius start - Old combat
-+                if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) {
++                if (!this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) {
 +                    f *= 0.2F + f2 * f2 * 0.8F;
 +                    f1 *= f2;
 +                }
@@ -273,7 +273,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
                      int i = b0 + EnchantmentManager.b((EntityLiving) this);
  
                      if (this.isSprinting() && flag) {
-+                        if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
++                        if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
                          sendSoundEffect(this, this.locX, this.locY, this.locZ, SoundEffects.fw, this.bK(), 1.0F, 1.0F); // Paper - send while respecting visibility
                          ++i;
                          flag1 = true;
@@ -281,7 +281,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
  
                      boolean flag2 = flag && this.fallDistance > 0.0F && !this.onGround && !this.m_() && !this.isInWater() && !this.hasEffect(MobEffects.BLINDNESS) && !this.isPassenger() && entity instanceof EntityLiving;
                      flag2 = flag2 && !world.paperConfig.disablePlayerCrits; // Paper
-+                    if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) // Lamius - Old combat
++                    if (!this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) // Lamius - Old combat
                      flag2 = flag2 && !this.isSprinting();
                      if (flag2) {
                          f *= 1.5F;
@@ -289,7 +289,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
                      boolean flag3 = false;
                      double d0 = (double) (this.J - this.I);
  
-+                    if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) // Lamius - Old combat
++                    if (!this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) // Lamius - Old combat
                      if (flag && !flag2 && !flag1 && this.onGround && d0 < (double) this.cy()) {
                          ItemStack itemstack = this.b(EnumHand.MAIN_HAND);
  
@@ -300,7 +300,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
 -                            if (entity instanceof EntityLiving) {
 -                                ((EntityLiving) entity).a(this, (float) i * 0.5F, (double) MathHelper.sin(this.yaw * 0.017453292F), (double) (-MathHelper.cos(this.yaw * 0.017453292F)));
 +                            // Lamius start - Old combat
-+                            if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) {
++                            if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) {
 +                                entity.f(-MathHelper.sin(this.yaw * 0.017453292F) * i * 0.5F, 0.1D, MathHelper.cos(this.yaw * 0.017453292F) * i * 0.5F);
                              } else {
 -                                entity.f((double) (-MathHelper.sin(this.yaw * 0.017453292F) * (float) i * 0.5F), 0.1D, (double) (MathHelper.cos(this.yaw * 0.017453292F) * (float) i * 0.5F));
@@ -318,12 +318,12 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
                          }
  
                          if (flag2) {
-+                            if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
++                            if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
                              sendSoundEffect(this, this.locX, this.locY, this.locZ, SoundEffects.fv, this.bK(), 1.0F, 1.0F); // Paper - send while respecting visibility
                              this.a(entity);
                          }
  
-+                        if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
++                        if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
                          if (!flag2 && !flag3) {
                              if (flag) {
                                  sendSoundEffect(this, this.locX, this.locY, this.locZ, SoundEffects.fy, this.bK(), 1.0F, 1.0F); // Paper - send while respecting visibility
@@ -331,7 +331,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
                                  // CraftBukkit end
                              }
  
-+                            if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisableDamageIndicator) // Lamius - Old combat
++                            if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisableDamageIndicator) // Lamius - Old combat
                              if (this.world instanceof WorldServer && f5 > 2.0F) {
                                  int k = (int) ((double) f5 * 0.5D);
  
@@ -339,7 +339,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
  
                          this.applyExhaustion(world.spigotConfig.combatExhaustion); // Spigot - Change to use configurable value
                      } else {
-+                        if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
++                        if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisableSounds) // Lamius - Old combat
                          sendSoundEffect(this, this.locX, this.locY, this.locZ, SoundEffects.fx, this.bK(), 1.0F, 1.0F); // Paper - send while respecting visibility
                          if (flag4) {
                              entity.extinguish();
@@ -347,7 +347,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
      }
  
      public void m(boolean flag) {
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatBlockingModifier) return; // Lamius - Old combat
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatBlockingModifier) return; // Lamius - Old combat
          float f = 0.25F + (float) EnchantmentManager.getDigSpeedEnchantmentLevel(this) * 0.05F;
  
          if (flag) {
@@ -355,7 +355,7 @@ index 599995662a2e0e6785d74374552355d2b0d2b60d..67e14a85a348720d2d29e82133060015
      }
  
      public float n(float f) {
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) return 1; // Lamius - Old combat
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) return 1; // Lamius - Old combat
          return MathHelper.a(((float) this.aE + f) / this.dr(), 0.0F, 1.0F);
      }
  
@@ -368,7 +368,7 @@ index 10857ed16dc5d1d526ae7248edcd3f76393836c9..7355c61bdef87222d47a5c448543ce2b
              this.motX -= d0 / (double) f1 * (double) f;
              this.motZ -= d1 / (double) f1 * (double) f;
 -            if (this.onGround) {
-+            if (this.onGround || com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) { // Lamius - Old combat
++            if (this.onGround || this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) { // Lamius - Old combat
                  this.motY /= 2.0D;
                  this.motY += (double) f;
                  if (this.motY > 0.4000000059604645D) {
@@ -376,7 +376,7 @@ index 10857ed16dc5d1d526ae7248edcd3f76393836c9..7355c61bdef87222d47a5c448543ce2b
  
      protected float applyArmorModifier(DamageSource damagesource, float f) {
          if (!damagesource.ignoresArmor()) {
-+            if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) return f * (25 - this.getArmorStrength()) / 25.0F; // Lamius - Old combat
++            if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) return f * (25 - this.getArmorStrength()) / 25.0F; // Lamius - Old combat
              // this.damageArmor(f); // CraftBukkit - Moved into damageEntity0(DamageSource, float)
              f = CombatMath.a(f, (float) this.getArmorStrength(), (float) this.getAttributeInstance(GenericAttributes.i).getValue());
          }
@@ -385,7 +385,7 @@ index 10857ed16dc5d1d526ae7248edcd3f76393836c9..7355c61bdef87222d47a5c448543ce2b
                  i = EnchantmentManager.a(this.getArmorItems(), damagesource);
                  if (i > 0) {
 +                    // Lamius start - Old combat
-+                    if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled) {
++                    if (this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled) {
 +                        if (i > 20) i = 20;
 +                        return f * (25 - i) / 25.0F;
 +                    }
@@ -398,7 +398,7 @@ index 10857ed16dc5d1d526ae7248edcd3f76393836c9..7355c61bdef87222d47a5c448543ce2b
                  @Override
                  public Double apply(Double f) {
 +                    // Lamius start - Old combat
-+                    if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatBlockingModifier) {
++                    if (this.core.lamius.Lamius.LamiusConfig.oldCombatBlockingModifier) {
 +                        return human && !damagesource.ignoresArmor() && EntityLiving.this.isBlocking() && f > 0.0D ? -(f - (1.0D + f) * 0.5D) : -0.0D;
 +                    }
 +                    // Lamius end
@@ -410,10 +410,10 @@ index 10857ed16dc5d1d526ae7248edcd3f76393836c9..7355c61bdef87222d47a5c448543ce2b
                      }
  
 -                    return false;
-+                    return com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled; // Lamius - Old combat
++                    return this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled; // Lamius - Old combat
                  } else {
 -                    return originalDamage > 0;
-+                    return originalDamage > 0 || com.github.ruviolence.Lamius.LamiusConfig.oldCombatEnabled; // Lamius - Old combat
++                    return originalDamage > 0 || this.core.lamius.Lamius.LamiusConfig.oldCombatEnabled; // Lamius - Old combat
                  }
                  // CraftBukkit end
              }
@@ -425,7 +425,7 @@ index 752760fab52727443c75d9584f32f11617c93bcd..d4278e92b125c403ea8445b5a3c824b9
                  // CraftBukkit end
              }
  
-+            if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatBlockingModifier) // Lamius - Old combat
++            if (!this.core.lamius.Lamius.LamiusConfig.oldCombatBlockingModifier) // Lamius - Old combat
              if (entity instanceof EntityHuman) {
                  EntityHuman entityhuman = (EntityHuman) entity;
                  ItemStack itemstack = this.getItemInMainHand();
@@ -437,7 +437,7 @@ index fcfae8c31d6c7ca066a93d997a7b96d92cf569b4..23a502cecd5121b6456ef5f166a5ed8e
          float f7 = MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f * 0.017453292F);
  
          this.shoot((double) f5, (double) f6, (double) f7, f3, f4);
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatProjectileMotion) return; // Lamius - Old combat
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatProjectileMotion) return; // Lamius - Old combat
          this.motX += entity.motX;
          this.motZ += entity.motZ;
          if (!entity.onGround) {
@@ -450,7 +450,7 @@ index c715138eee71e36b86344371b39b71ccd14da753..0b295ba05caca6b780f8740e77ffa5e1
          boolean flag = entityhuman.world.getGameRules().getBoolean("naturalRegeneration");
  
 -        if (flag && this.saturationLevel > 0.0F && entityhuman.dj() && this.foodLevel >= 20) {
-+        if (flag && !com.github.ruviolence.Lamius.LamiusConfig.oldCombatRegen && this.saturationLevel > 0.0F && entityhuman.dj() && this.foodLevel >= 20) { // Lamius - Old combat
++        if (flag && !this.core.lamius.Lamius.LamiusConfig.oldCombatRegen && this.saturationLevel > 0.0F && entityhuman.dj() && this.foodLevel >= 20) { // Lamius - Old combat
              ++this.foodTickTimer;
              if (this.foodTickTimer >= 10) {
                  float f = Math.min(this.saturationLevel, 6.0F);
@@ -463,7 +463,7 @@ index 241535d280e385844e83bb071806ad3b7099c0b9..a814ebd85288bc77be4d60fb736db502
      protected ItemAxe(Item.EnumToolMaterial item_enumtoolmaterial) {
          super(item_enumtoolmaterial, ItemAxe.e);
 -        this.b = ItemAxe.f[item_enumtoolmaterial.ordinal()];
-+        this.b = com.github.ruviolence.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, ItemAxe.f[item_enumtoolmaterial.ordinal()]); // Lamius - Old combat
++        this.b = this.core.lamius.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, ItemAxe.f[item_enumtoolmaterial.ordinal()]); // Lamius - Old combat
          this.c = ItemAxe.n[item_enumtoolmaterial.ordinal()];
      }
  
@@ -475,7 +475,7 @@ index 6b1ed8c65b7af325d74c20f725adf866e9992b15..1e30835a15aa4938662029df62f71631
          }
  
          world.a((EntityHuman) null, entityhuman.locX, entityhuman.locY, entityhuman.locZ, SoundEffects.bn, SoundCategory.NEUTRAL, 0.5F, 0.4F / (ItemEnderPearl.j.nextFloat() * 0.4F + 0.8F));
-+        if (!com.github.ruviolence.Lamius.LamiusConfig.oldCombatDisablePearlCooldown) // Lamius - Old combat
++        if (!this.core.lamius.Lamius.LamiusConfig.oldCombatDisablePearlCooldown) // Lamius - Old combat
          entityhuman.getCooldownTracker().a(this, 20);
          // CraftBukkit end
  
@@ -488,7 +488,7 @@ index 31c07906fa73bbc5666ad6897ba11a4a2207adfc..ffc42539a1a2840748bf1e5e1ec8dbd4
      protected void a(ItemStack itemstack, World world, EntityHuman entityhuman) {
          if (true) { // Lamius - Remove isClientSide check
 +            // Lamius start - Old combat
-+            if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatGoldenApple) {
++            if (this.core.lamius.Lamius.LamiusConfig.oldCombatGoldenApple) {
 +                entityhuman.addEffect(new MobEffect(MobEffects.ABSORBTION, 2400, 0));
 +                if (itemstack.getData() > 0) {
 +                    entityhuman.addEffect(new MobEffect(MobEffects.REGENERATION, 600, 4));
@@ -512,7 +512,7 @@ index 0b090734867bd4a1ac543d389db86401ea489022..7d5d6a89d3c1df6e2f4a216b8a720adc
          this.setMaxDurability(item_enumtoolmaterial.a());
          this.b(CreativeModeTab.j);
 -        this.a = 3.0F + item_enumtoolmaterial.c();
-+        this.a = com.github.ruviolence.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, 3.0F + item_enumtoolmaterial.c()); // Lamius - Old combat
++        this.a = this.core.lamius.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, 3.0F + item_enumtoolmaterial.c()); // Lamius - Old combat
      }
  
      public float g() {
@@ -525,7 +525,7 @@ index ce2123f345fb53e15d6d4a4a276ed09256803acd..f7f9735ebc6800f50eeff957acb82f7f
          this.setMaxDurability(item_enumtoolmaterial.a());
          this.a = item_enumtoolmaterial.b();
 -        this.b = f + item_enumtoolmaterial.c();
-+        this.b = com.github.ruviolence.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, f + item_enumtoolmaterial.c()); // Lamius - Old combat
++        this.b = this.core.lamius.Lamius.OldCombatHelper.calcItemDamage(this, item_enumtoolmaterial, f + item_enumtoolmaterial.c()); // Lamius - Old combat
          this.c = f1;
          this.b(CreativeModeTab.i);
      }
@@ -538,7 +538,7 @@ index 5d8d9746e7fcc361ec72d5ea79ef4da4a68f010f..426e7b27f0df8ea169972540d13189c4
              entityliving.damageEntity(DamageSource.WITHER, 1.0F);
          } else if (this == MobEffects.HUNGER && entityliving instanceof EntityHuman) {
 -            ((EntityHuman) entityliving).applyExhaustion(0.005F * (float) (i + 1));
-+            ((EntityHuman) entityliving).applyExhaustion(com.github.ruviolence.Lamius.OldCombatHelper.EXHAUSTION_HUNGER_EFFECT * (i + 1));
++            ((EntityHuman) entityliving).applyExhaustion(this.core.lamius.Lamius.OldCombatHelper.EXHAUSTION_HUNGER_EFFECT * (i + 1));
          } else if (this == MobEffects.SATURATION && entityliving instanceof EntityHuman) {
              if (true) { // Lamius - Remove isClientSide check
                  // CraftBukkit start
@@ -547,7 +547,7 @@ index 5d8d9746e7fcc361ec72d5ea79ef4da4a68f010f..426e7b27f0df8ea169972540d13189c4
          MobEffectList.REGISTRY.a(3, new MinecraftKey("haste"), (new MobEffectList(false, 14270531)).c("effect.digSpeed").b(2, 0).a(1.5D).j().a(GenericAttributes.g, "AF8B6E3F-3328-4C0A-AA36-5BA2BB9DBEF3", 0.10000000149011612D, 2));
          MobEffectList.REGISTRY.a(4, new MinecraftKey("mining_fatigue"), (new MobEffectList(true, 4866583)).c("effect.digSlowDown").b(3, 0).a(GenericAttributes.g, "55FCED67-E92A-486E-9800-B47F202C4386", -0.10000000149011612D, 2));
 -        MobEffectList.REGISTRY.a(5, new MinecraftKey("strength"), (new MobEffectAttackDamage(false, 9643043, 3.0D)).c("effect.damageBoost").b(4, 0).a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0).j());
-+        MobEffectList.REGISTRY.a(5, new MinecraftKey("strength"), (new MobEffectAttackDamage(false, 9643043, com.github.ruviolence.Lamius.OldCombatHelper.POTION_MODIFIER_STRENGTH)).c("effect.damageBoost").b(4, 0).a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0).j());
++        MobEffectList.REGISTRY.a(5, new MinecraftKey("strength"), (new MobEffectAttackDamage(false, 9643043, this.core.lamius.Lamius.OldCombatHelper.POTION_MODIFIER_STRENGTH)).c("effect.damageBoost").b(4, 0).a(GenericAttributes.ATTACK_DAMAGE, "648D7064-6A60-4F59-8ABE-C2C23A6DD7A9", 0.0D, 0).j());
          MobEffectList.REGISTRY.a(6, new MinecraftKey("instant_health"), (new InstantMobEffect(false, 16262179)).c("effect.heal").j());
          MobEffectList.REGISTRY.a(7, new MinecraftKey("instant_damage"), (new InstantMobEffect(true, 4393481)).c("effect.harm").j());
          MobEffectList.REGISTRY.a(8, new MinecraftKey("jump_boost"), (new MobEffectList(false, 2293580)).c("effect.jump").b(2, 1).j());
@@ -556,7 +556,7 @@ index 5d8d9746e7fcc361ec72d5ea79ef4da4a68f010f..426e7b27f0df8ea169972540d13189c4
          MobEffectList.REGISTRY.a(16, new MinecraftKey("night_vision"), (new MobEffectList(false, 2039713)).c("effect.nightVision").b(4, 1).j());
          MobEffectList.REGISTRY.a(17, new MinecraftKey("hunger"), (new MobEffectList(true, 5797459)).c("effect.hunger").b(1, 1));
 -        MobEffectList.REGISTRY.a(18, new MinecraftKey("weakness"), (new MobEffectAttackDamage(true, 4738376, -4.0D)).c("effect.weakness").b(5, 0).a(GenericAttributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", 0.0D, 0));
-+        MobEffectList.REGISTRY.a(18, new MinecraftKey("weakness"), (new MobEffectAttackDamage(true, 4738376, com.github.ruviolence.Lamius.OldCombatHelper.POTION_MODIFIER_WEAKNESS)).c("effect.weakness").b(5, 0).a(GenericAttributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", 0.0D, 0));
++        MobEffectList.REGISTRY.a(18, new MinecraftKey("weakness"), (new MobEffectAttackDamage(true, 4738376, this.core.lamius.Lamius.OldCombatHelper.POTION_MODIFIER_WEAKNESS)).c("effect.weakness").b(5, 0).a(GenericAttributes.ATTACK_DAMAGE, "22653B89-116E-49DC-9B6B-9971489B5BE5", 0.0D, 0));
          MobEffectList.REGISTRY.a(19, new MinecraftKey("poison"), (new MobEffectList(true, 5149489)).c("effect.poison").b(6, 0).a(0.25D));
          MobEffectList.REGISTRY.a(20, new MinecraftKey("wither"), (new MobEffectList(true, 3484199)).c("effect.wither").b(1, 2).a(0.25D));
          MobEffectList.REGISTRY.a(21, new MinecraftKey("health_boost"), (new MobEffectHealthBoost(false, 16284963)).c("effect.healthBoost").b(7, 2).a(GenericAttributes.maxHealth, "5D6F0BA2-1186-46AC-B896-C61C5CEE99CC", 4.0D, 0).j());
@@ -676,7 +676,7 @@ index f9c5e9ef44236635cdc04957278960c0be8d1d67..5eb99a574e192116856c2be0d07b9b30
          packetdataserializer.writeByte(this.a);
          packetdataserializer.writeShort(this.b);
 +        // Lamius start - Old combat
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatHideAttributes) {
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatHideAttributes) {
 +            packetdataserializer.writeItemStackWithHidedAttributes(this.c);
 +            return;
 +        }
@@ -693,7 +693,7 @@ index 0115340cd2a351ea4cdc2b3af1c287f0f03f8b58..6490e08ca41493dc182e5a67cfeedd2a
              AttributeInstance attributeinstance = (AttributeInstance) iterator.next();
  
 +            // Lamius start - Old combat
-+            if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatAttackSpeed) {
++            if (this.core.lamius.Lamius.LamiusConfig.oldCombatAttackSpeed) {
 +                if (attributeinstance.getAttribute().getName().equals("generic.attackSpeed")) {
 +                    this.b.add(new PacketPlayOutUpdateAttributes.AttributeSnapshot("generic.attackSpeed", 127, java.util.Collections.emptyList()));
 +                    continue;
@@ -712,7 +712,7 @@ index e054757d2fff32f1a3141784c2047d412830a943..9276b54b19f9061a0c921d6d8c8027ed
          Iterator iterator = this.b.iterator();
  
 +        // Lamius start - Old combat
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatHideAttributes) {
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatHideAttributes) {
 +            while (iterator.hasNext()) {
 +                ItemStack itemstack = (ItemStack) iterator.next();
 +                packetdataserializer.writeItemStackWithHidedAttributes(itemstack);
@@ -732,11 +732,11 @@ index 54665f5d294a3157ec9af9ce84fc50ca5e7c1b25..70c5d42b3b601429392da4c878a5f828
          a("poison", new PotionRegistry(new MobEffect[] { new MobEffect(MobEffects.POISON, 900)}));
 -        a("long_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, 1800)}));
 -        a("strong_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, 432, 1)}));
-+        a("long_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, com.github.ruviolence.Lamius.OldCombatHelper.POTION_DURATION_POISON_LONG)}));
-+        a("strong_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, com.github.ruviolence.Lamius.OldCombatHelper.POTION_DURATION_POISON_STRONG, 1)}));
++        a("long_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, this.core.lamius.Lamius.OldCombatHelper.POTION_DURATION_POISON_LONG)}));
++        a("strong_poison", new PotionRegistry("poison", new MobEffect[] { new MobEffect(MobEffects.POISON, this.core.lamius.Lamius.OldCombatHelper.POTION_DURATION_POISON_STRONG, 1)}));
          a("regeneration", new PotionRegistry(new MobEffect[] { new MobEffect(MobEffects.REGENERATION, 900)}));
 -        a("long_regeneration", new PotionRegistry("regeneration", new MobEffect[] { new MobEffect(MobEffects.REGENERATION, 1800)}));
-+        a("long_regeneration", new PotionRegistry("regeneration", new MobEffect[] { new MobEffect(MobEffects.REGENERATION,  com.github.ruviolence.Lamius.OldCombatHelper.POTION_DURATION_REGENERATION_LONG)}));
++        a("long_regeneration", new PotionRegistry("regeneration", new MobEffect[] { new MobEffect(MobEffects.REGENERATION,  this.core.lamius.Lamius.OldCombatHelper.POTION_DURATION_REGENERATION_LONG)}));
          a("strong_regeneration", new PotionRegistry("regeneration", new MobEffect[] { new MobEffect(MobEffects.REGENERATION, 450, 1)}));
          a("strength", new PotionRegistry(new MobEffect[] { new MobEffect(MobEffects.INCREASE_DAMAGE, 3600)}));
          a("long_strength", new PotionRegistry("strength", new MobEffect[] { new MobEffect(MobEffects.INCREASE_DAMAGE, 9600)}));
@@ -749,7 +749,7 @@ index f872c1554d911d28bb2fe8e0e1ce0bad87accaae..a1c46441f574be31ec70b7d449004747
          sprintMultiplier = (float) getDouble( "hunger.sprint-multiplier", 0.1 );
          otherMultiplier = (float) getDouble( "hunger.other-multiplier", 0.0 );
 +        // Lamius start - Old combat
-+        if (com.github.ruviolence.Lamius.LamiusConfig.oldCombatRegen) {
++        if (this.core.lamius.Lamius.LamiusConfig.oldCombatRegen) {
 +            jumpWalkExhaustion = 0.2F;
 +            jumpSprintExhaustion = 0.8F;
 +            combatExhaustion = 0.3F;

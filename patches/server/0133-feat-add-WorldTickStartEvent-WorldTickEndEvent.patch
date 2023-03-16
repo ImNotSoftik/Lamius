@@ -9,11 +9,11 @@ index fcd59b9f10fc1a071765b73243ae6a3e14031318..7e6d4ea01c76a9424ded4936be804a0b
 --- a/src/main/java/net/minecraft/server/MinecraftServer.java
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -917,6 +917,8 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
-         hasTileEntityTickEvent = com.github.ruviolence.Lamius.event.block.TileEntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
-         hasEntityTrackedEvent = com.github.ruviolence.Lamius.event.player.EntityTrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
-         hasEntityUntrackedEvent = com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        boolean hasWorldTickStartEvent = com.github.ruviolence.Lamius.event.server.WorldTickStartEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        boolean hasWorldTickEndEvent = com.github.ruviolence.Lamius.event.server.WorldTickEndEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasTileEntityTickEvent = this.core.lamius.Lamius.event.block.TileEntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasEntityTrackedEvent = this.core.lamius.Lamius.event.player.EntityTrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasEntityUntrackedEvent = this.core.lamius.Lamius.event.player.EntityUntrackedEvent.getHandlerList().getRegisteredListeners().length != 0;
++        boolean hasWorldTickStartEvent = this.core.lamius.Lamius.event.server.WorldTickStartEvent.getHandlerList().getRegisteredListeners().length != 0;
++        boolean hasWorldTickEndEvent = this.core.lamius.Lamius.event.server.WorldTickEndEvent.getHandlerList().getRegisteredListeners().length != 0;
          // Lamius end
  
          int i;
@@ -39,11 +39,11 @@ index f26ea55b4acaa87087b8f39ba7d0dce31f284813..9201f67cba452cdd7345bf5af2557b52
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -82,6 +82,8 @@ public class CraftEventFactory {
-     private static final com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent entityUntrackedEvent = new com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent(null);
-     private static final com.github.ruviolence.Lamius.event.server.ServerTickStartEvent serverTickStartEvent = new com.github.ruviolence.Lamius.event.server.ServerTickStartEvent();
-     private static final com.github.ruviolence.Lamius.event.server.ServerTickEndEvent serverTickEndEvent = new com.github.ruviolence.Lamius.event.server.ServerTickEndEvent();
-+    private static final com.github.ruviolence.Lamius.event.server.WorldTickStartEvent worldTickStartEvent = new com.github.ruviolence.Lamius.event.server.WorldTickStartEvent();
-+    private static final com.github.ruviolence.Lamius.event.server.WorldTickEndEvent worldTickEndEvent = new com.github.ruviolence.Lamius.event.server.WorldTickEndEvent();
+     private static final this.core.lamius.Lamius.event.player.EntityUntrackedEvent entityUntrackedEvent = new this.core.lamius.Lamius.event.player.EntityUntrackedEvent(null);
+     private static final this.core.lamius.Lamius.event.server.ServerTickStartEvent serverTickStartEvent = new this.core.lamius.Lamius.event.server.ServerTickStartEvent();
+     private static final this.core.lamius.Lamius.event.server.ServerTickEndEvent serverTickEndEvent = new this.core.lamius.Lamius.event.server.ServerTickEndEvent();
++    private static final this.core.lamius.Lamius.event.server.WorldTickStartEvent worldTickStartEvent = new this.core.lamius.Lamius.event.server.WorldTickStartEvent();
++    private static final this.core.lamius.Lamius.event.server.WorldTickEndEvent worldTickEndEvent = new this.core.lamius.Lamius.event.server.WorldTickEndEvent();
      // Lamius end
  
      // helper methods
@@ -53,7 +53,7 @@ index f26ea55b4acaa87087b8f39ba7d0dce31f284813..9201f67cba452cdd7345bf5af2557b52
      }
 +
 +    public static void callWorldTickStartEvent(WorldServer world, int tickNumber) {
-+        com.github.ruviolence.Lamius.event.server.WorldTickStartEvent event = CraftEventFactory.worldTickStartEvent;
++        this.core.lamius.Lamius.event.server.WorldTickStartEvent event = CraftEventFactory.worldTickStartEvent;
 +
 +        event.setData(world.getWorld(), tickNumber);
 +
@@ -61,7 +61,7 @@ index f26ea55b4acaa87087b8f39ba7d0dce31f284813..9201f67cba452cdd7345bf5af2557b52
 +    }
 +
 +    public static void callWorldTickEndEvent(WorldServer world, int tickNumber, double tickDuration) {
-+        com.github.ruviolence.Lamius.event.server.WorldTickEndEvent event = CraftEventFactory.worldTickEndEvent;
++        this.core.lamius.Lamius.event.server.WorldTickEndEvent event = CraftEventFactory.worldTickEndEvent;
 +
 +        event.setData(world.getWorld(), tickNumber, tickDuration);
 +
