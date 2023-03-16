@@ -29,7 +29,7 @@ index 2fa2dd7c71e4f24f60e415c38ccf734c78713cbb..f5657f6f862387d593f74276ca512584
 -    <name>Paper-API</name>
 -    <url>https://github.com/PaperMC/Paper</url>
 +    <name>Lamius-API</name>
-+    <url>https://github.com/ruViolence/Lamius</url>
++    <url>https://github.com/ImNotSoftik/Lamius</url>
      <description>An enhanced plugin API for Minecraft servers.</description>
  
      <properties>
