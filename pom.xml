@@ -1,7 +1,7 @@
 <project>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>this.core.lamius</groupId>
+    <groupId>me.core.lamius</groupId>
     <artifactId>Lamius-parent</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>pom</packaging>

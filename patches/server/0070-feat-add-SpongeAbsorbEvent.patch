@@ -38,7 +38,7 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
 -        while (iterator.hasNext()) {
 -            blockposition1 = (BlockPosition) iterator.next();
 -            world.applyPhysics(blockposition1, Blocks.AIR, false);
-+        if (this.core.lamius.Lamius.event.block.SpongeAbsorbEvent.getHandlerList().getRegisteredListeners().length != 0) {
++        if (me.core.lamius.Lamius.event.block.SpongeAbsorbEvent.getHandlerList().getRegisteredListeners().length != 0) {
 +            org.bukkit.craftbukkit.CraftWorld bWorld = world.getWorld();
 +            ArrayList<org.bukkit.block.Block> bBlocks = new ArrayList<>(arraylist.size());
 +
@@ -47,7 +47,7 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
 +                bBlocks.add(bWorld.getBlockAt(pos.getX(), pos.getY(), pos.getZ()));
 +            }
 +
-+            this.core.lamius.Lamius.event.block.SpongeAbsorbEvent event = new this.core.lamius.Lamius.event.block.SpongeAbsorbEvent(bWorld.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), bBlocks);
++            me.core.lamius.Lamius.event.block.SpongeAbsorbEvent event = new me.core.lamius.Lamius.event.block.SpongeAbsorbEvent(bWorld.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), bBlocks);
 +            world.getServer().getPluginManager().callEvent(event);
 +
 +            if (event.isCancelled()) return false;

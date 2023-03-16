@@ -4,10 +4,10 @@ Date: Thu, 14 Jul 2022 06:12:14 +0500
 Subject: [PATCH] perf: configurable asynchronous JsonList saving
 
 
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index 93242e3c96bb130958b5e19388593b3cef2d3984..52ffaf61a741f17cf7481cc2bbc45577293cf2d2 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -269,4 +269,9 @@ public class LamiusConfig {
      private static void entityTrackerCheckY() {
          entityTrackerCheckY = getBoolean("entity-tracker-check-y", false);
@@ -41,7 +41,7 @@ index 2a259758b5cf1fd66f5300036d0821c554e457a3..621dd6154238ab39b88a4df795a279f3
              IOUtils.closeQuietly(bufferedwriter);
          }
 +        };
-+        if (this.core.lamius.Lamius.LamiusConfig.saveJsonAsync) {
++        if (me.core.lamius.Lamius.LamiusConfig.saveJsonAsync) {
 +            MCUtil.scheduleAsyncTask(runnable);
 +        } else {
 +            runnable.run();

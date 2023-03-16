@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 10:47:51 +0500
 Subject: [PATCH] feat: configurable end portal shape check
 
 
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index c93566b38e3b2b2f217e65bc8912160e19f0a0fe..96a46a7eb51afa3461f619777a94e2350142f130 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -164,7 +164,9 @@ public class LamiusConfig {
      }
  
@@ -26,7 +26,7 @@ index 34de6c739336f3534c8f8f6a20ff0484c58706b6..a6bbf8ae41282c83e1d45660fdde0864
                  */ // Lamius end
  
                  world.a((EntityHuman) null, blockposition, SoundEffects.bp, SoundCategory.BLOCKS, 1.0F, 1.0F);
-+                if (!this.core.lamius.Lamius.LamiusConfig.shapeCheckEndPortal) return EnumInteractionResult.SUCCESS; // Lamius
++                if (!me.core.lamius.Lamius.LamiusConfig.shapeCheckEndPortal) return EnumInteractionResult.SUCCESS; // Lamius
                  ShapeDetector.ShapeDetectorCollection shapedetector_shapedetectorcollection = BlockEnderPortalFrame.e().a(world, blockposition);
  
                  if (shapedetector_shapedetectorcollection != null) {

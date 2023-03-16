@@ -4,13 +4,13 @@ Date: Fri, 3 Jun 2022 00:13:47 +0500
 Subject: [PATCH] feat: add EntityTickEvent
 
 
-diff --git a/src/main/java/this/core/lamius/Lamius/event/entity/EntityTickEvent.java b/src/main/java/this/core/lamius/Lamius/event/entity/EntityTickEvent.java
+diff --git a/src/main/java/me/core/lamius/Lamius/event/entity/EntityTickEvent.java b/src/main/java/me/core/lamius/Lamius/event/entity/EntityTickEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..e679d746b2eb68ef34d06f684433f4202302e0a7
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/event/entity/EntityTickEvent.java
++++ b/src/main/java/me/core/lamius/Lamius/event/entity/EntityTickEvent.java
 @@ -0,0 +1,48 @@
-+package this.core.lamius.Lamius.event.entity;
++package me.core.lamius.Lamius.event.entity;
 +
 +import org.bukkit.World;
 +import org.bukkit.entity.Entity;

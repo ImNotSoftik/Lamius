@@ -32,10 +32,10 @@ and an action can be defined: DROP or KICK
 
 If interval or rate are less-than 0, the limit is ignored
 
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index 52ffaf61a741f17cf7481cc2bbc45577293cf2d2..b9e0ec8066abab58c38886b6a1f9434740537a6e 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -5,21 +5,26 @@ import net.minecraft.server.DispenserRegistry;
  import net.minecraft.server.EntityPlayer;
  import net.minecraft.server.MathHelper;
@@ -267,7 +267,7 @@ index 4467c9edce2425a91c7f4428b879e3645423b2c4..434c74fb21ce2417ca655c80c5530a8e
 @@ -1,5 +1,6 @@
  package net.minecraft.server;
  
-+import this.core.lamius.Lamius.LamiusConfig;
++import me.core.lamius.Lamius.LamiusConfig;
  import com.google.common.collect.Queues;
  import com.google.common.util.concurrent.ThreadFactoryBuilder;
  import io.netty.channel.Channel;
@@ -277,8 +277,8 @@ index 4467c9edce2425a91c7f4428b879e3645423b2c4..434c74fb21ce2417ca655c80c5530a8e
      // Lamius end - allow controlled flushing
 +    // Paper start - packet limiter
 +    protected final Object PACKET_LIMIT_LOCK = new Object();
-+    protected final @Nullable io.papermc.paper.util.IntervalledCounter allPacketCounts = this.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.isEnabled() ? new io.papermc.paper.util.IntervalledCounter(
-+            (long)(this.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.interval * 1.0e9)
++    protected final @Nullable io.papermc.paper.util.IntervalledCounter allPacketCounts = me.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.isEnabled() ? new io.papermc.paper.util.IntervalledCounter(
++            (long)(me.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.interval * 1.0e9)
 +    ) : null;
 +    protected final java.util.Map<Class<? extends net.minecraft.server.Packet<?>>, io.papermc.paper.util.IntervalledCounter> packetSpecificLimits = new java.util.HashMap<>();
 +
@@ -306,20 +306,20 @@ index 4467c9edce2425a91c7f4428b879e3645423b2c4..434c74fb21ce2417ca655c80c5530a8e
 +                return;
 +            }
 +            if (this.allPacketCounts != null ||
-+                    this.core.lamius.Lamius.LamiusConfig.packetLimiterOverrides.containsKey(packet.getClass())) {
++                    me.core.lamius.Lamius.LamiusConfig.packetLimiterOverrides.containsKey(packet.getClass())) {
 +                long time = System.nanoTime();
 +                synchronized (PACKET_LIMIT_LOCK) {
 +                    if (this.allPacketCounts != null) {
 +                        this.allPacketCounts.updateAndAdd(1, time);
-+                        if (this.allPacketCounts.getRate() >= this.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.maxPacketRate) {
++                        if (this.allPacketCounts.getRate() >= me.core.lamius.Lamius.LamiusConfig.packetLimiterAllPackets.maxPacketRate) {
 +                            this.killForPacketSpam();
 +                            return;
 +                        }
 +                    }
 +
 +                    for (Class<?> check = packet.getClass(); check != Object.class; check = check.getSuperclass()) {
-+                        this.core.lamius.Lamius.LamiusConfig.PacketLimit packetSpecificLimit =
-+                            this.core.lamius.Lamius.LamiusConfig.packetLimiterOverrides.get(check);
++                        me.core.lamius.Lamius.LamiusConfig.PacketLimit packetSpecificLimit =
++                            me.core.lamius.Lamius.LamiusConfig.packetLimiterOverrides.get(check);
 +                        if (packetSpecificLimit == null || !packetSpecificLimit.isEnabled()) {
 +                            continue;
 +                        }

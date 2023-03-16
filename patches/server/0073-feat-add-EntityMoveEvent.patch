@@ -55,7 +55,7 @@ index 041b2f66982187c34f4de6cca7fde5851c800a75..e6ebdcda82b96cb5f80829de1f309540
          MinecraftTimings.timeUpdateTimer.stopTiming(); // Spigot
  
 +        // Lamius start
-+        hasEntityMoveEvent = this.core.lamius.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
++        hasEntityMoveEvent = me.core.lamius.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
 +        // Lamius end
 +
          int i;
@@ -175,7 +175,7 @@ index 41ea8d9f5bb862cb8f6b3a830468277492b8cd7d..9727853a41754a14416611b5184bcd7a
      public static org.bukkit.block.Block blockDamage; // For use in EntityDamageByBlockEvent
      public static Entity entityDamage; // For use in EntityDamageByEntityEvent
 +    // Lamius start
-+    private static final this.core.lamius.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new this.core.lamius.Lamius.event.entity.EntityMoveEvent(null);
++    private static final me.core.lamius.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new me.core.lamius.Lamius.event.entity.EntityMoveEvent(null);
 +    // Lamius end
  
      // helper methods
@@ -192,7 +192,7 @@ index 41ea8d9f5bb862cb8f6b3a830468277492b8cd7d..9727853a41754a14416611b5184bcd7a
 +        // Ignore the same position
 +        if (oldX == newX && oldY == newY && oldZ == newZ) return true;
 +
-+        this.core.lamius.Lamius.event.entity.EntityMoveEvent event = CraftEventFactory.entityMoveEvent;
++        me.core.lamius.Lamius.event.entity.EntityMoveEvent event = CraftEventFactory.entityMoveEvent;
 +
 +        event.setData(
 +                entity.getBukkitEntity(),

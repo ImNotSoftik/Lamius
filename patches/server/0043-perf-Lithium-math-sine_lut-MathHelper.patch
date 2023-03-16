@@ -7,13 +7,13 @@ Credits to Lithium:
 https://github.com/CaffeineMC/lithium-fabric/blob/fd862889af1c3b39606d6047c1fb61fbd0d12aa7/src/main/java/me/jellysquid/mods/lithium/mixin/math/sine_lut/MixinMathHelper.java
 https://github.com/CaffeineMC/lithium-fabric/blob/fd862889af1c3b39606d6047c1fb61fbd0d12aa7/src/main/java/me/jellysquid/mods/lithium/common/util/math/CompactSineLUT.java
 
-diff --git a/src/main/java/this/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java b/src/main/java/this/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java
+diff --git a/src/main/java/me/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java b/src/main/java/me/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..40197e12132dddb45fcea142ecad513564c5d465
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java
++++ b/src/main/java/me/core/lamius/Lamius/lithium/common/util/math/CompactSineLUT.java
 @@ -0,0 +1,89 @@
-+package this.core.lamius.Lamius.lithium.common.util.math;
++package me.core.lamius.Lamius.lithium.common.util.math;
 +
 +import net.minecraft.server.MathHelper;
 +
@@ -120,12 +120,12 @@ index 28ef4249fd70d35d1153afdea656e0224f357ba4..617619b9ad58ff9336319683a4caeeed
  
      public static float sin(float f) {
 -        return MathHelper.b[(int) (f * 10430.378F) & '\uffff'];
-+        return this.core.lamius.Lamius.lithium.common.util.math.CompactSineLUT.sin(f); // Lamius - Lithium: math/sine_lut/MathHelper
++        return me.core.lamius.Lamius.lithium.common.util.math.CompactSineLUT.sin(f); // Lamius - Lithium: math/sine_lut/MathHelper
      }
  
      public static float cos(float f) {
 -        return MathHelper.b[(int) (f * 10430.378F + 16384.0F) & '\uffff'];
-+        return this.core.lamius.Lamius.lithium.common.util.math.CompactSineLUT.cos(f); // Lamius - Lithium: math/sine_lut/MathHelper
++        return me.core.lamius.Lamius.lithium.common.util.math.CompactSineLUT.cos(f); // Lamius - Lithium: math/sine_lut/MathHelper
      }
  
      public static float c(float f) {

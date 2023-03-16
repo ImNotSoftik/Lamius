@@ -7,13 +7,13 @@ Determining the type of node offered by a block state is a very slow operation d
 
 Credits to Lithium: https://github.com/CaffeineMC/lithium-fabric/blob/a25ca4782f7170a5b38805894ffb56990b91a0b5/src/main/java/me/jellysquid/mods/lithium/mixin/ai/pathing/LandPathNodeMakerMixin.java
 
-diff --git a/src/main/java/this/core/lamius/Lamius/lithium/WorldHelper.java b/src/main/java/this/core/lamius/Lamius/lithium/WorldHelper.java
+diff --git a/src/main/java/me/core/lamius/Lamius/lithium/WorldHelper.java b/src/main/java/me/core/lamius/Lamius/lithium/WorldHelper.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..4a0bb7323dc2b6e7f5be84f707f9805a99671f46
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/lithium/WorldHelper.java
++++ b/src/main/java/me/core/lamius/Lamius/lithium/WorldHelper.java
 @@ -0,0 +1,11 @@
-+package this.core.lamius.Lamius.lithium;
++package me.core.lamius.Lamius.lithium;
 +
 +public class WorldHelper {
 +    public static boolean areNeighborsWithinSameChunk(int x, int y, int z) {
@@ -24,13 +24,13 @@ index 0000000000000000000000000000000000000000..4a0bb7323dc2b6e7f5be84f707f9805a
 +        return localX > 0 && localY > 0 && localZ > 0 && localX < 15 && localY < 15 && localZ < 15;
 +    }
 +}
-diff --git a/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java
+diff --git a/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..9f295474d01adaa044bb3048e87c26c5ec554c43
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java
++++ b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/BlockPathingBehavior.java
 @@ -0,0 +1,40 @@
-+package this.core.lamius.Lamius.lithium.ai.pathing;
++package me.core.lamius.Lamius.lithium.ai.pathing;
 +
 +import net.minecraft.server.IBlockAccess;
 +import net.minecraft.server.PathType;
@@ -70,13 +70,13 @@ index 0000000000000000000000000000000000000000..9f295474d01adaa044bb3048e87c26c5
 +     */
 +    PathType getNeighborPathNodeType();
 +}
-diff --git a/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java
+diff --git a/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..b5c8c66efa21fc97656e75f78620303fb24d860f
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java
++++ b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeCache.java
 @@ -0,0 +1,98 @@
-+package this.core.lamius.Lamius.lithium.ai.pathing;
++package me.core.lamius.Lamius.lithium.ai.pathing;
 +
 +import it.unimi.dsi.fastutil.objects.Reference2BooleanMap;
 +import it.unimi.dsi.fastutil.objects.Reference2BooleanOpenHashMap;
@@ -174,13 +174,13 @@ index 0000000000000000000000000000000000000000..b5c8c66efa21fc97656e75f78620303f
 +        return prevQueriedNeighborSectionResult;
 +    }
 +}
-diff --git a/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java
+diff --git a/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..483c4001b2d58fd307da540f162cb9aecf84b45b
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java
++++ b/src/main/java/me/core/lamius/Lamius/lithium/ai/pathing/PathNodeDefaults.java
 @@ -0,0 +1,51 @@
-+package this.core.lamius.Lamius.lithium.ai.pathing;
++package me.core.lamius.Lamius.lithium.ai.pathing;
 +
 +import net.minecraft.server.*;
 +
@@ -259,7 +259,7 @@ index 5df404866f9fce331ef43f7a66db473bfee9eed6..5f0c7dcbfe46f33d3f35139114cc6adc
  import java.util.Map.Entry;
  import java.util.regex.Pattern;
  import javax.annotation.Nullable;
-+import this.core.lamius.Lamius.lithium.ai.pathing.PathNodeDefaults;// Lamius - Lithium: ai/pathing/LandPathNodeMaker
++import me.core.lamius.Lamius.lithium.ai.pathing.PathNodeDefaults;// Lamius - Lithium: ai/pathing/LandPathNodeMaker
  
  public class BlockStateList {
  
@@ -396,7 +396,7 @@ index 6881d3dcb5e17fa2ac89dd1b1f85129cc85bba18..709ab2df1b8005dc401b8b9050e44ad3
  import java.util.Collection;
  
 -public interface IBlockData extends IBlockPhysics, IBlockProperties {
-+public interface IBlockData extends IBlockPhysics, IBlockProperties, this.core.lamius.Lamius.lithium.ai.pathing.BlockPathingBehavior { // Lamius - Lithium: ai/pathing/LandPathNodeMaker
++public interface IBlockData extends IBlockPhysics, IBlockProperties, me.core.lamius.Lamius.lithium.ai.pathing.BlockPathingBehavior { // Lamius - Lithium: ai/pathing/LandPathNodeMaker
  
      Collection<IBlockState<?>> s();
  
@@ -408,7 +408,7 @@ index e4217181e537160f8c3ef5deab4a936796336cc5..5b4898905b57b73741e78cd4d8577cb8
  import com.google.common.collect.Sets;
  import java.util.Set;
  import javax.annotation.Nullable;
-+import this.core.lamius.Lamius.lithium.ai.pathing.PathNodeCache;// Lamius - Lithium: ai/pathing/LandPathNodeMaker
++import me.core.lamius.Lamius.lithium.ai.pathing.PathNodeCache;// Lamius - Lithium: ai/pathing/LandPathNodeMaker
  
  public class Pathfinder {
  
@@ -446,8 +446,8 @@ index a0e17cba05148860c9d539140e0dc344d0f57659..374a1dba102d2cbc3b985093f4d4d270
  import javax.annotation.Nullable;
  
 +// Lamius start - Lithium: ai/pathing/LandPathNodeMaker
-+import this.core.lamius.Lamius.lithium.WorldHelper;
-+import this.core.lamius.Lamius.lithium.ai.pathing.PathNodeCache;
++import me.core.lamius.Lamius.lithium.WorldHelper;
++import me.core.lamius.Lamius.lithium.ai.pathing.PathNodeCache;
 +// Lamius end
 +
  public class PathfinderNormal extends PathfinderAbstract {

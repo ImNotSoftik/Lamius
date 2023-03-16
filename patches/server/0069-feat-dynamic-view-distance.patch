@@ -5,10 +5,10 @@ Subject: [PATCH] feat: dynamic view distance
 
 Sets the player's view distance based on their client settings.
 
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index 726b89f392de6351484e56a3799ffc588ab176a4..3b1e41110390cf1579f4161facf7fa040dc834bc 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -123,4 +123,9 @@ public class LamiusConfig {
          config.addDefault(path, def);
          return config.getString(path, config.getString(path));
@@ -43,7 +43,7 @@ index 6ac026c2486eef738c374b6d4f96a0a79a40b0b8..96814759247c24370a4ce890c784e6fa
          this.cl = EnumChatVisibility.FULL; // Lamius - Always full chat visibility
          this.cm = packetplayinsettings.d();
 +        // Lamius start - Dynamic view distance
-+        if (this.core.lamius.Lamius.LamiusConfig.dynamicViewDistance) {
++        if (me.core.lamius.Lamius.LamiusConfig.dynamicViewDistance) {
 +            if (viewDistance != packetplayinsettings.getViewDistance() && nextViewDistanceUpdateTick < MinecraftServer.currentTick) {
 +                this.nextViewDistanceUpdateTick = MinecraftServer.currentTick + (20 * 15);
 +                this.clientsideViewDistance = packetplayinsettings.getViewDistance();
@@ -67,7 +67,7 @@ index 2218b542908688972e23c7c0296617e2975a8eef..01c29a59d77c205bb31a5c90242eabc2
          double d1 = entityplayer.locZ - this.tracker.locZ;
          // Lamius end
 -        int i = Math.min(this.e, this.f);
-+        int i = Math.min(this.e, this.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Lamius - Dynamic view distance
++        int i = Math.min(this.e, me.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Lamius - Dynamic view distance
  
          return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer);
      }
@@ -93,7 +93,7 @@ index 003ba96f3924952be5f683fe1486cfb1be8b0f62..3157d9c15d5a4598f8a4cdcc03ad2dda
      public PlayerChunkMap(WorldServer worldserver) {
          this.world = worldserver;
 -        this.a(worldserver.spigotConfig.viewDistance); // Spigot
-+        this.a(this.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? 1 : worldserver.spigotConfig.viewDistance); // Spigot // Lamius - Dynamic view distance
++        this.a(me.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? 1 : worldserver.spigotConfig.viewDistance); // Spigot // Lamius - Dynamic view distance
      }
  
      public WorldServer getWorld() {
@@ -102,7 +102,7 @@ index 003ba96f3924952be5f683fe1486cfb1be8b0f62..3157d9c15d5a4598f8a4cdcc03ad2dda
              int l = (int) entityplayer.e >> 4;
              final int viewDistance = entityplayer.getViewDistance(); // Paper - Player view distance API
 -            int i1 = Math.max(getViewDistance(), viewDistance); // Paper - Player view distance API
-+            int i1 = this.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? viewDistance : Math.max(getViewDistance(), viewDistance); // Paper - Player view distance API // Lamius - Dynamic view distance
++            int i1 = me.core.lamius.Lamius.LamiusConfig.dynamicViewDistance ? viewDistance : Math.max(getViewDistance(), viewDistance); // Paper - Player view distance API // Lamius - Dynamic view distance
  
              int j1 = i - k;
              int k1 = j - l;

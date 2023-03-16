@@ -19,8 +19,8 @@ index e6ebdcda82b96cb5f80829de1f309540d0fc4e50..72b23385bc5ec9bf730217e0e591eb82
 @@ -887,6 +888,7 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
  
          // Lamius start
-         hasEntityMoveEvent = this.core.lamius.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        hasEntityTickEvent = this.core.lamius.Lamius.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
+         hasEntityMoveEvent = me.core.lamius.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
++        hasEntityTickEvent = me.core.lamius.Lamius.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
          // Lamius end
  
          int i;
@@ -50,9 +50,9 @@ index f9e25970d40db707576c7d8a76a27b39d7985d5d..97331a2179aaba64c232992e14ae8ddb
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -76,6 +76,7 @@ public class CraftEventFactory {
      // Lamius start
-     private static final this.core.lamius.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new this.core.lamius.Lamius.event.entity.EntityMoveEvent(null);
-     private static final this.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new this.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent(null);
-+    private static final this.core.lamius.Lamius.event.entity.EntityTickEvent entityTickEvent = new this.core.lamius.Lamius.event.entity.EntityTickEvent(null);
+     private static final me.core.lamius.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new me.core.lamius.Lamius.event.entity.EntityMoveEvent(null);
+     private static final me.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new me.core.lamius.Lamius.event.entity.AnyEntitySpawnEvent(null);
++    private static final me.core.lamius.Lamius.event.entity.EntityTickEvent entityTickEvent = new me.core.lamius.Lamius.event.entity.EntityTickEvent(null);
      // Lamius end
  
      // helper methods
@@ -62,7 +62,7 @@ index f9e25970d40db707576c7d8a76a27b39d7985d5d..97331a2179aaba64c232992e14ae8ddb
      }
 +
 +    public static boolean callEntityTickEvent(Entity entity, World world) {
-+        this.core.lamius.Lamius.event.entity.EntityTickEvent event = CraftEventFactory.entityTickEvent;
++        me.core.lamius.Lamius.event.entity.EntityTickEvent event = CraftEventFactory.entityTickEvent;
 +
 +        event.setData(entity.getBukkitEntity(), world.getWorld());
 +

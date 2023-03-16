@@ -4,10 +4,10 @@ Date: Mon, 13 Feb 2023 14:56:50 +0500
 Subject: [PATCH] feat: map decorations limit
 
 
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index b9e0ec8066abab58c38886b6a1f9434740537a6e..b72f6aa70d2fd54a420254c2f4058a690908a61f 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -280,6 +280,11 @@ public class LamiusConfig {
          saveJsonAsync = getBoolean("save-json-async", false);
      }
@@ -28,7 +28,7 @@ index df317009b47918f764cde3fb9ec44e8d2788c482..418dc27946225803ab73ed66721fc6fb
              }
          }
  
-+        if (countMapIcon() >= this.core.lamius.Lamius.LamiusConfig.mapDecorationsLimit) return; // Lamius - Limit decorations
++        if (countMapIcon() >= me.core.lamius.Lamius.LamiusConfig.mapDecorationsLimit) return; // Lamius - Limit decorations
          this.decorations.put(s, new MapIcon(mapicon_type, b0, b1, b2));
      }
  

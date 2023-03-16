@@ -23,10 +23,10 @@ index d10b64229aa5a42e345633130f504682282fe028..fd764891ad62de69b404da891f5077e6
  
      public boolean disableEndCredits;
      private void disableEndCredits() {
-diff --git a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index d02e86391bc0b2321b4d3fa040efa7224976f60e..a59d750229e63810e2efce175d087de392cacfe8 100644
---- a/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
-+++ b/src/main/java/this/core/lamius/Lamius/LamiusConfig.java
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 @@ -5,6 +5,7 @@ import net.minecraft.server.DispenserRegistry;
  import net.minecraft.server.EntityPlayer;
  import net.minecraft.server.MathHelper;
@@ -115,8 +115,8 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
  
 +    // Lamius start
 +    public void runOrQueueLightUpdate(int x, int y, int z, int type) {
-+        if (this.core.lamius.Lamius.LamiusConfig.queueLightUpdates
-+                && (type != 0 || !this.core.lamius.Lamius.LamiusConfig.lightThrottlingAllowBlockRelight)) {
++        if (me.core.lamius.Lamius.LamiusConfig.queueLightUpdates
++                && (type != 0 || !me.core.lamius.Lamius.LamiusConfig.lightThrottlingAllowBlockRelight)) {
 +            lightingQueue.schedule(x, y, z, type);
 +        } else {
 +            runLightTaskByType(x, y, z, type);
@@ -286,7 +286,7 @@ index 0000000000000000000000000000000000000000..6471bdfb81cd9439982343d9c1bf86e9
 +package net.minecraft.server;
 +
 +import co.aikar.timings.Timing;
-+import this.core.lamius.Lamius.LamiusConfig;
++import me.core.lamius.Lamius.LamiusConfig;
 +import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 +import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 +import it.unimi.dsi.fastutil.objects.ObjectCollection;

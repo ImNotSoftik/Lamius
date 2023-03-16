@@ -4,13 +4,13 @@ Date: Thu, 14 Jul 2022 04:57:46 +0500
 Subject: [PATCH] perf: async spawn chunks
 
 
-diff --git a/src/main/java/this/core/lamius/Lamius/Constants.java b/src/main/java/this/core/lamius/Lamius/Constants.java
+diff --git a/src/main/java/me/core/lamius/Lamius/Constants.java b/src/main/java/me/core/lamius/Lamius/Constants.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..8e0e7542ed6d95dc9a403d320640651998abeb6e
 --- /dev/null
-+++ b/src/main/java/this/core/lamius/Lamius/Constants.java
++++ b/src/main/java/me/core/lamius/Lamius/Constants.java
 @@ -0,0 +1,5 @@
-+package this.core.lamius.Lamius;
++package me.core.lamius.Lamius;
 +
 +public class Constants {
 +    public static final Runnable NULL_RUNNABLE = () -> {};
@@ -24,7 +24,7 @@ index 04ce30a82ee7f655b23f9620fd19e912ca879c1f..2f9f7ee109a6fd50ad6ef221e09bfe99
  
                      ++i;
 -                    worldserver.getChunkProviderServer().getChunkAt(blockposition.getX() + k >> 4, blockposition.getZ() + l >> 4);
-+                    worldserver.getChunkProviderServer().getChunkAt(blockposition.getX() + k >> 4, blockposition.getZ() + l >> 4, this.core.lamius.Lamius.Constants.NULL_RUNNABLE); // Lamius - Async Spawn Chunks
++                    worldserver.getChunkProviderServer().getChunkAt(blockposition.getX() + k >> 4, blockposition.getZ() + l >> 4, me.core.lamius.Lamius.Constants.NULL_RUNNABLE); // Lamius - Async Spawn Chunks
                  }
              }
          }
@@ -37,7 +37,7 @@ index b800048737aa316548cd968a22ed81d6a566089e..56ef78618da942b9074e4bcd2222efd4
  
                      BlockPosition chunkcoordinates = internal.getSpawn();
 -                    internal.getChunkProviderServer().getChunkAt(chunkcoordinates.getX() + j >> 4, chunkcoordinates.getZ() + k >> 4);
-+                    internal.getChunkProviderServer().getChunkAt(chunkcoordinates.getX() + j >> 4, chunkcoordinates.getZ() + k >> 4, this.core.lamius.Lamius.Constants.NULL_RUNNABLE); // Lamius - Async Spawn Chunks
++                    internal.getChunkProviderServer().getChunkAt(chunkcoordinates.getX() + j >> 4, chunkcoordinates.getZ() + k >> 4, me.core.lamius.Lamius.Constants.NULL_RUNNABLE); // Lamius - Async Spawn Chunks
                  }
              }
          }
