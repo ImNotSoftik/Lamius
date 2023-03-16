@@ -3,6 +3,8 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Thu, 9 Feb 2023 00:39:00 +0500
 Subject: [PATCH] Backport-Purpur-s-Alternative-Keepalive-Handling
 
+Credits to Dionysus: https://github.com/nopjmp/Dionysus/blob/dev/patches/server/0147-Backport-Purpur-s-Alternative-Keepalive-Handling.patch
+
 
 diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index b9e0ec8066abab58c38886b6a1f9434740537a6e..d50b6b8890ce37c9699b7c66bba511be456be823 100644
