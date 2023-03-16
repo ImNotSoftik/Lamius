@@ -1,1 +1,1 @@
-This https://github.com/ruViolence/Lamius/tree/ver/1.12.2/patches/server fork special for 6g6s.org
+This Reaper fork special for 6g6s.org
