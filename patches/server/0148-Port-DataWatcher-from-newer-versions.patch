@@ -3,6 +3,8 @@ From: AlexProgrammerDE <40795980+AlexProgrammerDE@users.noreply.github.com>
 Date: Sat, 20 Aug 2022 20:30:36 +0200
 Subject: [PATCH] Port DataWatcher from newer versions
 
+Credits to Dionysus: https://github.com/nopjmp/Dionysus/blob/dev/patches/server/0158-Port-DataWatcher-from-newer-versions.patch
+
 
 diff --git a/src/main/java/net/minecraft/server/DataWatcher.java b/src/main/java/net/minecraft/server/DataWatcher.java
 index fe84844531ab06d20de9ca4988ee12e69ab5f2f7..ee3cd05c822edbb917e8e7906347a6dd28f4f3c9 100644
