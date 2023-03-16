@@ -14,10 +14,10 @@ index 718f2cb722c94e84eb9ff1587a28bb5021d69a4e..3b976e3765bc7700ac8dc9e424582bcc
                  IBlockData iblockdata = block.getBlockData().set(BlockShulkerBox.a, enumdirection1);
  
 -                world.setTypeUpdate(blockposition, iblockdata);
-+                // Reaper start
++                // Lamius start
 +                boolean wasPlaced = world.setTypeUpdate(blockposition, iblockdata);
 +                if (!wasPlaced) return itemstack;
-+                // Reaper end
++                // Lamius end
                  TileEntity tileentity = world.getTileEntity(blockposition);
                  ItemStack itemstack1 = itemstack.cloneAndSubtract(1);
  

@@ -2,16 +2,16 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.github.ruviolence</groupId>
-    <artifactId>reaper-parent</artifactId>
+    <artifactId>Lamius-parent</artifactId>
     <version>dev-SNAPSHOT</version>
     <packaging>pom</packaging>
-    <name>Reaper (Parent)</name>
+    <name>Lamius (Parent)</name>
 
     <distributionManagement>
         <repository>
             <id>github</id>
             <name>GitHub ruViolence Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/ruViolence/Reaper</url>
+            <url>https://maven.pkg.github.com/ruViolence/Lamius</url>
         </repository>
     </distributionManagement>
 
@@ -31,8 +31,8 @@
         <finalName>${project.artifactId}</finalName>
     </build>
     <modules>
-        <module>Reaper-API</module>
-        <module>Reaper-Server</module>
+        <module>Lamius-API</module>
+        <module>Lamius-Server</module>
     </modules>
 
     <profiles>

@@ -13,13 +13,13 @@ index b5a4f020de60e9826c146f1e590aaeb792dbc247..3a20967dea557b617b3801a7ac8254d4
              }
  
 -            return this.getChunkAtWorldCoords(blockposition).a(blockposition, 0);
-+            // Reaper start - Don't load chunks for light checks
++            // Lamius start - Don't load chunks for light checks
 +            Chunk chunk = this.getChunkIfLoaded(blockposition);
 +            if (chunk == null) {
 +                return 0;
 +            }
 +            return chunk.a(blockposition, 0);
-+            // Reaper end
++            // Lamius end
          }
      }
  

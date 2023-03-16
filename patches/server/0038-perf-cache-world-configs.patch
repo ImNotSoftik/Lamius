@@ -12,17 +12,17 @@ index 5615a019962dc08ee2aa9833e46504d14e1abeab..41d6fbc96c874fc84d4d9a08e9918046
          for (WorldServer world : console.worlds) {
              world.paperConfig.init();
          }
-+        com.github.ruviolence.reaper.WorldConfigCache.dropCache(); // Reaper - Cache world configs
++        com.github.ruviolence.Lamius.WorldConfigCache.dropCache(); // Lamius - Cache world configs
          console.server.reloadCount++;
  
          Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Paper config reload complete.");
-diff --git a/src/main/java/com/github/ruviolence/reaper/WorldConfigCache.java b/src/main/java/com/github/ruviolence/reaper/WorldConfigCache.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/WorldConfigCache.java b/src/main/java/com/github/ruviolence/Lamius/WorldConfigCache.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..e556587cf45f9fe460c10b57a6071cf2418a828f
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/WorldConfigCache.java
++++ b/src/main/java/com/github/ruviolence/Lamius/WorldConfigCache.java
 @@ -0,0 +1,26 @@
-+package com.github.ruviolence.reaper;
++package com.github.ruviolence.Lamius;
 +
 +import com.destroystokyo.paper.PaperWorldConfig;
 +import com.github.benmanes.caffeine.cache.Cache;
@@ -58,8 +58,8 @@ index da77bbabccef8f9f66a1d9d0a9decaaa2b862aee..a27f6efd3005171acae4474983654321
      protected World(IDataManager idatamanager, WorldData worlddata, WorldProvider worldprovider, MethodProfiler methodprofiler, boolean flag, ChunkGenerator gen, org.bukkit.World.Environment env) {
 -        this.spigotConfig = new org.spigotmc.SpigotWorldConfig( worlddata.getName() ); // Spigot
 -        this.paperConfig = new com.destroystokyo.paper.PaperWorldConfig(worlddata.getName(), this.spigotConfig); // Paper
-+        this.spigotConfig = com.github.ruviolence.reaper.WorldConfigCache.getSpigotConfig( worlddata.getName() ); // Spigot // Reaper - Cache world configs
-+        this.paperConfig = com.github.ruviolence.reaper.WorldConfigCache.getPaperConfig(worlddata.getName(), this.spigotConfig); // Paper // Reaper - Cache world configs
++        this.spigotConfig = com.github.ruviolence.Lamius.WorldConfigCache.getSpigotConfig( worlddata.getName() ); // Spigot // Lamius - Cache world configs
++        this.paperConfig = com.github.ruviolence.Lamius.WorldConfigCache.getPaperConfig(worlddata.getName(), this.spigotConfig); // Paper // Lamius - Cache world configs
          this.generator = gen;
          this.world = new CraftWorld((WorldServer) this, gen, env);
          this.ticksPerAnimalSpawns = this.getServer().getTicksPerAnimalSpawns(); // CraftBukkit
@@ -71,7 +71,7 @@ index 95bc3e2e328c9faf79ef9a65a47c7b779708d564..b800048737aa316548cd968a22ed81d6
              }
              world.spigotConfig.init(); // Spigot
              world.paperConfig.init(); // Paper
-+            com.github.ruviolence.reaper.WorldConfigCache.dropCache(); // Reaper - Cache world configs
++            com.github.ruviolence.Lamius.WorldConfigCache.dropCache(); // Lamius - Cache world configs
          }
  
          Plugin[] pluginClone = pluginManager.getPlugins().clone(); // Paper
@@ -83,7 +83,7 @@ index fdb030c7af3a63769302391a0aab6ad10f77fb30..f0730d03fca2a21157eb75b8e6904fac
              for (WorldServer world : console.worlds) {
                  world.spigotConfig.init();
              }
-+            com.github.ruviolence.reaper.WorldConfigCache.dropCache(); // Reaper - Cache world configs
++            com.github.ruviolence.Lamius.WorldConfigCache.dropCache(); // Lamius - Cache world configs
              console.server.reloadCount++;
  
              Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Reload complete.");

@@ -22,11 +22,11 @@ index 611287806ed200195fe9c61fec2dfeb806b4683a..1f8cc423177efa0d082abc3142621621
  import java.util.concurrent.Callable;
  // Spigot end
  
-+// Reaper start - Guava to caffeine
++// Lamius start - Guava to caffeine
 +import com.github.benmanes.caffeine.cache.CacheLoader;
 +import com.github.benmanes.caffeine.cache.Caffeine;
 +import com.github.benmanes.caffeine.cache.LoadingCache;
-+// Reaper end
++// Lamius end
 +
  public class TileEntitySkull extends TileEntity /*implements ITickable*/ { // Paper - remove tickable
  
@@ -36,7 +36,7 @@ index 611287806ed200195fe9c61fec2dfeb806b4683a..1f8cc423177efa0d082abc3142621621
                      .build()
      );
 -    public static final LoadingCache<String, GameProfile> skinCache = CacheBuilder.newBuilder()
-+    public static final LoadingCache<String, GameProfile> skinCache = Caffeine.newBuilder() // Reaper - Guava to caffeine
++    public static final LoadingCache<String, GameProfile> skinCache = Caffeine.newBuilder() // Lamius - Guava to caffeine
              .maximumSize( 5000 )
              .expireAfterAccess( 60, TimeUnit.MINUTES )
              .build( new CacheLoader<String, GameProfile>()
@@ -45,7 +45,7 @@ index 611287806ed200195fe9c61fec2dfeb806b4683a..1f8cc423177efa0d082abc3142621621
                          @Override
                          public GameProfile call() {
 -                            final GameProfile profile = skinCache.getUnchecked(gameprofile.getName().toLowerCase(java.util.Locale.ROOT));
-+                            final GameProfile profile = skinCache.get(gameprofile.getName().toLowerCase(java.util.Locale.ROOT)); // Reaper - Guava to caffeine
++                            final GameProfile profile = skinCache.get(gameprofile.getName().toLowerCase(java.util.Locale.ROOT)); // Lamius - Guava to caffeine
                              MinecraftServer.getServer().processQueue.add(new Runnable() {
                                  @Override
                                  public void run() {
@@ -58,7 +58,7 @@ index ae9a6031fe04d24b1fc322b1a4747589ace2b0e5..95bc3e2e328c9faf79ef9a65a47c7b77
      private YamlConfiguration commandsConfiguration;
      private final Yaml yaml = new Yaml(new SafeConstructor());
 -    private final Map<UUID, OfflinePlayer> offlinePlayers = new MapMaker().weakValues().makeMap();
-+    private final com.github.benmanes.caffeine.cache.Cache<UUID, OfflinePlayer> offlinePlayers = com.github.benmanes.caffeine.cache.Caffeine.newBuilder().weakValues().build(); // Reaper - Guava to caffeine
++    private final com.github.benmanes.caffeine.cache.Cache<UUID, OfflinePlayer> offlinePlayers = com.github.benmanes.caffeine.cache.Caffeine.newBuilder().weakValues().build(); // Lamius - Guava to caffeine
      private final EntityMetadataStore entityMetadata = new EntityMetadataStore();
      private final PlayerMetadataStore playerMetadata = new PlayerMetadataStore();
      private final WorldMetadataStore worldMetadata = new WorldMetadataStore();
@@ -67,7 +67,7 @@ index ae9a6031fe04d24b1fc322b1a4747589ace2b0e5..95bc3e2e328c9faf79ef9a65a47c7b77
              }
          } else {
 -            offlinePlayers.remove(result.getUniqueId());
-+            offlinePlayers.invalidate(result.getUniqueId()); // Reaper - Guava to caffeine
++            offlinePlayers.invalidate(result.getUniqueId()); // Lamius - Guava to caffeine
          }
  
          return result;
@@ -76,14 +76,14 @@ index ae9a6031fe04d24b1fc322b1a4747589ace2b0e5..95bc3e2e328c9faf79ef9a65a47c7b77
          OfflinePlayer result = getPlayer(id);
          if (result == null) {
 -            result = offlinePlayers.get(id);
-+            result = offlinePlayers.getIfPresent(id); // Reaper - Guava to caffeine
++            result = offlinePlayers.getIfPresent(id); // Lamius - Guava to caffeine
              if (result == null) {
                  result = new CraftOfflinePlayer(this, new GameProfile(id, null));
                  offlinePlayers.put(id, result);
              }
          } else {
 -            offlinePlayers.remove(id);
-+            offlinePlayers.invalidate(id); // Reaper - Guava to caffeine
++            offlinePlayers.invalidate(id); // Lamius - Guava to caffeine
          }
  
          return result;

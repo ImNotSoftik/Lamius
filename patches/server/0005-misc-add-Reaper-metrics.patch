@@ -1,16 +1,16 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: ruViolence <78062896+ruViolence@users.noreply.github.com>
 Date: Wed, 1 Jun 2022 06:58:07 +0500
-Subject: [PATCH] misc: add Reaper metrics
+Subject: [PATCH] misc: add Lamius metrics
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/Metrics.java b/src/main/java/com/github/ruviolence/reaper/Metrics.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/Metrics.java b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941edf0b40924
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/Metrics.java
++++ b/src/main/java/com/github/ruviolence/Lamius/Metrics.java
 @@ -0,0 +1,450 @@
-+package com.github.ruviolence.reaper;
++package com.github.ruviolence.Lamius;
 +
 +import com.google.gson.JsonArray;
 +import com.google.gson.JsonObject;
@@ -416,7 +416,7 @@ index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941ed
 +
 +    }
 +
-+    static class ReaperMetrics {
++    static class LamiusMetrics {
 +        static void startMetrics() {
 +            // Get the config file
 +            File bStatsFolder = new File((File) MinecraftServer.getServer().options.valueOf("plugins"), "bStats");
@@ -460,11 +460,11 @@ index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941ed
 +        }
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index aac88cdc33ce89b418a554c66568e0aec3fdc05d..726b89f392de6351484e56a3799ffc588ab176a4 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-@@ -28,6 +28,7 @@ public class ReaperConfig {
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+@@ -28,6 +28,7 @@ public class LamiusConfig {
      static int version;
      static Map<String, Command> commands;
      /*========================================================================*/
@@ -472,9 +472,9 @@ index aac88cdc33ce89b418a554c66568e0aec3fdc05d..726b89f392de6351484e56a3799ffc58
  
      public static void init(File configFile) {
          CONFIG_FILE = configFile;
-@@ -54,6 +55,16 @@ public class ReaperConfig {
+@@ -54,6 +55,16 @@ public class LamiusConfig {
          for (Map.Entry<String, Command> entry : commands.entrySet()) {
-             MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Reaper", entry.getValue());
+             MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Lamius", entry.getValue());
          }
 +
 +        if (!metricsStarted) {
@@ -482,7 +482,7 @@ index aac88cdc33ce89b418a554c66568e0aec3fdc05d..726b89f392de6351484e56a3799ffc58
 +            File configFile = new File(bStatsFolder, "config.yml");
 +
 +            if (!configFile.exists() || YamlConfiguration.loadConfiguration(configFile).getBoolean("enabled", true)) {
-+                Metrics.ReaperMetrics.startMetrics();
++                Metrics.LamiusMetrics.startMetrics();
 +            }
 +            metricsStarted = true;
 +        }

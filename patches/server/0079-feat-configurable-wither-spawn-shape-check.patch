@@ -4,11 +4,11 @@ Date: Fri, 27 May 2022 10:44:34 +0500
 Subject: [PATCH] feat: configurable wither spawn shape check
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index 92637c77c1cf9e2f4647b4fb4a0d53bc6ca87909..c93566b38e3b2b2f217e65bc8912160e19f0a0fe 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-@@ -162,4 +162,9 @@ public class ReaperConfig {
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+@@ -162,4 +162,9 @@ public class LamiusConfig {
              player.initDelayedChunksList();
          }
      }
@@ -26,7 +26,7 @@ index 56c7639889f359281969ffc9e841ce60cc14de26..4c357da8f6f3f3a5f44a9d040679f200
      }
  
      public void a(World world, BlockPosition blockposition, TileEntitySkull tileentityskull) {
-+        if (!com.github.ruviolence.reaper.ReaperConfig.shapeCheckWither) return; // Reaper
++        if (!com.github.ruviolence.Lamius.LamiusConfig.shapeCheckWither) return; // Lamius
          if (world.captureBlockStates) return; // CraftBukkit
-         if (tileentityskull.getSkullType() == 1 && blockposition.getY() >= 2 && world.getDifficulty() != EnumDifficulty.PEACEFUL) { // Reaper - Remove isClientSide check
+         if (tileentityskull.getSkullType() == 1 && blockposition.getY() >= 2 && world.getDifficulty() != EnumDifficulty.PEACEFUL) { // Lamius - Remove isClientSide check
              ShapeDetector shapedetector = this.g();

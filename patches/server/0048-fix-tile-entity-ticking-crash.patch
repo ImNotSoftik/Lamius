@@ -13,7 +13,7 @@ index fd489c2a6aae254557e58b12fe17a2674552b099..39221d8e5f04562b2ce86c5bd42bba81
                  NextTickListEntry nextticklistentry;
  
                  for (int j = 0; j < i; ++j) {
-+                    // Reaper start - Fix TileEntity ticking crash
++                    // Lamius start - Fix TileEntity ticking crash
 +                    try {
                      nextticklistentry = (NextTickListEntry) this.nextTickList.first();
 +                    } catch (java.util.NoSuchElementException e) {
@@ -21,7 +21,7 @@ index fd489c2a6aae254557e58b12fe17a2674552b099..39221d8e5f04562b2ce86c5bd42bba81
 +                        nextTickList.fixInconsistence();
 +                        break;
 +                    }
-+                    // Reaper end
++                    // Lamius end
                      if (!flag && nextticklistentry.b > this.worldData.getTime()) {
                          break;
                      }
@@ -33,5 +33,5 @@ index cd864c404747f8f77417e67ca319b3daa04bae59..4a7120b83a93cbcf400780354722c5d5
          return tree.first();
      }
  
-+    public void fixInconsistence() { hash.removeIf(entry -> !tree.contains(entry)); } // Reaper - Fix TileEntity ticking crash
++    public void fixInconsistence() { hash.removeIf(entry -> !tree.contains(entry)); } // Lamius - Fix TileEntity ticking crash
  }

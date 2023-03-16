@@ -13,7 +13,7 @@ index 35bc094758b8f1fcaa58356a0adb865b0b933afd..8061a7c12aa32e6dc9bdd697983925cf
      public NBTTagCompound save(NBTTagCompound nbttagcompound) {
          try {
 -            nbttagcompound.set("Pos", this.a(new double[] { this.locX, this.locY, this.locZ}));
-+            // Reaper start
++            // Lamius start
 +            double locX = this.locX;
 +            double locY = this.locY;
 +            double locZ = this.locZ;
@@ -21,7 +21,7 @@ index 35bc094758b8f1fcaa58356a0adb865b0b933afd..8061a7c12aa32e6dc9bdd697983925cf
 +            if (Double.isNaN(locY)) locY = 0;
 +            if (Double.isNaN(locZ)) locZ = 0;
 +            nbttagcompound.set("Pos", this.a(new double[] {locX, locY, locZ}));
-+            // Reaper end
++            // Lamius end
              nbttagcompound.set("Motion", this.a(new double[] { this.motX, this.motY, this.motZ}));
  
              // CraftBukkit start - Checking for NaN pitch/yaw and resetting to zero

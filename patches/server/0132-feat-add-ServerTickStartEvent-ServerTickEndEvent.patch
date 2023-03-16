@@ -12,15 +12,15 @@ index 966a8df509e96fe076608801c9049e61a9e625a8..fcd59b9f10fc1a071765b73243ae6a3e
                      }
                      lastTick = curTime;
  
-+                    if (com.github.ruviolence.reaper.event.server.ServerTickStartEvent.getHandlerList().getRegisteredListeners().length != 0) org.bukkit.craftbukkit.event.CraftEventFactory.callServerTickStartEvent(this.ticks); // Reaper - ServerTickStartEvent
++                    if (com.github.ruviolence.Lamius.event.server.ServerTickStartEvent.getHandlerList().getRegisteredListeners().length != 0) org.bukkit.craftbukkit.event.CraftEventFactory.callServerTickStartEvent(this.ticks); // Lamius - ServerTickStartEvent
                      this.C();
-+                    // Reaper start - ServerTickEndEvent
-+                    if (com.github.ruviolence.reaper.event.server.ServerTickEndEvent.getHandlerList().getRegisteredListeners().length != 0) {
++                    // Lamius start - ServerTickEndEvent
++                    if (com.github.ruviolence.Lamius.event.server.ServerTickEndEvent.getHandlerList().getRegisteredListeners().length != 0) {
 +                        long endTime = System.nanoTime();
 +                        long remaining = (TICK_TIME - (endTime - lastTick)) - catchupTime;
 +                        org.bukkit.craftbukkit.event.CraftEventFactory.callServerTickEndEvent(this.ticks, ((double) (endTime - lastTick) / 1000000D), remaining);
 +                    }
-+                    // Reaper end
++                    // Lamius end
                      this.Q = true;
                  }
                  // Spigot end
@@ -29,12 +29,12 @@ index 8d3afe3b6819e080d646b10020d852d287dc33de..f26ea55b4acaa87087b8f39ba7d0dce3
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -80,6 +80,8 @@ public class CraftEventFactory {
-     private static final com.github.ruviolence.reaper.event.block.TileEntityTickEvent tileEntityTickEvent = new com.github.ruviolence.reaper.event.block.TileEntityTickEvent(null);
-     private static final com.github.ruviolence.reaper.event.player.EntityTrackedEvent entityTrackedEvent = new com.github.ruviolence.reaper.event.player.EntityTrackedEvent(null);
-     private static final com.github.ruviolence.reaper.event.player.EntityUntrackedEvent entityUntrackedEvent = new com.github.ruviolence.reaper.event.player.EntityUntrackedEvent(null);
-+    private static final com.github.ruviolence.reaper.event.server.ServerTickStartEvent serverTickStartEvent = new com.github.ruviolence.reaper.event.server.ServerTickStartEvent();
-+    private static final com.github.ruviolence.reaper.event.server.ServerTickEndEvent serverTickEndEvent = new com.github.ruviolence.reaper.event.server.ServerTickEndEvent();
-     // Reaper end
+     private static final com.github.ruviolence.Lamius.event.block.TileEntityTickEvent tileEntityTickEvent = new com.github.ruviolence.Lamius.event.block.TileEntityTickEvent(null);
+     private static final com.github.ruviolence.Lamius.event.player.EntityTrackedEvent entityTrackedEvent = new com.github.ruviolence.Lamius.event.player.EntityTrackedEvent(null);
+     private static final com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent entityUntrackedEvent = new com.github.ruviolence.Lamius.event.player.EntityUntrackedEvent(null);
++    private static final com.github.ruviolence.Lamius.event.server.ServerTickStartEvent serverTickStartEvent = new com.github.ruviolence.Lamius.event.server.ServerTickStartEvent();
++    private static final com.github.ruviolence.Lamius.event.server.ServerTickEndEvent serverTickEndEvent = new com.github.ruviolence.Lamius.event.server.ServerTickEndEvent();
+     // Lamius end
  
      // helper methods
 @@ -1248,5 +1250,21 @@ public class CraftEventFactory {
@@ -43,7 +43,7 @@ index 8d3afe3b6819e080d646b10020d852d287dc33de..f26ea55b4acaa87087b8f39ba7d0dce3
      }
 +
 +    public static void callServerTickStartEvent(int tickNumber) {
-+        com.github.ruviolence.reaper.event.server.ServerTickStartEvent event = CraftEventFactory.serverTickStartEvent;
++        com.github.ruviolence.Lamius.event.server.ServerTickStartEvent event = CraftEventFactory.serverTickStartEvent;
 +
 +        event.setData(tickNumber);
 +
@@ -51,11 +51,11 @@ index 8d3afe3b6819e080d646b10020d852d287dc33de..f26ea55b4acaa87087b8f39ba7d0dce3
 +    }
 +
 +    public static void callServerTickEndEvent(int tickNumber, double tickDuration, long timeEnd) {
-+        com.github.ruviolence.reaper.event.server.ServerTickEndEvent event = CraftEventFactory.serverTickEndEvent;
++        com.github.ruviolence.Lamius.event.server.ServerTickEndEvent event = CraftEventFactory.serverTickEndEvent;
 +
 +        event.setData(tickNumber, tickDuration, timeEnd);
 +
 +        Bukkit.getPluginManager().callEvent(event);
 +    }
-     // Reaper end
+     // Lamius end
  }

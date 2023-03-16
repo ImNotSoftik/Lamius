@@ -13,36 +13,36 @@ index 6f075bc2d811d6770e66f9826babb520c6640ab5..30dbd4017c4fcbe8639d4792f14b6bf8
      private org.spigotmc.TickLimiter tileLimiter;
      private int tileTickPosition;
      public final Map<Explosion.CacheKey, Float> explosionDensityCache = new HashMap<>(); // Paper - Optimize explosions
-+    // Reaper start - Improve the physics update loop
++    // Lamius start - Improve the physics update loop
 +    private final List<org.apache.commons.lang3.tuple.ImmutableTriple<BlockPosition, Block, BlockPosition>> pendingUpdates = new ArrayList<>();
 +    private final List<org.apache.commons.lang3.tuple.ImmutableTriple<BlockPosition, Block, BlockPosition>> toIterate = new ArrayList<>();
 +    private boolean isUpdatingBlocks = false;
-+    // Reaper end
++    // Lamius end
  
      public CraftWorld getWorld() {
          return this.world;
 @@ -580,13 +585,21 @@ public abstract class World implements IBlockAccess {
  
      public void a(BlockPosition blockposition, final Block block, BlockPosition blockposition1) {
-         if (true) { // Reaper - Remove isClientSide check
+         if (true) { // Lamius - Remove isClientSide check
 -            IBlockData iblockdata = this.getType(blockposition);
-+            // Reaper start - Optimize physics update loop
++            // Lamius start - Optimize physics update loop
 +            if (isUpdatingBlocks) {
 +                pendingUpdates.add(new org.apache.commons.lang3.tuple.ImmutableTriple<>(blockposition, block, blockposition1));
 +                return;
 +            }
 +            isUpdatingBlocks = true;
-+            // IBlockData iblockdata = this.getType(blockposition); // Reaper - Move down 
++            // IBlockData iblockdata = this.getType(blockposition); // Lamius - Move down 
  
              try {
-+                int depth = 1; // Reaper
++                int depth = 1; // Lamius
                  // CraftBukkit start
                  CraftWorld world = ((WorldServer) this).getWorld();
 -                if (world != null && !((WorldServer)this).stopPhysicsEvent) { // Paper
 -                    BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block), blockposition1.getX(), blockposition1.getY(), blockposition1.getZ()); // Paper - add source block
-+                boolean hasPhysicsEvent = world != null && !((WorldServer) this).stopPhysicsEvent; // Reaper
++                boolean hasPhysicsEvent = world != null && !((WorldServer) this).stopPhysicsEvent; // Lamius
 +                if (hasPhysicsEvent) { // Paper
-+                    BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block), blockposition1.getX(), blockposition1.getY(), blockposition1.getZ(), depth); // Reaper - Add depth API // Paper - add source block
++                    BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), CraftMagicNumbers.getId(block), blockposition1.getX(), blockposition1.getY(), blockposition1.getZ(), depth); // Lamius - Add depth API // Paper - add source block
                      this.getServer().getPluginManager().callEvent(event);
  
                      if (event.isCancelled()) {
@@ -51,7 +51,7 @@ index 6f075bc2d811d6770e66f9826babb520c6640ab5..30dbd4017c4fcbe8639d4792f14b6bf8
                  }
                  // CraftBukkit end
 -                iblockdata.doPhysics(this, blockposition, block, blockposition1);
-+                this.getType(blockposition).doPhysics(this, blockposition, block, blockposition1); // Reaper
++                this.getType(blockposition).doPhysics(this, blockposition, block, blockposition1); // Lamius
 +                if (pendingUpdates.isEmpty()) return; // If the next updates have not been queued after the first update
 +
 +                List<org.apache.commons.lang3.tuple.ImmutableTriple<BlockPosition, Block, BlockPosition>> pendingUpdates = this.pendingUpdates;
@@ -72,7 +72,7 @@ index 6f075bc2d811d6770e66f9826babb520c6640ab5..30dbd4017c4fcbe8639d4792f14b6bf8
 +                        BlockPosition sourcePos = triple.getRight();
 +
 +                        if (hasPhysicsEvent) {
-+                            BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()), CraftMagicNumbers.getId(b), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), depth); // Reaper - Add depth API
++                            BlockPhysicsEvent event = new BlockPhysicsEvent(world.getBlockAt(pos.getX(), pos.getY(), pos.getZ()), CraftMagicNumbers.getId(b), sourcePos.getX(), sourcePos.getY(), sourcePos.getZ(), depth); // Lamius - Add depth API
 +                            this.getServer().getPluginManager().callEvent(event);
 +
 +                            if (event.isCancelled()) {
@@ -95,7 +95,7 @@ index 6f075bc2d811d6770e66f9826babb520c6640ab5..30dbd4017c4fcbe8639d4792f14b6bf8
                  throw new ReportedException(crashreport);
 +            } finally {
 +                isUpdatingBlocks = false;
-+                // Reaper end - Optimize physics update loop
++                // Lamius end - Optimize physics update loop
              }
          }
      }

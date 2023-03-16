@@ -13,7 +13,7 @@ index b15cd5874eed58e80781f8d1341b975d414750c2..79d0f7e64be4f8232996c31234a81ff8
          }
  
 -        this.x().getTracker().a(this);
-+        // this.x().getTracker().a(this); // Reaper - Reduce entity tracker updates
++        // this.x().getTracker().a(this); // Lamius - Reduce entity tracker updates
      }
  
      public Entity getSpecatorTarget() {

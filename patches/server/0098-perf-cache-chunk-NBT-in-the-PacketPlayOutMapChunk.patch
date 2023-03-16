@@ -12,7 +12,7 @@ index 6782d7afab4d986a06ab8a2228c4b912748295dd..a727f995d8ea6b7119329580c4f23a11
      private byte[] d;
      private List<NBTTagCompound> e;
      private boolean f;
-+    private byte[] nbtData; // Reaper - Cache chunk NBT
++    private byte[] nbtData; // Lamius - Cache chunk NBT
  
      public PacketPlayOutMapChunk() {}
  
@@ -20,7 +20,7 @@ index 6782d7afab4d986a06ab8a2228c4b912748295dd..a727f995d8ea6b7119329580c4f23a11
                  this.e.add(nbttagcompound);
              }
          }
-+        // Reaper start - Cache chunk NBT
++        // Lamius start - Cache chunk NBT
 +        if (!this.e.isEmpty()) {
 +            try {
 +                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
@@ -34,7 +34,7 @@ index 6782d7afab4d986a06ab8a2228c4b912748295dd..a727f995d8ea6b7119329580c4f23a11
 +                e.printStackTrace();
 +            }
 +        }
-+        // Reaper end
++        // Lamius end
  
      }
  
@@ -42,7 +42,7 @@ index 6782d7afab4d986a06ab8a2228c4b912748295dd..a727f995d8ea6b7119329580c4f23a11
          packetdataserializer.d(this.d.length);
          packetdataserializer.writeBytes(this.d);
          packetdataserializer.d(this.e.size());
-+        /* // Reaper start - Cache chunk NBT
++        /* // Lamius start - Cache chunk NBT
          Iterator iterator = this.e.iterator();
  
          while (iterator.hasNext()) {
@@ -54,7 +54,7 @@ index 6782d7afab4d986a06ab8a2228c4b912748295dd..a727f995d8ea6b7119329580c4f23a11
 +        if (nbtData != null) {
 +            packetdataserializer.writeBytes(this.nbtData);
 +        }
-+        // Reaper end
++        // Lamius end
  
      }
  

@@ -16,10 +16,10 @@ index 83c4411ffc42625656d05eace3e3c68057da66e8..728c3e3c1dea2dff959e9dfe0a586be5
              
 -            int k = (int) entityplayer.locX >> 4;
 -            int l = (int) entityplayer.locZ >> 4;
-+            // Reaper start - Calculate by last managedPos, not by current location, fixes getting stuck in the PlayerChunk viewers list
++            // Lamius start - Calculate by last managedPos, not by current location, fixes getting stuck in the PlayerChunk viewers list
 +            int k = (int) entityplayer.d >> 4;
 +            int l = (int) entityplayer.e >> 4;
-+            // Reaper end
++            // Lamius end
              int i1;
              int j1;
  
@@ -28,7 +28,7 @@ index 83c4411ffc42625656d05eace3e3c68057da66e8..728c3e3c1dea2dff959e9dfe0a586be5
                      for (j1 = l - oldViewDistance; j1 <= l + oldViewDistance; ++j1) {
                          if (!this.a(i1, j1, k, l, i)) {
 -                            this.c(i1, j1).b(entityplayer);
-+                            PlayerChunk chunk = this.getChunk(i1, j1); if (chunk != null) chunk.b(entityplayer); // Reaper - Fix memory leak
++                            PlayerChunk chunk = this.getChunk(i1, j1); if (chunk != null) chunk.b(entityplayer); // Lamius - Fix memory leak
                          }
                      }
                  }

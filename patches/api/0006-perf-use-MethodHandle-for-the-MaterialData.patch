@@ -20,10 +20,10 @@ index b43bc24376be6acc562a26b05c0228225f46d7b4..0d6cfe3d84f7c703454a0b0f403b2ac0
      private final static Map<String, Material> BY_NAME = Maps.newHashMap();
      private final int maxStack;
      private final short durability;
-+    // Reaper start - Optimize data instantiation
++    // Lamius start - Optimize data instantiation
 +    private final Class<? extends MaterialData> dataClass;
 +    private final MethodHandle ctorMh;
-+    // Reaper end
++    // Lamius end
  
      private Material(final int id) {
          this(id, 64);
@@ -31,13 +31,13 @@ index b43bc24376be6acc562a26b05c0228225f46d7b4..0d6cfe3d84f7c703454a0b0f403b2ac0
          // try to cache the constructor for this material
          try {
              this.ctor = data.getConstructor(int.class, byte.class);
-+            // Reaper start - Optimize data instantiation
++            // Lamius start - Optimize data instantiation
 +            this.ctorMh = MethodHandles.lookup().unreflectConstructor(ctor);
 +            this.dataClass = ctor.getDeclaringClass();
-+            // Reaper end
++            // Lamius end
          } catch (NoSuchMethodException ex) {
              throw new AssertionError(ex);
-+        } catch (IllegalAccessException ex) {throw new AssertionError(ex); // Reaper
++        } catch (IllegalAccessException ex) {throw new AssertionError(ex); // Lamius
          } catch (SecurityException ex) {
              throw new AssertionError(ex);
          }
@@ -46,7 +46,7 @@ index b43bc24376be6acc562a26b05c0228225f46d7b4..0d6cfe3d84f7c703454a0b0f403b2ac0
       */
      public Class<? extends MaterialData> getData() {
 -        return ctor.getDeclaringClass();
-+        return dataClass; // Reaper - Optimize data instantiation
++        return dataClass; // Lamius - Optimize data instantiation
      }
  
      /**
@@ -55,7 +55,7 @@ index b43bc24376be6acc562a26b05c0228225f46d7b4..0d6cfe3d84f7c703454a0b0f403b2ac0
      public MaterialData getNewData(final byte raw) {
          try {
 -            return ctor.newInstance(id, raw);
-+            return (MaterialData) ctorMh.invoke(id, raw); // Reaper - Optimize data instantiation
++            return (MaterialData) ctorMh.invoke(id, raw); // Lamius - Optimize data instantiation
          } catch (InstantiationException ex) {
              final Throwable t = ex.getCause();
              if (t instanceof RuntimeException) {

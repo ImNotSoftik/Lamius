@@ -12,7 +12,7 @@ index 6536e5fb843fd6e9f28ad975fc73678fafffff47..634cc51777fbbb3256d57805da3a25db
              return;
          }
          // Paper end
-+        if (!this.isVillageAreaLoaded()) { return; } // Reaper - Don't load chunks for village doors
++        if (!this.isVillageAreaLoaded()) { return; } // Lamius - Don't load chunks for village doors
          this.g = i;
          this.m();
          this.l();
@@ -20,7 +20,7 @@ index 6536e5fb843fd6e9f28ad975fc73678fafffff47..634cc51777fbbb3256d57805da3a25db
          }
      }
  
-+    // Reaper start - Don't load chunks for village doors
++    // Lamius start - Don't load chunks for village doors
 +    private BlockPosition[] positions = null;
 +
 +    private void calculateNewCheckPositions() {
@@ -43,7 +43,7 @@ index 6536e5fb843fd6e9f28ad975fc73678fafffff47..634cc51777fbbb3256d57805da3a25db
 +        }
 +        return false;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public void a(VillageDoor villagedoor) {
          this.b.add(villagedoor);
@@ -52,7 +52,7 @@ index 6536e5fb843fd6e9f28ad975fc73678fafffff47..634cc51777fbbb3256d57805da3a25db
  
              this.e = Math.max(32, (int) Math.sqrt((double) j) + 1);
          }
-+        this.calculateNewCheckPositions(); // Reaper - Don't load chunks for village doors
++        this.calculateNewCheckPositions(); // Lamius - Don't load chunks for village doors
      }
  
      public int a(String s) {
@@ -61,7 +61,7 @@ index 6536e5fb843fd6e9f28ad975fc73678fafffff47..634cc51777fbbb3256d57805da3a25db
              }
          }
 -
-+        this.calculateNewCheckPositions(); // Reaper - Don't load chunks for village doors
++        this.calculateNewCheckPositions(); // Lamius - Don't load chunks for village doors
      }
  
      public void b(NBTTagCompound nbttagcompound) {

@@ -12,10 +12,10 @@ index 492e7e2bb64e05f66799f0646ad6e7a502e11086..4281ab1ba4da46a5a15b8609f735fd24
          return this.yaw;
      }
      // CraftBukkit end
-+    // Reaper start - Cache isInLava result
++    // Lamius start - Cache isInLava result
 +    private boolean isInLava;
 +    private int lastLavaCheck = -1;
-+    // Reaper end
++    // Lamius end
  
      public Entity(World world) {
          this.id = Entity.entityCount++;
@@ -24,14 +24,14 @@ index 492e7e2bb64e05f66799f0646ad6e7a502e11086..4281ab1ba4da46a5a15b8609f735fd24
  
      public boolean au() {
 -        return this.world.a(this.getBoundingBox().grow(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.LAVA);
-+        // Reaper start - Cache isInLava result
++        // Lamius start - Cache isInLava result
 +        int currentTick = MinecraftServer.currentTick;
 +        if (this.lastLavaCheck != currentTick) {
 +            this.lastLavaCheck = currentTick;
 +            this.isInLava = this.world.a(this.getBoundingBox().grow(-0.10000000149011612D, -0.4000000059604645D, -0.10000000149011612D), Material.LAVA);
 +        }
 +        return this.isInLava;
-+        // Reaper end
++        // Lamius end
      }
  
      public void b(float f, float f1, float f2, float f3) {

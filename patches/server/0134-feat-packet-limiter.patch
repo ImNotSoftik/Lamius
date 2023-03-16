@@ -32,16 +32,16 @@ and an action can be defined: DROP or KICK
 
 If interval or rate are less-than 0, the limit is ignored
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index 52ffaf61a741f17cf7481cc2bbc45577293cf2d2..b9e0ec8066abab58c38886b6a1f9434740537a6e 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 @@ -5,21 +5,26 @@ import net.minecraft.server.DispenserRegistry;
  import net.minecraft.server.EntityPlayer;
  import net.minecraft.server.MathHelper;
  import net.minecraft.server.MinecraftServer;
 +import net.minecraft.server.Packet;
- import net.minecraft.server.ReaperLightingQueue;
+ import net.minecraft.server.LamiusLightingQueue;
  import org.bukkit.Bukkit;
  import org.bukkit.command.Command;
 +import org.bukkit.configuration.ConfigurationSection;
@@ -62,8 +62,8 @@ index 52ffaf61a741f17cf7481cc2bbc45577293cf2d2..b9e0ec8066abab58c38886b6a1f94347
 +import java.util.Set;
  import java.util.logging.Level;
  
- public class ReaperConfig {
-@@ -274,4 +279,61 @@ public class ReaperConfig {
+ public class LamiusConfig {
+@@ -274,4 +279,61 @@ public class LamiusConfig {
      private static void saveJsonAsync() {
          saveJsonAsync = getBoolean("save-json-async", false);
      }
@@ -135,7 +135,7 @@ index 0000000000000000000000000000000000000000..5e15f400aab49bc52efe07aac8f368d1
 +
 +public class GlobalConfiguration {
 +    public class PacketLimiter {
-+        // Reaper - This is just a dummy class to prevent ViaVersion from enabling its packet limiter.
++        // Lamius - This is just a dummy class to prevent ViaVersion from enabling its packet limiter.
 +    }
 +}
 diff --git a/src/main/java/io/papermc/paper/util/IntervalledCounter.java b/src/main/java/io/papermc/paper/util/IntervalledCounter.java
@@ -267,24 +267,24 @@ index 4467c9edce2425a91c7f4428b879e3645423b2c4..434c74fb21ce2417ca655c80c5530a8e
 @@ -1,5 +1,6 @@
  package net.minecraft.server;
  
-+import com.github.ruviolence.reaper.ReaperConfig;
++import com.github.ruviolence.Lamius.LamiusConfig;
  import com.google.common.collect.Queues;
  import com.google.common.util.concurrent.ThreadFactoryBuilder;
  import io.netty.channel.Channel;
 @@ -117,6 +118,25 @@ public class NetworkManager extends SimpleChannelInboundHandler<Packet<?>> {
          }
      }
-     // Reaper end - allow controlled flushing
+     // Lamius end - allow controlled flushing
 +    // Paper start - packet limiter
 +    protected final Object PACKET_LIMIT_LOCK = new Object();
-+    protected final @Nullable io.papermc.paper.util.IntervalledCounter allPacketCounts = com.github.ruviolence.reaper.ReaperConfig.packetLimiterAllPackets.isEnabled() ? new io.papermc.paper.util.IntervalledCounter(
-+            (long)(com.github.ruviolence.reaper.ReaperConfig.packetLimiterAllPackets.interval * 1.0e9)
++    protected final @Nullable io.papermc.paper.util.IntervalledCounter allPacketCounts = com.github.ruviolence.Lamius.LamiusConfig.packetLimiterAllPackets.isEnabled() ? new io.papermc.paper.util.IntervalledCounter(
++            (long)(com.github.ruviolence.Lamius.LamiusConfig.packetLimiterAllPackets.interval * 1.0e9)
 +    ) : null;
 +    protected final java.util.Map<Class<? extends net.minecraft.server.Packet<?>>, io.papermc.paper.util.IntervalledCounter> packetSpecificLimits = new java.util.HashMap<>();
 +
 +    private boolean stopReadingPackets;
 +    private void killForPacketSpam() {
-+        ChatComponentText kickReason = new ChatComponentText(ReaperConfig.packetLimiterKickMessage);
++        ChatComponentText kickReason = new ChatComponentText(LamiusConfig.packetLimiterKickMessage);
 +        this.sendPacket(new PacketPlayOutKickDisconnect(kickReason), new GenericFutureListener() {
 +            public void operationComplete(Future future) throws Exception {
 +                close(kickReason);
@@ -306,20 +306,20 @@ index 4467c9edce2425a91c7f4428b879e3645423b2c4..434c74fb21ce2417ca655c80c5530a8e
 +                return;
 +            }
 +            if (this.allPacketCounts != null ||
-+                    com.github.ruviolence.reaper.ReaperConfig.packetLimiterOverrides.containsKey(packet.getClass())) {
++                    com.github.ruviolence.Lamius.LamiusConfig.packetLimiterOverrides.containsKey(packet.getClass())) {
 +                long time = System.nanoTime();
 +                synchronized (PACKET_LIMIT_LOCK) {
 +                    if (this.allPacketCounts != null) {
 +                        this.allPacketCounts.updateAndAdd(1, time);
-+                        if (this.allPacketCounts.getRate() >= com.github.ruviolence.reaper.ReaperConfig.packetLimiterAllPackets.maxPacketRate) {
++                        if (this.allPacketCounts.getRate() >= com.github.ruviolence.Lamius.LamiusConfig.packetLimiterAllPackets.maxPacketRate) {
 +                            this.killForPacketSpam();
 +                            return;
 +                        }
 +                    }
 +
 +                    for (Class<?> check = packet.getClass(); check != Object.class; check = check.getSuperclass()) {
-+                        com.github.ruviolence.reaper.ReaperConfig.PacketLimit packetSpecificLimit =
-+                            com.github.ruviolence.reaper.ReaperConfig.packetLimiterOverrides.get(check);
++                        com.github.ruviolence.Lamius.LamiusConfig.PacketLimit packetSpecificLimit =
++                            com.github.ruviolence.Lamius.LamiusConfig.packetLimiterOverrides.get(check);
 +                        if (packetSpecificLimit == null || !packetSpecificLimit.isEnabled()) {
 +                            continue;
 +                        }

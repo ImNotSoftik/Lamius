@@ -13,7 +13,7 @@ index 4822c22b3b1b57d0aa7555aad39a9b6521798448..b644fb09a69b8494d3ccf9595857c9a3
          if (entitytrackerentry1 != null) {
              this.c.remove(entitytrackerentry1);
              entitytrackerentry1.a();
-+            entitytrackerentry1.trackedPlayers.clear(); // Reaper - Attempt to reduce memory leakage
++            entitytrackerentry1.trackedPlayers.clear(); // Lamius - Attempt to reduce memory leakage
          }
  
      }
@@ -25,7 +25,7 @@ index 9cb528a391068ee2fe16c216fa66a1cfb0361768..7473ba226904b6965e5bd4cf6ba3395d
          // CraftBukkit end
  
          ChunkIOExecutor.adjustPoolSize(this.getPlayerCount()); // CraftBukkit
-+        worldserver.getTracker().untrackPlayer(entityplayer); // Reaper - Attempt to reduce memory leakage
++        worldserver.getTracker().untrackPlayer(entityplayer); // Lamius - Attempt to reduce memory leakage
  
          return playerQuitEvent.getQuitMessage(); // CraftBukkit
      }

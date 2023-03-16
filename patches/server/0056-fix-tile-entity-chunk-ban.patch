@@ -13,7 +13,7 @@ index 4808e3af47003bb63cb659a6511daf15a3f74258..6782d7afab4d986a06ab8a2228c4b912
          return extraPackets;
      }
      // Paper end
-+    private static final int EXCESSIVE_TILEENTITIES_CAP = Integer.getInteger("Reaper.excessiveTileEntitiesCap", 500); // Reaper
++    private static final int EXCESSIVE_TILEENTITIES_CAP = Integer.getInteger("Lamius.excessiveTileEntitiesCap", 500); // Lamius
      public PacketPlayOutMapChunk(Chunk chunk, int i) {
          this.a = chunk.locX;
          this.b = chunk.locZ;
@@ -21,7 +21,7 @@ index 4808e3af47003bb63cb659a6511daf15a3f74258..6782d7afab4d986a06ab8a2228c4b912
          this.e = Lists.newArrayList();
          Iterator iterator = chunk.getTileEntities().entrySet().iterator();
          int totalSigns = 0; // Paper
-+        int totalTileEntities = 0; // Reaper
++        int totalTileEntities = 0; // Lamius
  
          while (iterator.hasNext()) {
              Entry entry = (Entry) iterator.next();
@@ -29,7 +29,7 @@ index 4808e3af47003bb63cb659a6511daf15a3f74258..6782d7afab4d986a06ab8a2228c4b912
                      continue;
                  }
                  // Paper end
-+                // Reaper start
++                // Lamius start
 +                if (++totalTileEntities > EXCESSIVE_TILEENTITIES_CAP) {
 +                    PacketPlayOutTileEntityData updatePacket = tileentity.getUpdatePacket();
 +                    if (updatePacket != null) {
@@ -40,7 +40,7 @@ index 4808e3af47003bb63cb659a6511daf15a3f74258..6782d7afab4d986a06ab8a2228c4b912
 +                    }
 +                    continue;
 +                }
-+                // Reaper end
++                // Lamius end
                  NBTTagCompound nbttagcompound = tileentity.d();
  
                  this.e.add(nbttagcompound);

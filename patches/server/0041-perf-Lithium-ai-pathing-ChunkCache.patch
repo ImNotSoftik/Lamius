@@ -15,7 +15,7 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
  import javax.annotation.Nullable;
  
  public class ChunkCache implements IBlockAccess {
-+    private static final IBlockData DEFAULT_BLOCK = Blocks.AIR.getBlockData(); // Reaper - Lithium: ai/pathing/ChunkCache
++    private static final IBlockData DEFAULT_BLOCK = Blocks.AIR.getBlockData(); // Lamius - Lithium: ai/pathing/ChunkCache
  
      protected int a;
      protected int b;
@@ -23,13 +23,13 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
      protected boolean d;
      protected World e;
  
-+    // Reaper start - Lithium: ai/pathing/ChunkCache
++    // Lamius start - Lithium: ai/pathing/ChunkCache
 +    // A 1D view of the chunks available to this cache
 +    private Chunk[] chunksFlat;
 +
 +    // The x/z length of this cache
 +    private int xLen, zLen;
-+    // Reaper end
++    // Lamius end
 +
      public ChunkCache(World world, BlockPosition blockposition, BlockPosition blockposition1, int i) {
          this.e = world;
@@ -38,7 +38,7 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
              }
          }
  
-+        // Reaper start - Lithium: ai/pathing/ChunkCache
++        // Lamius start - Lithium: ai/pathing/ChunkCache
 +        this.xLen = 1 + (blockposition1.getX() >> 4) - (blockposition.getX() >> 4);
 +        this.zLen = 1 + (blockposition1.getZ() >> 4) - (blockposition.getZ() >> 4);
 +
@@ -48,7 +48,7 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
 +        for (int x = 0; x < this.xLen; x++) {
 +            System.arraycopy(this.c[x], 0, this.chunksFlat, x * this.zLen, this.zLen);
 +        }
-+        // Reaper end
++        // Lamius end
      }
  
      @Nullable
@@ -59,7 +59,7 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
 -        if (blockposition.getY() >= 0 && blockposition.getY() < 256) {
 -            int i = (blockposition.getX() >> 4) - this.a;
 -            int j = (blockposition.getZ() >> 4) - this.b;
-+        // Reaper start - Lithium: ai/pathing/ChunkCache
++        // Lamius start - Lithium: ai/pathing/ChunkCache
 +        int y = blockposition.getY();
 +
 +        if (y >= 0 && y < 256) {
@@ -88,7 +88,7 @@ index 786d1dd2269adbb6041257e0ae926a8fac4d717d..8f8d9cd57ab1c69e22d81525f8530e97
  
 -        return Blocks.AIR.getBlockData();
 +        return DEFAULT_BLOCK;
-+        // Reaper end
++        // Lamius end
      }
  
      public boolean isEmpty(BlockPosition blockposition) {

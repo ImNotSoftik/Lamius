@@ -4,11 +4,11 @@ Date: Mon, 6 Mar 2023 21:52:50 +0500
 Subject: [PATCH] feat: async PlayerList
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index d2d473a50e114d5283f5ba5b71f675488ad36161..f065429e317606e3a89d2f0d0238506a1ae5c6b5 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-@@ -295,6 +295,11 @@ public class ReaperConfig {
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+@@ -295,6 +295,11 @@ public class LamiusConfig {
          generatePortalExitChunks = getBoolean("generate-portal-exit-chunks", false);
      }
  
@@ -28,8 +28,8 @@ index b9e3fc6e7375a2cdeed57345ecbcf11ac258c47c..40fd3d6cbeb4a920fba195db668a677f
  
      public void tick() {
          if (++this.v > 600) {
-+            // Reaper start - Async PlayerList
-+            if (com.github.ruviolence.reaper.ReaperConfig.asyncPlayerList) {
++            // Lamius start - Async PlayerList
++            if (com.github.ruviolence.Lamius.LamiusConfig.asyncPlayerList) {
 +                List<Tuple<EntityPlayer, Packet<?>>> packetEntries = new ArrayList<>(this.players.size());
 +
 +                for (int i = 0; i < this.players.size(); ++i) {
@@ -49,7 +49,7 @@ index b9e3fc6e7375a2cdeed57345ecbcf11ac258c47c..40fd3d6cbeb4a920fba195db668a677f
 +                    }
 +                });
 +            } else {
-+            // Reaper end
++            // Lamius end
              // CraftBukkit start
              for (int i = 0; i < this.players.size(); ++i) {
                  final EntityPlayer target = (EntityPlayer) this.players.get(i);
@@ -57,7 +57,7 @@ index b9e3fc6e7375a2cdeed57345ecbcf11ac258c47c..40fd3d6cbeb4a920fba195db668a677f
                      }
                  })));
              }
-+            } // Reaper - Async PlayerList
++            } // Lamius - Async PlayerList
              // CraftBukkit end
              this.v = 0;
          }

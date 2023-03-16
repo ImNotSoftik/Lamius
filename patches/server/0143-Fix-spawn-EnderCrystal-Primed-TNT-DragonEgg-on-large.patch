@@ -23,7 +23,7 @@ index d8ac3bc7d7a43360ec055fcdedf9e5ae8d567912..da600de589ffec5a9523520dbacff6c3
 +++ b/src/main/java/net/minecraft/server/BlockTNT.java
 @@ -43,7 +43,7 @@ public class BlockTNT extends Block {
      public void a(World world, BlockPosition blockposition, IBlockData iblockdata, EntityLiving entityliving) {
-         if (true) { // Reaper - Remove isClientSide check
+         if (true) { // Lamius - Remove isClientSide check
              if (((Boolean) iblockdata.get(BlockTNT.EXPLODE)).booleanValue()) {
 -                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), entityliving);
 +                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, blockposition.getX() + 0.5D, blockposition.getY(), blockposition.getZ() + 0.5F, entityliving);

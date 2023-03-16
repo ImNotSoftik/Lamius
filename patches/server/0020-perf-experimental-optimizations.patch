@@ -13,7 +13,7 @@ index be4b53b4111259382e425a87719d75adf93f28b5..9d7f06140ff9cf7d09bf4e03acc9acc8
      }
      public void saveNbt(NBTTagCompound base) {
 -        NBTTagCompound comp = new NBTTagCompound();
-+        NBTTagCompound comp = new NBTTagCompound(4); // Reaper - Use initial capacity
++        NBTTagCompound comp = new NBTTagCompound(4); // Lamius - Use initial capacity
          if (this.nextRefill != -1) {
              comp.setLong("nextRefill", this.nextRefill);
          }
@@ -26,7 +26,7 @@ index d949a9c88bd961e5ae58b9e69b69d9d15945d366..170cfd4f4d0209d8474f4e76f5566a97
              super.save(nbttagcompound);
              if (!this.getRecord().isEmpty()) {
 -                nbttagcompound.set("RecordItem", this.getRecord().save(new NBTTagCompound()));
-+                nbttagcompound.set("RecordItem", this.getRecord().save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++                nbttagcompound.set("RecordItem", this.getRecord().save(new NBTTagCompound(4))); // Lamius - Use initial capacity
              }
  
              return nbttagcompound;
@@ -39,7 +39,7 @@ index 234cbfc88a3eea13833bed5f5d9d7da399153e0c..238e85d8360f9fa2815ac2323691dd58
              if (!tileentityshulkerbox.r() && tileentityshulkerbox.F()) {
                  ItemStack itemstack = new ItemStack(Item.getItemOf(this));
 -                NBTTagCompound nbttagcompound = new NBTTagCompound();
-+                NBTTagCompound nbttagcompound = new NBTTagCompound(1); // Reaper - Use initial capacity
++                NBTTagCompound nbttagcompound = new NBTTagCompound(1); // Lamius - Use initial capacity
                  NBTTagCompound nbttagcompound1 = new NBTTagCompound();
  
                  nbttagcompound.set("BlockEntityTag", ((TileEntityShulkerBox) tileentity).f(nbttagcompound1));
@@ -53,15 +53,15 @@ index 080f4942473b824f3fb7fad50aa2db988a82d818..56c7639889f359281969ffc9e841ce60
                  if (tileentityskull.getSkullType() == 3 && tileentityskull.getGameProfile() != null) {
 -                    itemstack.setTag(new NBTTagCompound());
 -                    NBTTagCompound nbttagcompound = new NBTTagCompound();
-+                    // Reaper start - Optimize
-+                    NBTTagCompound itemTag = new NBTTagCompound(1); // Reaper - Use initial capacity
++                    // Lamius start - Optimize
++                    NBTTagCompound itemTag = new NBTTagCompound(1); // Lamius - Use initial capacity
 +                    itemstack.setTag(itemTag);
-+                    NBTTagCompound nbttagcompound = new NBTTagCompound(3); // Reaper - Use initial capacity
++                    NBTTagCompound nbttagcompound = new NBTTagCompound(3); // Lamius - Use initial capacity
  
                      GameProfileSerializer.serialize(nbttagcompound, tileentityskull.getGameProfile());
 -                    itemstack.getTag().set("SkullOwner", nbttagcompound);
 +                    itemTag.set("SkullOwner", nbttagcompound);
-+                    // Reaper end
++                    // Lamius end
                  }
  
                  a(world, blockposition, itemstack);
@@ -73,7 +73,7 @@ index 15aa87c1f7d73bab8f1ec4c4a0a3a4ceb642b364..4b7b02b7796dc0107868cd5dc5f32869
  
      public void addEntities() {
          this.j = true;
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        if (!this.tileEntities.isEmpty())
          this.world.b(this.tileEntities.values());
 +        checkHasEntities:
@@ -85,7 +85,7 @@ index 15aa87c1f7d73bab8f1ec4c4a0a3a4ceb642b364..4b7b02b7796dc0107868cd5dc5f32869
 +            }
 +            return;
 +        }
-+        // Reaper end
++        // Lamius end
          List[] aentityslice = this.entitySlices; // Spigot
          int i = aentityslice.length;
          List<Entity> toAdd = new java.util.ArrayList<>(32); // Paper
@@ -99,8 +99,8 @@ index b9dc7589a5ddca9f9e80b1632558d8857dc306f3..dee82ad78296644205f41401fd20cf26
          try {
 -            NBTTagCompound nbttagcompound = new NBTTagCompound();
 -            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-+            NBTTagCompound nbttagcompound = new NBTTagCompound(2); // Reaper - Use initial capacity
-+            NBTTagCompound nbttagcompound1 = new NBTTagCompound(12); // Reaper - Use initial capacity
++            NBTTagCompound nbttagcompound = new NBTTagCompound(2); // Lamius - Use initial capacity
++            NBTTagCompound nbttagcompound1 = new NBTTagCompound(12); // Lamius - Use initial capacity
  
              nbttagcompound.set("Level", nbttagcompound1);
              nbttagcompound.setInt("DataVersion", 1343);
@@ -109,16 +109,16 @@ index b9dc7589a5ddca9f9e80b1632558d8857dc306f3..dee82ad78296644205f41401fd20cf26
          nbttagcompound.setLong("InhabitedTime", chunk.x());
          ChunkSection[] achunksection = chunk.getSections();
 -        NBTTagList nbttaglist = new NBTTagList();
-+        NBTTagList nbttaglist = new NBTTagList(achunksection.length); // Reaper - Use initial capacity
++        NBTTagList nbttaglist = new NBTTagList(achunksection.length); // Lamius - Use initial capacity
          boolean flag = worldHasSkyLight; // Spigot
          ChunkSection[] achunksection1 = achunksection;
          int i = achunksection.length;
 @@ -307,7 +307,7 @@ public class ChunkRegionLoader implements IChunkLoader, IAsyncChunkSaver {
-             ChunkSection chunksection = achunksection[j]; // Reaper - Inline
+             ChunkSection chunksection = achunksection[j]; // Lamius - Inline
  
              if (chunksection != Chunk.a) {
 -                nbttagcompound1 = new NBTTagCompound();
-+                nbttagcompound1 = new NBTTagCompound(7); // Reaper - Use initial capacity
++                nbttagcompound1 = new NBTTagCompound(7); // Lamius - Use initial capacity
                  nbttagcompound1.setByte("Y", (byte) (chunksection.getYPosition() >> 4 & 255));
                  byte[] abyte = new byte[4096];
                  NibbleArray nibblearray = new NibbleArray();
@@ -131,7 +131,7 @@ index f4e3bafd675a1bae190cda9fe89ab01031cae2f6..39b770ab27c23369385aba281d405ce7
  
              if (!itemstack.isEmpty()) {
 -                nbttagcompound.set("SelectedItem", itemstack.save(new NBTTagCompound()));
-+                nbttagcompound.set("SelectedItem", itemstack.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++                nbttagcompound.set("SelectedItem", itemstack.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
              }
          }
  
@@ -144,7 +144,7 @@ index c74d00b14b2362c82da3a3def9204dac75afbacf..9d3f2c6c2e8e29d290b5594948e87359
              if (enchantment != null) {
                  int i = ((Integer) entry.getValue()).intValue();
 -                NBTTagCompound nbttagcompound = new NBTTagCompound();
-+                NBTTagCompound nbttagcompound = new NBTTagCompound(2); // Reaper - Use initial capacity
++                NBTTagCompound nbttagcompound = new NBTTagCompound(2); // Lamius - Use initial capacity
  
                  nbttagcompound.setShort("id", (short) Enchantment.getId(enchantment));
                  nbttagcompound.setShort("lvl", (short) i);
@@ -158,7 +158,7 @@ index dbfbdba2e792ea435a008b77e2484d41cce99a42..82cbcfe6e52f3c4f1b8fd3e657e7c04f
          double len = axisalignedbb.d - axisalignedbb.a;
 -        if (len < 0) d = a;
 -        if (len > 64) d = a + 64.0;
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        boolean broken = false;
 +        if (len < 0) { d = a; broken = true; }
 +        if (len > 64) { d = a + 64.0; broken = true; }
@@ -176,7 +176,7 @@ index dbfbdba2e792ea435a008b77e2484d41cce99a42..82cbcfe6e52f3c4f1b8fd3e657e7c04f
 +        if (len < 0) { f = c; broken = true; }
 +        if (len > 64) { f = c + 64.0; broken = true; }
 +        this.boundingBox = broken ? new AxisAlignedBB(a, b, c, d, e, f) : axisalignedbb;
-+        // Reaper end
++        // Lamius end
          // CraftBukkit end
      }
  
@@ -189,7 +189,7 @@ index 8b4260acfd1443f690e5d61f2870ca6444adc40c..e95da9f281d5dfeddb433bdf14fe4002
                  MobEffect mobeffect = (MobEffect) iterator.next();
  
 -                nbttaglist.add(mobeffect.a(new NBTTagCompound()));
-+                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Reaper - Use initial capacity
++                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Lamius - Use initial capacity
              }
  
              nbttagcompound.set("Effects", nbttaglist);
@@ -202,7 +202,7 @@ index 5533d8fb77aef22c5b898a9aca92b4bfa97a7df0..ad9e6f19954805cc8462ec62ad54b6b9
              ItemStack itemstack = (ItemStack) iterator.next();
  
 -            nbttagcompound1 = new NBTTagCompound();
-+            nbttagcompound1 = new NBTTagCompound(4); // Reaper - Use initial capacity
++            nbttagcompound1 = new NBTTagCompound(4); // Lamius - Use initial capacity
              if (!itemstack.isEmpty()) {
                  itemstack.save(nbttagcompound1);
              }
@@ -211,7 +211,7 @@ index 5533d8fb77aef22c5b898a9aca92b4bfa97a7df0..ad9e6f19954805cc8462ec62ad54b6b9
              ItemStack itemstack1 = (ItemStack) iterator1.next();
  
 -            nbttagcompound2 = new NBTTagCompound();
-+            nbttagcompound2 = new NBTTagCompound(4); // Reaper - Use initial capacity
++            nbttagcompound2 = new NBTTagCompound(4); // Lamius - Use initial capacity
              if (!itemstack1.isEmpty()) {
                  itemstack1.save(nbttagcompound2);
              }
@@ -224,7 +224,7 @@ index cd11eadaa4a3fb4d56b9094979d51097087d61a6..93e64c0a1ad65fee45c2ac942c8cd9d6
  
          if (!itemstack.isEmpty()) {
 -            nbttagcompound.set("FireworksItem", itemstack.save(new NBTTagCompound()));
-+            nbttagcompound.set("FireworksItem", itemstack.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("FireworksItem", itemstack.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
          // Paper start
          if (spawningEntity != null) {
@@ -237,7 +237,7 @@ index cbc092a91a9f4cd20729c669fa65783e29d27ef0..03bb8cd396e683b5e5b4a9beae352095
          nbttagcompound.setInt("Variant", this.getVariant());
          if (!this.inventoryChest.getItem(1).isEmpty()) {
 -            nbttagcompound.set("ArmorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound()));
-+            nbttagcompound.set("ArmorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("ArmorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
      }
@@ -250,7 +250,7 @@ index 796e71a306c98272b526a3c981f55e67b736dd12..d3e25e43063d34bbba7cafa79abb8834
  
          if (!this.inventoryChest.getItem(0).isEmpty()) {
 -            nbttagcompound.set("SaddleItem", this.inventoryChest.getItem(0).save(new NBTTagCompound()));
-+            nbttagcompound.set("SaddleItem", this.inventoryChest.getItem(0).save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("SaddleItem", this.inventoryChest.getItem(0).save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
      }
@@ -263,7 +263,7 @@ index 9a46680932ed05826d5f16bee51c32315fbdd913..9e1ea5ff044e6e888aa74b9a1f86ce99
  
                  if (!itemstack.isEmpty()) {
 -                    NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-+                    NBTTagCompound nbttagcompound1 = new NBTTagCompound(5); // Reaper - Use initial capacity
++                    NBTTagCompound nbttagcompound1 = new NBTTagCompound(5); // Lamius - Use initial capacity
  
                      nbttagcompound1.setByte("Slot", (byte) i);
                      itemstack.save(nbttagcompound1);
@@ -276,7 +276,7 @@ index c2c601ffeabe8fe6c65b539e607bd977470f41d3..ac0fab568afee1da9c936d52510fe156
              ItemStack itemstack = (ItemStack) iterator.next();
  
 -            nbttagcompound1 = new NBTTagCompound();
-+            nbttagcompound1 = new NBTTagCompound(4); // Reaper - Use initial capacity
++            nbttagcompound1 = new NBTTagCompound(4); // Lamius - Use initial capacity
              if (!itemstack.isEmpty()) {
                  itemstack.save(nbttagcompound1);
              }
@@ -285,7 +285,7 @@ index c2c601ffeabe8fe6c65b539e607bd977470f41d3..ac0fab568afee1da9c936d52510fe156
              ItemStack itemstack1 = (ItemStack) iterator1.next();
  
 -            nbttagcompound2 = new NBTTagCompound();
-+            nbttagcompound2 = new NBTTagCompound(4); // Reaper - Use initial capacity
++            nbttagcompound2 = new NBTTagCompound(4); // Lamius - Use initial capacity
              if (!itemstack1.isEmpty()) {
                  itemstack1.save(nbttagcompound2);
              }
@@ -294,7 +294,7 @@ index c2c601ffeabe8fe6c65b539e607bd977470f41d3..ac0fab568afee1da9c936d52510fe156
          nbttagcompound.setBoolean("Leashed", this.bE);
          if (this.leashHolder != null) {
 -            nbttagcompound2 = new NBTTagCompound();
-+            nbttagcompound2 = new NBTTagCompound(5); // Reaper - Use initial capacity
++            nbttagcompound2 = new NBTTagCompound(5); // Lamius - Use initial capacity
              if (this.leashHolder instanceof EntityLiving) {
                  UUID uuid = this.leashHolder.getUniqueID();
  
@@ -306,7 +306,7 @@ index 6dbb8152acad8060315ebc22d212649f152cd869..ee571529d5ac0359d7740ab04f3f44b1
      }
  
      private boolean a(EntityItem entityitem) {
-+        /* // Reaper start - Rework to optimize
++        /* // Lamius start - Rework to optimize
          if (entityitem == this) {
              return false;
          } else if (entityitem.isAlive() && this.isAlive()) {
@@ -351,7 +351,7 @@ index 6dbb8152acad8060315ebc22d212649f152cd869..ee571529d5ac0359d7740ab04f3f44b1
 +        entityitem.die();
 +        // Spigot end
 +        return true;
-+        // Reaper end
++        // Lamius end
      }
  
      public void j() {
@@ -360,7 +360,7 @@ index 6dbb8152acad8060315ebc22d212649f152cd869..ee571529d5ac0359d7740ab04f3f44b1
  
          if (!this.getItemStack().isEmpty()) {
 -            nbttagcompound.set("Item", this.getItemStack().save(new NBTTagCompound()));
-+            nbttagcompound.set("Item", this.getItemStack().save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("Item", this.getItemStack().save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
      }
@@ -373,7 +373,7 @@ index d075706a3d7db9b05d3515a60e31fec8d7688af1..189d8b400485c6d12fbc171a37f2566c
      public void b(NBTTagCompound nbttagcompound) {
          if (!this.getItem().isEmpty()) {
 -            nbttagcompound.set("Item", this.getItem().save(new NBTTagCompound()));
-+            nbttagcompound.set("Item", this.getItem().save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("Item", this.getItem().save(new NBTTagCompound(4))); // Lamius - Use initial capacity
              nbttagcompound.setByte("ItemRotation", (byte) this.getRotation());
              nbttagcompound.setFloat("ItemDropChance", this.e);
          }
@@ -386,7 +386,7 @@ index 41f625fba18c422278904b31c6474183be6b3b61..de0ae73fad05172778c8d7eb7ca59e6e
                  MobEffect mobeffect = (MobEffect) iterator.next();
  
 -                nbttaglist.add(mobeffect.a(new NBTTagCompound()));
-+                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Reaper - Use initial capacity
++                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Lamius - Use initial capacity
              }
  
              nbttagcompound.set("ActiveEffects", nbttaglist);
@@ -399,7 +399,7 @@ index d2a72f28e3b22cd6af63005f6f85e9c927c7b59f..3df146f3b2d6d27663747251e4507f6f
          nbttagcompound.setInt("Strength", this.getStrength());
          if (!this.inventoryChest.getItem(1).isEmpty()) {
 -            nbttagcompound.set("DecorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound()));
-+            nbttagcompound.set("DecorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("DecorItem", this.inventoryChest.getItem(1).save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
      }
@@ -412,7 +412,7 @@ index aca6e78e19d9848e567fdfd7fd8e67e68b89ddac..b15cd5874eed58e80781f8d1341b975d
          nbttagcompound.setBoolean("seenCredits", this.cq);
          if (this.cv != null) {
 -            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-+            NBTTagCompound nbttagcompound1 = new NBTTagCompound(3); // Reaper - Use initial capacity
++            NBTTagCompound nbttagcompound1 = new NBTTagCompound(3); // Lamius - Use initial capacity
  
              nbttagcompound1.setDouble("x", this.cv.x);
              nbttagcompound1.setDouble("y", this.cv.y);
@@ -421,7 +421,7 @@ index aca6e78e19d9848e567fdfd7fd8e67e68b89ddac..b15cd5874eed58e80781f8d1341b975d
  
          if (entity1 != null && entity != this && entity.b(EntityPlayer.class).size() == 1) {
 -            NBTTagCompound nbttagcompound2 = new NBTTagCompound();
-+            NBTTagCompound nbttagcompound2 = new NBTTagCompound(3); // Reaper - Use initial capacity
++            NBTTagCompound nbttagcompound2 = new NBTTagCompound(3); // Lamius - Use initial capacity
              NBTTagCompound nbttagcompound3 = new NBTTagCompound();
  
              entity.d(nbttagcompound3);
@@ -434,7 +434,7 @@ index 13d17fc716517c2bb82ef82ba06244a10d47e814..a0869d47f62555a6c348ab2e6a44d96d
  
          if (!itemstack.isEmpty()) {
 -            nbttagcompound.set("Potion", itemstack.save(new NBTTagCompound()));
-+            nbttagcompound.set("Potion", itemstack.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("Potion", itemstack.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
      }
@@ -447,7 +447,7 @@ index 35c811c76db94e3c6b88c54529b9c855919cf2d8..c371da2108342979723e5bfd5adb5a7b
                  MobEffect mobeffect = (MobEffect) iterator.next();
  
 -                nbttaglist.add(mobeffect.a(new NBTTagCompound()));
-+                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Reaper - Use initial capacity
++                nbttaglist.add(mobeffect.a(new NBTTagCompound(5))); // Lamius - Use initial capacity
              }
  
              nbttagcompound.set("CustomPotionEffects", nbttaglist);
@@ -460,7 +460,7 @@ index a4b9a60eb0a594bcbf263f2229b7747ee17b7648..9781b129ff692e47b2b16331eb5fc3ac
  
              if (!itemstack.isEmpty()) {
 -                nbttaglist.add(itemstack.save(new NBTTagCompound()));
-+                nbttaglist.add(itemstack.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++                nbttaglist.add(itemstack.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
              }
          }
  
@@ -474,11 +474,11 @@ index 21865021b428ebc4a21416a364e1519bd9e97858..9218eafdbe3e6398962ab8a358623a26
      public static NBTTagList a(AttributeMapBase attributemapbase) {
 -        NBTTagList nbttaglist = new NBTTagList();
 -        Iterator iterator = attributemapbase.a().iterator();
-+        // Reaper start - Use initial capacity
++        // Lamius start - Use initial capacity
 +        Collection<AttributeInstance> values = attributemapbase.a();
 +        NBTTagList nbttaglist = new NBTTagList(values.size());
 +        Iterator iterator = values.iterator();
-+        // Reaper end
++        // Lamius end
  
          while (iterator.hasNext()) {
              AttributeInstance attributeinstance = (AttributeInstance) iterator.next();
@@ -487,7 +487,7 @@ index 21865021b428ebc4a21416a364e1519bd9e97858..9218eafdbe3e6398962ab8a358623a26
  
      private static NBTTagCompound a(AttributeInstance attributeinstance) {
 -        NBTTagCompound nbttagcompound = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound = new NBTTagCompound(3); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound = new NBTTagCompound(3); // Lamius - Use initial capacity
          IAttribute iattribute = attributeinstance.getAttribute();
  
          nbttagcompound.setString("Name", iattribute.getName());
@@ -496,7 +496,7 @@ index 21865021b428ebc4a21416a364e1519bd9e97858..9218eafdbe3e6398962ab8a358623a26
  
          if (collection != null && !collection.isEmpty()) {
 -            NBTTagList nbttaglist = new NBTTagList();
-+            NBTTagList nbttaglist = new NBTTagList(collection.size()); // Reaper - Use initial capacity
++            NBTTagList nbttaglist = new NBTTagList(collection.size()); // Lamius - Use initial capacity
              Iterator iterator = collection.iterator();
  
              while (iterator.hasNext()) {
@@ -505,7 +505,7 @@ index 21865021b428ebc4a21416a364e1519bd9e97858..9218eafdbe3e6398962ab8a358623a26
  
      public static NBTTagCompound a(AttributeModifier attributemodifier) {
 -        NBTTagCompound nbttagcompound = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
  
          nbttagcompound.setString("Name", attributemodifier.b());
          nbttagcompound.setDouble("Amount", attributemodifier.d());
@@ -518,7 +518,7 @@ index 37b494b7806be07a5eaea1b2886da67e78838f4c..f4a7525416ddb6ce0b904e847c4e22ef
  
              if (!itemstack.isEmpty()) {
 -                NBTTagCompound nbttagcompound = new NBTTagCompound();
-+                NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++                NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
  
                  nbttagcompound.setByte("Slot", (byte) i);
                  itemstack.save(nbttagcompound);
@@ -531,7 +531,7 @@ index beeaec95eca074c80881e46894ff14f071b20641..1420cc794744fcac6dddd1c29ca616b7
                  @Override
                  public boolean apply(GameProfile gameprofile) {
 -                    nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(), gameprofile));
-+                    nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(3), gameprofile)); // Reaper - Use initial capacity
++                    nbttagcompound.set("SkullOwner", GameProfileSerializer.serialize(new NBTTagCompound(3), gameprofile)); // Lamius - Use initial capacity
                      return false;
                  }
              }, false);
@@ -544,7 +544,7 @@ index 34529e40b622e15870f6cf474b31b2368a674879..012c9dd54db32b573109f5567851cd96
              }
  
 -            NBTTagCompound savedStack = new NBTTagCompound();
-+            NBTTagCompound savedStack = new NBTTagCompound(4); // Reaper - Use initial capacity
++            NBTTagCompound savedStack = new NBTTagCompound(4); // Lamius - Use initial capacity
              this.save(savedStack);
              MinecraftServer.getServer().dataConverterManager.a(DataConverterTypes.ITEM_INSTANCE, savedStack); // PAIL: convert
              this.load(savedStack);
@@ -553,10 +553,10 @@ index 34529e40b622e15870f6cf474b31b2368a674879..012c9dd54db32b573109f5567851cd96
      // CraftBukkit - break into own method
      public void load(NBTTagCompound nbttagcompound) {
 -        this.item = nbttagcompound.hasKeyOfType("id", 8) ? Item.b(nbttagcompound.getString("id")) : Item.getItemOf(Blocks.AIR); // Paper - fix NumberFormatException caused by attempting to read an EMPTY ItemStack
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        String id = nbttagcompound.getStringNullable("id");
 +        this.item = id != null ? Item.b(id) : Item.getItemOf(Blocks.AIR); // Paper - fix NumberFormatException caused by attempting to read an EMPTY ItemStack
-+        // Reaper end
++        // Lamius end
          this.count = nbttagcompound.getByte("Count");
          // CraftBukkit start - Route through setData for filtering
          // this.damage = Math.max(0, nbttagcompound.getShort("Damage"));
@@ -564,13 +564,13 @@ index 34529e40b622e15870f6cf474b31b2368a674879..012c9dd54db32b573109f5567851cd96
          // CraftBukkit end
  
 -        if (nbttagcompound.hasKeyOfType("tag", 10)) {
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        NBTTagCompound tag = nbttagcompound.getCompoundNullable("tag");
 +        if (tag != null) {
              // CraftBukkit start - make defensive copy as this data may be coming from the save thread
 -            this.tag = (NBTTagCompound) nbttagcompound.getCompound("tag").clone();
 +            this.tag = (NBTTagCompound) tag.clone();
-+            // Reaper end
++            // Lamius end
              processEnchantOrder(this.tag); // Paper
              if (this.item != null) {
                  this.item.a(this.tag);
@@ -580,20 +580,20 @@ index 34529e40b622e15870f6cf474b31b2368a674879..012c9dd54db32b573109f5567851cd96
          if (nbttagcompound != null) {
 -            if (nbttagcompound.hasKeyOfType("Name", 8)) {
 -                return nbttagcompound.getString("Name");
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            String name = nbttagcompound.getStringNullable("Name");
 +            if (name != null) {
 +                return name;
-+                // Reaper end
++                // Lamius end
              }
  
 -            if (nbttagcompound.hasKeyOfType("LocName", 8)) {
 -                return LocaleI18n.get(nbttagcompound.getString("LocName"));
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            String locName = nbttagcompound.getStringNullable("LocName");
 +            if (locName != null) {
 +                return LocaleI18n.get(locName);
-+                // Reaper end
++                // Lamius end
              }
          }
  
@@ -602,7 +602,7 @@ index 34529e40b622e15870f6cf474b31b2368a674879..012c9dd54db32b573109f5567851cd96
  
          if (!this.g) {
 -            NBTTagCompound nbttagcompound = this.save(new NBTTagCompound());
-+            NBTTagCompound nbttagcompound = this.save(new NBTTagCompound(4)); // Reaper - Use initial capacity
++            NBTTagCompound nbttagcompound = this.save(new NBTTagCompound(4)); // Lamius - Use initial capacity
  
              ichatbasecomponent.getChatModifier().setChatHoverable(new ChatHoverable(ChatHoverable.EnumHoverAction.SHOW_ITEM, new ChatComponentText(nbttagcompound.toString())));
              ichatbasecomponent.getChatModifier().setColor(this.v().e);
@@ -615,15 +615,15 @@ index 96f3e16d7a0d89a7009754b2ab7a735c059eb6e9..7b8f72aedae14474218bf40cd6412655
  
      public NBTTagCompound k() {
 -        NBTTagCompound nbttagcompound = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound = new NBTTagCompound(6); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound = new NBTTagCompound(6); // Lamius - Use initial capacity
  
 -        nbttagcompound.set("buy", this.buyingItem1.save(new NBTTagCompound()));
 -        nbttagcompound.set("sell", this.sellingItem.save(new NBTTagCompound()));
-+        nbttagcompound.set("buy", this.buyingItem1.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
-+        nbttagcompound.set("sell", this.sellingItem.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++        nbttagcompound.set("buy", this.buyingItem1.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
++        nbttagcompound.set("sell", this.sellingItem.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          if (!this.buyingItem2.isEmpty()) {
 -            nbttagcompound.set("buyB", this.buyingItem2.save(new NBTTagCompound()));
-+            nbttagcompound.set("buyB", this.buyingItem2.save(new NBTTagCompound(4))); // Reaper - Use initial capacity
++            nbttagcompound.set("buyB", this.buyingItem2.save(new NBTTagCompound(4))); // Lamius - Use initial capacity
          }
  
          nbttagcompound.setInt("uses", this.uses);
@@ -635,10 +635,10 @@ index 9a45ef2b92bb25616c0045e703f7e4fed26bf431..19d7cee6f0582a30968d8b30067abec6
  public abstract class NBTBase {
  
      public static final String[] a = new String[] { "END", "BYTE", "SHORT", "INT", "LONG", "FLOAT", "DOUBLE", "BYTE[]", "STRING", "LIST", "COMPOUND", "INT[]", "LONG[]"};
-+    // Reaper start - Use constants
++    // Lamius start - Use constants
 +    public static final byte[] EMPTY_BYTE_ARRAY = new byte[0];
 +    public static final int[] EMPTY_INT_ARRAY = new int[0];
-+    // Reaper end
++    // Lamius end
  
      abstract void write(DataOutput dataoutput) throws IOException;
  
@@ -651,13 +651,13 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
      private static final Logger b = LogManager.getLogger();
      private static final Pattern c = Pattern.compile("[A-Za-z0-9._+-]+");
 -    public final Map<String, NBTBase> map = Maps.newHashMap(); // Paper
-+    public final Map<String, NBTBase> map; // Paper // Reaper
++    public final Map<String, NBTBase> map; // Paper // Lamius
  
 -    public NBTTagCompound() {}
-+    // Reaper start
++    // Lamius start
 +    public NBTTagCompound() { map = new java.util.HashMap<>(); }
 +    public NBTTagCompound(int initialCapacity) { map = new it.unimi.dsi.fastutil.objects.Object2ObjectArrayMap<>(initialCapacity); }
-+    // Reaper end
++    // Lamius end
  
      void write(DataOutput dataoutput) throws IOException {
 -        Iterator iterator = this.map.keySet().iterator();
@@ -667,10 +667,10 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 -            NBTBase nbtbase = (NBTBase) this.map.get(s);
 -
 -            a(s, nbtbase, dataoutput);
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        for (Map.Entry<String, NBTBase> entry : this.map.entrySet()) {
 +            a(entry.getKey(), entry.getValue(), dataoutput);
-+            // Reaper end
++            // Lamius end
          }
  
          dataoutput.writeByte(0);
@@ -678,11 +678,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          return this.map.containsKey(s);
      }
  
-+    // Reaper start
++    // Lamius start
 +    public static boolean isKeyOfType(byte type, int needed) {
 +        return type == needed ? true : (needed != 99 ? false : type == 1 || type == 2 || type == 3 || type == 4 || type == 5 || type == 6);
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public boolean hasKeyOfType(String s, int i) {
          byte b0 = this.d(s);
@@ -693,11 +693,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).g();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).g();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -707,11 +707,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).f();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).f();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -721,11 +721,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).e();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).e();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -735,11 +735,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).d();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).d();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -749,11 +749,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).i();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).i();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -763,11 +763,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 99)) {
 -                return ((NBTNumber) this.map.get(s)).asDouble();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && isKeyOfType(nbt.getTypeId(), 99)) {
 +                return ((NBTNumber) nbt).asDouble();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -777,11 +777,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          try {
 -            if (this.hasKeyOfType(s, 8)) {
 -                return ((NBTBase) this.map.get(s)).c_();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && nbt.getTypeId() == 8) {
 +                return ((NBTBase) nbt).c_();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              ;
@@ -789,7 +789,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          return "";
      }
  
-+    // Reaper start
++    // Lamius start
 +    public String getStringNullable(String s) {
 +        try {
 +            NBTBase nbt = this.map.get(s);
@@ -801,27 +801,27 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 +
 +        return null;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public byte[] getByteArray(String s) {
          try {
 -            if (this.hasKeyOfType(s, 7)) {
 -                return ((NBTTagByteArray) this.map.get(s)).c();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && nbt.getTypeId() == 7) {
 +                return ((NBTTagByteArray) nbt).c();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              throw new ReportedException(this.a(s, 7, classcastexception));
          }
  
 -        return new byte[0];
-+        return NBTBase.EMPTY_BYTE_ARRAY; // Reaper - Use constants
++        return NBTBase.EMPTY_BYTE_ARRAY; // Lamius - Use constants
      }
  
-+    // Reaper start
++    // Lamius start
 +    public byte[] getByteArrayNullable(String s) {
 +        try {
 +            NBTBase nbt = this.map.get(s);
@@ -834,35 +834,35 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 +
 +        return null;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public int[] getIntArray(String s) {
          try {
 -            if (this.hasKeyOfType(s, 11)) {
 -                return ((NBTTagIntArray) this.map.get(s)).d();
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && nbt.getTypeId() == 11) {
 +                return ((NBTTagIntArray) nbt).d();
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              throw new ReportedException(this.a(s, 11, classcastexception));
          }
  
 -        return new int[0];
-+        return NBTBase.EMPTY_INT_ARRAY; // Reaper - Use constants
++        return NBTBase.EMPTY_INT_ARRAY; // Lamius - Use constants
      }
  
      public NBTTagCompound getCompound(String s) {
          try {
 -            if (this.hasKeyOfType(s, 10)) {
 -                return (NBTTagCompound) this.map.get(s);
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && nbt.getTypeId() == 10) {
 +                return (NBTTagCompound) nbt;
-+                // Reaper end
++                // Lamius end
              }
          } catch (ClassCastException classcastexception) {
              throw new ReportedException(this.a(s, 10, classcastexception));
@@ -870,7 +870,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          return new NBTTagCompound();
      }
  
-+    // Reaper start
++    // Lamius start
 +    public NBTTagCompound getCompoundNullable(String s) {
 +        try {
 +            NBTBase nbt = this.map.get(s);
@@ -883,21 +883,21 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 +
 +        return null;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public NBTTagList getList(String s, int i) {
          try {
 -            if (this.d(s) == 9) {
 -                NBTTagList nbttaglist = (NBTTagList) this.map.get(s);
-+            // Reaper start - Optimize
++            // Lamius start - Optimize
 +            NBTBase nbt = this.map.get(s);
 +            if (nbt != null && nbt.getTypeId() == 9) {
 +                NBTTagList nbttaglist = (NBTTagList) nbt;
-+                // Reaper end
++                // Lamius end
  
                  if (!nbttaglist.isEmpty() && nbttaglist.g() != i) {
 -                    return new NBTTagList();
-+                    return new NBTTagList(0); // Reaper - Optimize
++                    return new NBTTagList(0); // Lamius - Optimize
                  }
  
                  return nbttaglist;
@@ -906,10 +906,10 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
          }
  
 -        return new NBTTagList();
-+        return new NBTTagList(0); // Reaper - Optimize
++        return new NBTTagList(0); // Lamius - Optimize
      }
  
-+    // Reaper start
++    // Lamius start
 +    public NBTTagList getListNullable(String s, int i) {
 +        try {
 +            NBTBase nbt = this.map.get(s);
@@ -928,7 +928,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 +
 +        return null;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public boolean getBoolean(String s) {
          return this.getByte(s) != 0;
@@ -937,7 +937,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
  
      public String toString() {
          StringBuilder stringbuilder = new StringBuilder("{");
-+        /* // Reaper start - Optimize
++        /* // Lamius start - Optimize
          Object object = this.map.keySet();
  
          if (NBTTagCompound.b.isDebugEnabled()) {
@@ -954,7 +954,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
                  stringbuilder.append(',');
              }
 +            stringbuilder.append(s(entry.getKey())).append(':').append(entry.getValue());
-+            // Reaper end
++            // Lamius end
          }
  
          return stringbuilder.append('}').toString();
@@ -963,7 +963,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
      public NBTTagCompound g() {
          NBTTagCompound nbttagcompound = new NBTTagCompound();
 -        Iterator iterator = this.map.keySet().iterator();
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
  
 -        while (iterator.hasNext()) {
 -            String s = (String) iterator.next();
@@ -971,7 +971,7 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 -            nbttagcompound.set(s, ((NBTBase) this.map.get(s)).clone());
 +        for (Map.Entry<String, NBTBase> entry : this.map.entrySet()) {
 +            nbttagcompound.set(entry.getKey(), entry.getValue().clone());
-+            // Reaper end
++            // Lamius end
          }
  
          return nbttagcompound;
@@ -984,11 +984,11 @@ index 82c2537b30ad2f17bdcb1828561ecea09fde445f..44854e9a67536fce441ad0639f9c77ff
 -        while (iterator.hasNext()) {
 -            String s = (String) iterator.next();
 -            NBTBase nbtbase = (NBTBase) nbttagcompound.map.get(s);
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        for (Map.Entry<String, NBTBase> entry : nbttagcompound.map.entrySet()) {
 +            String s = entry.getKey();
 +            NBTBase nbtbase = entry.getValue();
-+            // Reaper end
++            // Lamius end
  
              if (nbtbase.getTypeId() == 10) {
                  if (this.hasKeyOfType(s, 10)) {
@@ -1001,7 +1001,7 @@ index 9833f80b170af390530f4d4c7aca535f28295c64..7a94a22b87db376a30157ab3bd13bd13
  
      private static final Logger b = LogManager.getLogger();
 -    public List<NBTBase> list = Lists.newArrayList(); // Paper
-+    public List<NBTBase> list; // Paper // Reaper
++    public List<NBTBase> list; // Paper // Lamius
      // Paper start
      public void sort(java.util.Comparator<? extends NBTBase> comparator) {
          //noinspection unchecked
@@ -1010,10 +1010,10 @@ index 9833f80b170af390530f4d4c7aca535f28295c64..7a94a22b87db376a30157ab3bd13bd13
      private byte type = 0;
  
 -    public NBTTagList() {}
-+    // Reaper start
++    // Lamius start
 +    public NBTTagList() { list = new java.util.ArrayList<>(); }
 +    public NBTTagList(int initialCapacity) { list = new java.util.ArrayList<>(initialCapacity); }
-+    // Reaper end
++    // Lamius end
  
      void write(DataOutput dataoutput) throws IOException {
          if (this.list.isEmpty()) {
@@ -1022,7 +1022,7 @@ index 9833f80b170af390530f4d4c7aca535f28295c64..7a94a22b87db376a30157ab3bd13bd13
          }
  
 -        return new NBTTagCompound();
-+        return new NBTTagCompound(0); // Reaper - Optimize
++        return new NBTTagCompound(0); // Lamius - Optimize
      }
  
      public int c(int i) {
@@ -1031,7 +1031,7 @@ index 9833f80b170af390530f4d4c7aca535f28295c64..7a94a22b87db376a30157ab3bd13bd13
          }
  
 -        return new int[0];
-+        return NBTBase.EMPTY_INT_ARRAY; // Reaper - Use constants
++        return NBTBase.EMPTY_INT_ARRAY; // Lamius - Use constants
      }
  
      public final double getDoubleAt(int i) { return this.f(i); } // Paper - OBFHELPER
@@ -1043,13 +1043,13 @@ index 38b8d88875cb77030f4088bdbd30ca1bab93f989..f6b15a4d78e8b7ae7213b2a2bbbf6dc6
  
              // Tell client the block is gone immediately then process events
              // Don't tell the client if its a creative sword break because its not broken!
-+            /* // Reaper start - Optimize
++            /* // Lamius start - Optimize
              if (world.getTileEntity(blockposition) == null && !isSwordNoBreak) {
                  PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(this.world, blockposition);
                  packet.block = Blocks.AIR.getBlockData();
                  ((EntityPlayer) this.player).playerConnection.sendPacket(packet);
              }
-+            */ // Reaper end
++            */ // Lamius end
  
              event = new BlockBreakEvent(block, this.player.getBukkitEntity());
  
@@ -1062,7 +1062,7 @@ index 9cb13774783704251e82d05b6d921cc1a967b0e4..56f8eab6f6e3b8e9eff4cc1e4f728195
          for (i = 0; i < this.items.size(); ++i) {
              if (!((ItemStack) this.items.get(i)).isEmpty()) {
 -                nbttagcompound = new NBTTagCompound();
-+                nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++                nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
                  nbttagcompound.setByte("Slot", (byte) i);
                  ((ItemStack) this.items.get(i)).save(nbttagcompound);
                  nbttaglist.add(nbttagcompound);
@@ -1071,7 +1071,7 @@ index 9cb13774783704251e82d05b6d921cc1a967b0e4..56f8eab6f6e3b8e9eff4cc1e4f728195
          for (i = 0; i < this.armor.size(); ++i) {
              if (!((ItemStack) this.armor.get(i)).isEmpty()) {
 -                nbttagcompound = new NBTTagCompound();
-+                nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++                nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
                  nbttagcompound.setByte("Slot", (byte) (i + 100));
                  ((ItemStack) this.armor.get(i)).save(nbttagcompound);
                  nbttaglist.add(nbttagcompound);
@@ -1080,7 +1080,7 @@ index 9cb13774783704251e82d05b6d921cc1a967b0e4..56f8eab6f6e3b8e9eff4cc1e4f728195
          for (i = 0; i < this.extraSlots.size(); ++i) {
              if (!((ItemStack) this.extraSlots.get(i)).isEmpty()) {
 -                nbttagcompound = new NBTTagCompound();
-+                nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++                nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
                  nbttagcompound.setByte("Slot", (byte) (i + 150));
                  ((ItemStack) this.extraSlots.get(i)).save(nbttagcompound);
                  nbttaglist.add(nbttagcompound);
@@ -1093,7 +1093,7 @@ index 54bfbfc6bcdf033853becd8c363f79d0a50c9040..d63c279b0967e3af0573d208bf26b792
  
      public NBTTagCompound d() {
 -        return this.c(new NBTTagCompound());
-+        return this.c(new NBTTagCompound(4)); // Reaper - Use initial capacity
++        return this.c(new NBTTagCompound(4)); // Lamius - Use initial capacity
      }
  
      public boolean y() {
@@ -1106,7 +1106,7 @@ index f16706961fa9be92897fceac6261cd4286228dd1..e460748f2f50aec1ad11e86f334535e7
  
      public NBTTagCompound d() {
 -        return this.save(new NBTTagCompound());
-+        return this.save(new NBTTagCompound(7)); // Reaper - Use initial capacity
++        return this.save(new NBTTagCompound(7)); // Lamius - Use initial capacity
      }
  
      public static int b(ItemStack itemstack) {
@@ -1118,16 +1118,16 @@ index b29fe2891968617cb58b00f6c2ebd7ee147c96a5..4e83fa719000a3150a7a1fc608797cdc
  
  public class TileEntityBeacon extends TileEntityContainer implements ITickable, IWorldInventory {
  
-+    private static final int[] EMPTY_SLOTS = new int[0]; // Reaper - Use constant
++    private static final int[] EMPTY_SLOTS = new int[0]; // Lamius - Use constant
      public static final MobEffectList[][] a = new MobEffectList[][] { { MobEffects.FASTER_MOVEMENT, MobEffects.FASTER_DIG}, { MobEffects.RESISTANCE, MobEffects.JUMP}, { MobEffects.INCREASE_DAMAGE}, { MobEffects.REGENERATION}};
      private static final Set<MobEffectList> f = Sets.newHashSet();
-     // private final List<TileEntityBeacon.BeaconColorTracker> g = Collections.emptyList(); // Reaper - Optimize unused
+     // private final List<TileEntityBeacon.BeaconColorTracker> g = Collections.emptyList(); // Lamius - Optimize unused
 @@ -284,7 +285,7 @@ public class TileEntityBeacon extends TileEntityContainer implements ITickable,
      }
  
      public NBTTagCompound d() {
 -        return this.save(new NBTTagCompound());
-+        return this.save(new NBTTagCompound(8)); // Reaper - Use initial capacity
++        return this.save(new NBTTagCompound(8)); // Lamius - Use initial capacity
      }
  
      @Nullable
@@ -1136,7 +1136,7 @@ index b29fe2891968617cb58b00f6c2ebd7ee147c96a5..4e83fa719000a3150a7a1fc608797cdc
  
      public int[] getSlotsForFace(EnumDirection enumdirection) {
 -        return new int[0];
-+        return EMPTY_SLOTS; // Reaper - Use constant
++        return EMPTY_SLOTS; // Lamius - Use constant
      }
  
      public boolean canPlaceItemThroughFace(int i, ItemStack itemstack, EnumDirection enumdirection) {
@@ -1149,7 +1149,7 @@ index bda60e4d4ecdf99b8db20232bed619859db702b6..0e9b94a760122c27f8c35e58307e9801
  
      public NBTTagCompound d() {
 -        return this.save(new NBTTagCompound());
-+        return this.save(new NBTTagCompound(10)); // Reaper - Use initial capacity
++        return this.save(new NBTTagCompound(10)); // Lamius - Use initial capacity
      }
  
      public int v() {
@@ -1162,7 +1162,7 @@ index a26d00127c6f0c2f66aa270bedec7663aa0ea2d2..3177ed30ded2b0cff28750cd93ffaa1f
  
      public NBTTagCompound d() {
 -        return this.save(new NBTTagCompound());
-+        return this.save(new NBTTagCompound(10)); // Reaper - Use initial capacity
++        return this.save(new NBTTagCompound(10)); // Lamius - Use initial capacity
      }
  
      public boolean isFilteredNBT() {
@@ -1175,7 +1175,7 @@ index c63481f41063ed15c7c1ef4752ded53a8f1bd202..611287806ed200195fe9c61fec2dfeb8
          nbttagcompound.setByte("Rot", (byte) (this.rotation & 255));
          if (this.g != null) {
 -            NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-+            NBTTagCompound nbttagcompound1 = new NBTTagCompound(3); // Reaper - Use initial capacity
++            NBTTagCompound nbttagcompound1 = new NBTTagCompound(3); // Lamius - Use initial capacity
  
              GameProfileSerializer.serialize(nbttagcompound1, this.g);
              nbttagcompound.set("Owner", nbttagcompound1);
@@ -1184,7 +1184,7 @@ index c63481f41063ed15c7c1ef4752ded53a8f1bd202..611287806ed200195fe9c61fec2dfeb8
  
      public NBTTagCompound d() {
 -        return this.save(new NBTTagCompound());
-+        return this.save(new NBTTagCompound(7)); // Reaper - Use initial capacity
++        return this.save(new NBTTagCompound(7)); // Lamius - Use initial capacity
      }
  
      public void setSkullType(int i) {
@@ -1197,7 +1197,7 @@ index 7f0baf17a2ca17e8907eebac06e62f2d9bec445d..f0731fdd548a43059672f08435fd33e4
  
      private void a(NBTTagCompound nbttagcompound, NBTTagCompound nbttagcompound1) {
 -        NBTTagCompound nbttagcompound2 = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound2 = new NBTTagCompound(3); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound2 = new NBTTagCompound(3); // Lamius - Use initial capacity
  
          nbttagcompound2.setString("Name", "1.12.2");
          nbttagcompound2.setInt("Id", 1343);
@@ -1206,7 +1206,7 @@ index 7f0baf17a2ca17e8907eebac06e62f2d9bec445d..f0731fdd548a43059672f08435fd33e4
          nbttagcompound.setBoolean("DifficultyLocked", this.D);
          nbttagcompound.set("GameRules", this.O.a());
 -        NBTTagCompound nbttagcompound3 = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound3 = new NBTTagCompound(this.N.size()); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound3 = new NBTTagCompound(this.N.size()); // Lamius - Use initial capacity
          Iterator iterator = this.N.entrySet().iterator();
  
          while (iterator.hasNext()) {
@@ -1219,7 +1219,7 @@ index c74ac77d5e7a40acdbc4b95971f9f579581b212b..e42bd181e27e7912b7eaf7bda7052e07
              while (iterator.hasNext()) {
                  ChunkCoordIntPair chunkcoordintpair = (ChunkCoordIntPair) iterator.next();
 -                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-+                NBTTagCompound nbttagcompound1 = new NBTTagCompound(2); // Reaper - Use initial capacity
++                NBTTagCompound nbttagcompound1 = new NBTTagCompound(2); // Lamius - Use initial capacity
  
                  nbttagcompound1.setInt("X", chunkcoordintpair.x);
                  nbttagcompound1.setInt("Z", chunkcoordintpair.z);
@@ -1232,7 +1232,7 @@ index f573756e670fb73d12615c8a0f0eebebace3152e..df317009b47918f764cde3fb9ec44e8d
          }
  
 -        NBTTagCompound nbttagcompound = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound = new NBTTagCompound(5); // Lamius - Use initial capacity
  
          nbttagcompound.setByte("type", mapicon_type.a());
          nbttagcompound.setString("id", s);
@@ -1245,7 +1245,7 @@ index 4bb6f600dc665d8f99e50e4ff118085906480fd1..691d511bf7ed8f9787146bd0d7c078f2
      public void saveWorldData(WorldData worlddata, @Nullable NBTTagCompound nbttagcompound) {
          NBTTagCompound nbttagcompound1 = worlddata.a(nbttagcompound);
 -        NBTTagCompound nbttagcompound2 = new NBTTagCompound();
-+        NBTTagCompound nbttagcompound2 = new NBTTagCompound(1); // Reaper - Use initial capacity
++        NBTTagCompound nbttagcompound2 = new NBTTagCompound(1); // Lamius - Use initial capacity
  
          nbttagcompound2.set("Data", nbttagcompound1);
  
@@ -1257,11 +1257,11 @@ index 4128e8384dc6ed17cea5d61d3181686f70ffb55c..9d5ac0e189e2a526ee63be60325f98a7
  
  public class CraftParticle {
  
-+    // Reaper start - Use constants
++    // Lamius start - Use constants
 +    private static final int[] VOID = new int[0];
 +    private static final int[] NULL_ITEMSTACK = new int[]{0, 0};
 +    private static final int[] NULL_MATERIAL_DATA = new int[]{0};
-+    // Reaper end
++    // Lamius end
 +
      public static EnumParticle toNMS(Particle bukkit) {
          return EnumParticle.valueOf(bukkit.name());
@@ -1271,12 +1271,12 @@ index 4128e8384dc6ed17cea5d61d3181686f70ffb55c..9d5ac0e189e2a526ee63be60325f98a7
      public static int[] toData(Particle particle, Object obj) {
          if (particle.getDataType().equals(Void.class)) {
 -            return new int[0];
-+            return VOID; // Reaper - Use constant
++            return VOID; // Lamius - Use constant
          }
          if (particle.getDataType().equals(ItemStack.class)) {
              if (obj == null) {
 -                return new int[]{0, 0};
-+                return NULL_ITEMSTACK; // Reaper - Use constant
++                return NULL_ITEMSTACK; // Lamius - Use constant
              }
              ItemStack itemStack = (ItemStack) obj;
              return new int[]{itemStack.getType().getId(), itemStack.getDurability()};
@@ -1284,7 +1284,7 @@ index 4128e8384dc6ed17cea5d61d3181686f70ffb55c..9d5ac0e189e2a526ee63be60325f98a7
          if (particle.getDataType().equals(MaterialData.class)) {
              if (obj == null) {
 -                return new int[]{0};
-+                return NULL_MATERIAL_DATA; // Reaper - Use constant
++                return NULL_MATERIAL_DATA; // Lamius - Use constant
              }
              MaterialData data = (MaterialData) obj;
              return new int[]{data.getItemTypeId() + ((int)(data.getData()) << 12)};
@@ -1297,7 +1297,7 @@ index e2c9a9b77ec7342d467e825a11b4a0688b844eb8..f4cce7d70b00b2d13a3b27db0f7badf5
  
          for (Pattern p : patterns) {
 -            NBTTagCompound compound = new NBTTagCompound();
-+            NBTTagCompound compound = new NBTTagCompound(2); // Reaper - Use initial capacity
++            NBTTagCompound compound = new NBTTagCompound(2); // Lamius - Use initial capacity
              compound.setInt("Color", p.getColor().getDyeData());
              compound.setString("Pattern", p.getPattern().getIdentifier());
              newPatterns.add(compound);
@@ -1311,16 +1311,16 @@ index cbd550ba069639319e4ad6f7b39c2972172f06ea..b0934ae20b8a05b96048cfd25b4fcadf
      public void setExtraData(NBTTagCompound nbttagcompound) {
 -        if (!nbttagcompound.hasKey("bukkit")) {
 -            nbttagcompound.set("bukkit", new NBTTagCompound());
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        NBTTagCompound data = nbttagcompound.getCompoundNullable("bukkit");
 +        if (data == null) {
-+            data = new NBTTagCompound(8); // Reaper - Use initial capacity
++            data = new NBTTagCompound(8); // Lamius - Use initial capacity
 +            nbttagcompound.set("bukkit", data);
          }
  
 -        NBTTagCompound data = nbttagcompound.getCompound("bukkit");
 +        // NBTTagCompound data = nbttagcompound.getCompound("bukkit");
-+        // Reaper end
++        // Lamius end
          EntityPlayer handle = getHandle();
          data.setInt("newExp", handle.newExp);
          data.setInt("newTotalExp", handle.newTotalExp);
@@ -1333,7 +1333,7 @@ index 7b3567894468d7c38c364c6f2be7d8d7c78e860a..ba6a40df6f2db2f1fc8970cb7eadc304
  
          for (Pattern p : patterns) {
 -            NBTTagCompound compound = new NBTTagCompound();
-+            NBTTagCompound compound = new NBTTagCompound(2); // Reaper - Use initial capacity
++            NBTTagCompound compound = new NBTTagCompound(2); // Lamius - Use initial capacity
              compound.setInt(COLOR.NBT, p.getColor().getDyeData());
              compound.setString(PATTERN.NBT, p.getPattern().getIdentifier());
              newPatterns.add(compound);
@@ -1347,11 +1347,11 @@ index f16a5d1f807c068e72d0dd0976d0dbbe423d31d1..50858abf13c1a53a4c45deb7ee28ffc7
      CraftMetaItem(NBTTagCompound tag) {
 -        if (tag.hasKey(DISPLAY.NBT)) {
 -            NBTTagCompound display = tag.getCompound(DISPLAY.NBT);
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        NBTTagCompound display = tag.getCompoundNullable(DISPLAY.NBT);
 +        if (display != null) {
 +            // NBTTagCompound display = tag.getCompound(DISPLAY.NBT);
-+            // Reaper end
++            // Lamius end
  
              if (display.hasKey(NAME.NBT)) {
                  displayName = limit( display.getString(NAME.NBT), 1024 ); // Spigot
@@ -1360,7 +1360,7 @@ index f16a5d1f807c068e72d0dd0976d0dbbe423d31d1..50858abf13c1a53a4c45deb7ee28ffc7
  
      static EnchantmentMap buildEnchantments(NBTTagCompound tag, ItemMetaKey key) { // Paper
 -        if (!tag.hasKey(key.NBT)) {
-+        // Reaper start - Optimize
++        // Lamius start - Optimize
 +        NBTTagList ench = tag.getListNullable(key.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND);
 +        if (ench == null) {
              return null;
@@ -1368,7 +1368,7 @@ index f16a5d1f807c068e72d0dd0976d0dbbe423d31d1..50858abf13c1a53a4c45deb7ee28ffc7
  
 -        NBTTagList ench = tag.getList(key.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND);
 +        // NBTTagList ench = tag.getList(key.NBT, CraftMagicNumbers.NBT.TAG_COMPOUND);
-+        // Reaper end
++        // Lamius end
          EnchantmentMap enchantments = new EnchantmentMap(); // Paper
  
          for (int i = 0; i < ench.size(); i++) {

@@ -13,7 +13,7 @@ index e10f67508c1d2dbbe41a1db8cf900a83987c88d8..7c611a9be8ef1adeedd37a54ed3fc1ee
              <groupId>org.xerial</groupId>
              <artifactId>sqlite-jdbc</artifactId>
 -            <version>3.21.0.1</version>
-+            <version>3.36.0.3</version> <!-- Reaper - Update sqlite-jdbc dependency -->
++            <version>3.36.0.3</version> <!-- Lamius - Update sqlite-jdbc dependency -->
              <scope>runtime</scope>
          </dependency>
          <dependency>

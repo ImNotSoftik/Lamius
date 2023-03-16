@@ -11,8 +11,8 @@ index 960db455d58a90b9ec9895b4d81c1b36dfd6feb6..5fcba6969ea9a2fe899f86ee838a97f4
 @@ -979,6 +979,7 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
                      }
                  }
-                 try { // Reaper end - Flush consolidation
-+                if (this.getPlayerList().getPlayerCount() != 0) // Reaper - Skip updating entity tracker without players
+                 try { // Lamius end - Flush consolidation
++                if (this.getPlayerList().getPlayerCount() != 0) // Lamius - Skip updating entity tracker without players
                  worldserver.getTracker().updatePlayers();
-                 // Reaper start - Flush consolidation
+                 // Lamius start - Flush consolidation
                  } finally {

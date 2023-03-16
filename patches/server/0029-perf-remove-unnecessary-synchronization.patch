@@ -13,7 +13,7 @@ index dee82ad78296644205f41401fd20cf269bf4df9a..e98a638eb3a2146a5e1cb68d34727c2b
      }
  
 -    private synchronized boolean processSaveQueueEntry(boolean logCompletion) {
-+    private /*synchronized*/ boolean processSaveQueueEntry(boolean logCompletion) { // Reaper - Remove unnecessary synchronization
++    private /*synchronized*/ boolean processSaveQueueEntry(boolean logCompletion) { // Lamius - Remove unnecessary synchronization
          // CraftBukkit start
          // Paper start - Chunk queue improvements
          QueuedChunk chunk = queue.poll();

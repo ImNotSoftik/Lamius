@@ -106,5 +106,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Dispencer shulker box crash [\[1\]](https://youtu.be/zFrCb1RVyys?t=104).
 - Reduce EntityTracker memory leakage.
 
-[Unreleased]: https://github.com/ruViolence/Reaper/compare/v1.0.0...HEAD
-[1.0.0]: https://github.com/ruViolence/Reaper/releases/tag/v1.0.0
+[Unreleased]: https://github.com/ruViolence/Lamius/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/ruViolence/Lamius/releases/tag/v1.0.0

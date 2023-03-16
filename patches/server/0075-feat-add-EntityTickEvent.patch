@@ -10,18 +10,18 @@ index e6ebdcda82b96cb5f80829de1f309540d0fc4e50..72b23385bc5ec9bf730217e0e591eb82
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -126,6 +126,7 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
      // Spigot end
-     // Reaper start
+     // Lamius start
      boolean hasEntityMoveEvent;
 +    boolean hasEntityTickEvent;
-     // Reaper end
+     // Lamius end
  
      public MinecraftServer(OptionSet options, Proxy proxy, DataConverterManager dataconvertermanager, YggdrasilAuthenticationService yggdrasilauthenticationservice, MinecraftSessionService minecraftsessionservice, GameProfileRepository gameprofilerepository, UserCache usercache) {
 @@ -887,6 +888,7 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
  
-         // Reaper start
-         hasEntityMoveEvent = com.github.ruviolence.reaper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        hasEntityTickEvent = com.github.ruviolence.reaper.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
-         // Reaper end
+         // Lamius start
+         hasEntityMoveEvent = com.github.ruviolence.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
++        hasEntityTickEvent = com.github.ruviolence.Lamius.event.entity.EntityTickEvent.getHandlerList().getRegisteredListeners().length != 0;
+         // Lamius end
  
          int i;
 diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
@@ -30,30 +30,30 @@ index 070488d870ea9dbb85c4093693e2b8139537d615..69ceb76bd9b198d4aeafea134608cb04
 +++ b/src/main/java/net/minecraft/server/World.java
 @@ -1609,6 +1609,7 @@ public abstract class World implements IBlockAccess {
          //if (tickPosition < 0) tickPosition = 0;
-         // Reaper start
+         // Lamius start
          boolean hasEntityMoveEvent = getMinecraftServer().hasEntityMoveEvent;
 +        boolean hasEntityTickEvent = getMinecraftServer().hasEntityTickEvent;
-         // Reaper end
+         // Lamius end
          for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
              // Paper end
 @@ -1627,6 +1628,7 @@ public abstract class World implements IBlockAccess {
  
-             // this.methodProfiler.a("tick"); // Reaper - Remove MethodProfiler
+             // this.methodProfiler.a("tick"); // Lamius - Remove MethodProfiler
              if (!entity.dead && !(entity instanceof EntityPlayer)) {
-+                if (!hasEntityTickEvent || CraftEventFactory.callEntityTickEvent(entity, this)) // Reaper - Add EntityTickEvent
++                if (!hasEntityTickEvent || CraftEventFactory.callEntityTickEvent(entity, this)) // Lamius - Add EntityTickEvent
                  try {
                      entity.tickTimer.startTiming(); // Paper
-                     // Reaper start - EntityMoveEvent
+                     // Lamius start - EntityMoveEvent
 diff --git a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 index f9e25970d40db707576c7d8a76a27b39d7985d5d..97331a2179aaba64c232992e14ae8ddbb3fff14c 100644
 --- a/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -76,6 +76,7 @@ public class CraftEventFactory {
-     // Reaper start
-     private static final com.github.ruviolence.reaper.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.reaper.event.entity.EntityMoveEvent(null);
-     private static final com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent(null);
-+    private static final com.github.ruviolence.reaper.event.entity.EntityTickEvent entityTickEvent = new com.github.ruviolence.reaper.event.entity.EntityTickEvent(null);
-     // Reaper end
+     // Lamius start
+     private static final com.github.ruviolence.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.Lamius.event.entity.EntityMoveEvent(null);
+     private static final com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent(null);
++    private static final com.github.ruviolence.Lamius.event.entity.EntityTickEvent entityTickEvent = new com.github.ruviolence.Lamius.event.entity.EntityTickEvent(null);
+     // Lamius end
  
      // helper methods
 @@ -1205,5 +1206,15 @@ public class CraftEventFactory {
@@ -62,7 +62,7 @@ index f9e25970d40db707576c7d8a76a27b39d7985d5d..97331a2179aaba64c232992e14ae8ddb
      }
 +
 +    public static boolean callEntityTickEvent(Entity entity, World world) {
-+        com.github.ruviolence.reaper.event.entity.EntityTickEvent event = CraftEventFactory.entityTickEvent;
++        com.github.ruviolence.Lamius.event.entity.EntityTickEvent event = CraftEventFactory.entityTickEvent;
 +
 +        event.setData(entity.getBukkitEntity(), world.getWorld());
 +
@@ -70,5 +70,5 @@ index f9e25970d40db707576c7d8a76a27b39d7985d5d..97331a2179aaba64c232992e14ae8ddb
 +
 +        return !event.isCancelled();
 +    }
-     // Reaper end
+     // Lamius end
  }

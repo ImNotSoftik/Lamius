@@ -13,7 +13,7 @@ index 3daf3d05fdd319bf7c798ec8e826c3eeb371affa..10857ed16dc5d1d526ae7248edcd3f76
      }
  
      public void die(DamageSource damagesource) {
-+        if (this.dead) return; // Reaper
++        if (this.dead) return; // Lamius
          if (!this.aU) {
              Entity entity = damagesource.getEntity();
              EntityLiving entityliving = this.ci();

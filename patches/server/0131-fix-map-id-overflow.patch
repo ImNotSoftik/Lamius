@@ -12,7 +12,7 @@ index 50056f49a8eaea687d00175e41a877040934e9ae..21ee0c5039361f04cfd07144d5d8e8e4
              oshort = Short.valueOf((short) 0);
          } else {
              oshort = Short.valueOf((short) (oshort.shortValue() + 1));
-+            if (oshort < 0) oshort = 0; // Reaper - Fix map ID overflow
++            if (oshort < 0) oshort = 0; // Lamius - Fix map ID overflow
          }
  
          this.d.put(s, oshort);

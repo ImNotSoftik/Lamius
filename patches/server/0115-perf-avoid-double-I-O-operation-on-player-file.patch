@@ -14,8 +14,8 @@ index 691d511bf7ed8f9787146bd0d7c078f2a56d256f..8b113eac32c732d15cd5b146153c08cb
              // Spigot Start
              boolean usingWrongFile = false;
 -            if ( org.bukkit.Bukkit.getOnlineMode() && !file.exists() ) // Paper - Check online mode first
-+            boolean normalFile = file.exists() && file.isFile(); // Reaper - Ensures normal file
-+            if ( org.bukkit.Bukkit.getOnlineMode() && !normalFile ) // Paper - Check online mode first // Reaper - Ensures normal file
++            boolean normalFile = file.exists() && file.isFile(); // Lamius - Ensures normal file
++            if ( org.bukkit.Bukkit.getOnlineMode() && !normalFile ) // Paper - Check online mode first // Lamius - Ensures normal file
              {
                  file = new File( this.playerDir, UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + entityhuman.getName() ).getBytes( "UTF-8" ) ).toString() + ".dat");
                  if ( file.exists() )
@@ -24,7 +24,7 @@ index 691d511bf7ed8f9787146bd0d7c078f2a56d256f..8b113eac32c732d15cd5b146153c08cb
              // Spigot End
  
 -            if (file.exists() && file.isFile()) {
-+            if (normalFile) { // Reaper - Avoid double I/O operation
++            if (normalFile) { // Lamius - Avoid double I/O operation
                  nbttagcompound = NBTCompressedStreamTools.a((InputStream) (new FileInputStream(file)));
              }
              // Spigot Start

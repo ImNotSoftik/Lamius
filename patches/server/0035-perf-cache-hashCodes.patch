@@ -12,7 +12,7 @@ index 4470d26a7dfad1c75774b77dae08d163c874138e..bd202ae956d0a0f96cc38d0c5c99e405
      protected int a;
      protected int b;
      protected int c;
-+    private int hashCode = -1; // Reaper - Cache hash code
++    private int hashCode = -1; // Lamius - Cache hash code
  
      public final boolean isValidLocation() {
          return a >= -30000000 && c >= -30000000 && a < 30000000 && c < 30000000 && b >= 0 && b < 256;
@@ -20,15 +20,15 @@ index 4470d26a7dfad1c75774b77dae08d163c874138e..bd202ae956d0a0f96cc38d0c5c99e405
      }
  
      public int hashCode() {
--        return (this.b + this.c * 31) * 31 + this.a; // Reaper - Optimize BlockPosition
-+        // Reaper start - Cache hash code
+-        return (this.b + this.c * 31) * 31 + this.a; // Lamius - Optimize BlockPosition
++        // Lamius start - Cache hash code
 +        int hash = this.hashCode;
 +        if (hash == -1) {
-+            hash = (this.b + this.c * 31) * 31 + this.a; // Reaper - Optimize BlockPosition
++            hash = (this.b + this.c * 31) * 31 + this.a; // Lamius - Optimize BlockPosition
 +            hashCode = hash;
 +        }
 +        return hash;
-+        // Reaper end
++        // Lamius end
      }
  
      public int l(BaseBlockPosition baseblockposition) {
@@ -41,12 +41,12 @@ index 3962026078dbc0a83fd61acf915bb12bd70c9deb..e0c122487f631b7945486c538e8e7154
              return this.f(i, j, k);
          }
 +
-+        // Reaper start
++        // Lamius start
 +        @Override
 +        public int hashCode() {
 +            return (((BaseBlockPosition) this).b + ((BaseBlockPosition) this).c * 31) * 31 + super.a;
 +        }
-+        // Reaper end
++        // Lamius end
      }
  
      public static class MutableBlockPosition extends BlockPosition {
@@ -55,12 +55,12 @@ index 3962026078dbc0a83fd61acf915bb12bd70c9deb..e0c122487f631b7945486c538e8e7154
              return super.c(baseblockposition);
          }
 +
-+        // Reaper start
++        // Lamius start
 +        @Override
 +        public int hashCode() {
 +            return (((BaseBlockPosition) this).b + ((BaseBlockPosition) this).c * 31) * 31 + super.a;
 +        }
-+        // Reaper end
++        // Lamius end
      }
  }
 diff --git a/src/main/java/net/minecraft/server/BlockState.java b/src/main/java/net/minecraft/server/BlockState.java
@@ -71,7 +71,7 @@ index 1d626ce2fa8b5acaaaffc04844b4740cda52c529..36169b3179ad4fa7d17247dd2ed25864
      protected BlockState(String s, Class<T> oclass) {
          this.a = oclass;
          this.b = s;
-+        this.hashCode = 31 * this.a.hashCode() + this.b.hashCode(); // Reaper - Move hash calc to the constructor
++        this.hashCode = 31 * this.a.hashCode() + this.b.hashCode(); // Lamius - Move hash calc to the constructor
      }
  
      public String a() {
@@ -85,7 +85,7 @@ index 1d626ce2fa8b5acaaaffc04844b4740cda52c529..36169b3179ad4fa7d17247dd2ed25864
 -            hashCode = hash;
 -        }
 -        return hash;
-+        return hashCode; // Reaper - Move hash calc to the constructor
++        return hashCode; // Lamius - Move hash calc to the constructor
      }
      // Spigot end
  }
@@ -97,7 +97,7 @@ index 02b4956ecd1ddf5887a4632025c3135cc29468ce..f42fd1acb03071be815e08a7cc6a093c
  
      protected BlockStateBoolean(String s) {
          super(s, Boolean.class);
-+        this.hashCode = 31 * super.hashCode() + this.a.hashCode(); // Reaper - Move hash calc to the constructor
++        this.hashCode = 31 * super.hashCode() + this.a.hashCode(); // Lamius - Move hash calc to the constructor
      }
  
      public Collection<Boolean> c() {
@@ -111,7 +111,7 @@ index 02b4956ecd1ddf5887a4632025c3135cc29468ce..f42fd1acb03071be815e08a7cc6a093c
 -            hashCode = hash;
 -        }
 -        return hash;
-+        return hashCode; // Reaper - Move hash calc to the constructor
++        return hashCode; // Lamius - Move hash calc to the constructor
      }
      // Spigot end
  }
@@ -123,7 +123,7 @@ index 403fa144accdee97f4001d9c45c81be9e135d8d9..96ea215749fab0142fb77295647b4635
              }
  
              this.a = ImmutableSet.copyOf(hashset);
-+            this.hashCode = 31 * super.hashCode() + this.a.hashCode(); // Reaper - Move hash calc to the constructor
++            this.hashCode = 31 * super.hashCode() + this.a.hashCode(); // Lamius - Move hash calc to the constructor
          }
      }
  
@@ -137,7 +137,7 @@ index 403fa144accdee97f4001d9c45c81be9e135d8d9..96ea215749fab0142fb77295647b4635
 -            hashCode = hash;
 -        }
 -        return hash;
-+        return hashCode; // Reaper - Move hash calc to the constructor
++        return hashCode; // Lamius - Move hash calc to the constructor
      }
      // Spigot end
  
@@ -149,7 +149,7 @@ index aafd23bebc82ef77e3932399e5f7893537373b6c..d30a320ba76a37d497cc34acf559130d
  
      public final int x;
      public final int z;
-+    private int hashCode = 0; // Reaper - Cache hash code
++    private int hashCode = 0; // Lamius - Cache hash code
  
      public ChunkCoordIntPair(int i, int j) {
          this.x = i;
@@ -161,7 +161,7 @@ index aafd23bebc82ef77e3932399e5f7893537373b6c..d30a320ba76a37d497cc34acf559130d
 -        int j = 1664525 * (this.z ^ -559038737) + 1013904223;
 -
 -        return i ^ j;
-+        // Reaper start - Cache hash code
++        // Lamius start - Cache hash code
 +        int hash = this.hashCode;
 +        if (hash == 0) {
 +            int a1 = 1664525 * this.x + 1013904223;
@@ -170,7 +170,7 @@ index aafd23bebc82ef77e3932399e5f7893537373b6c..d30a320ba76a37d497cc34acf559130d
 +            this.hashCode = hash;
 +        }
 +        return hash;
-+        // Reaper end
++        // Lamius end
      }
  
      public boolean equals(Object object) {

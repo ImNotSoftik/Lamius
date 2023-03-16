@@ -18,11 +18,11 @@ index 7355c61bdef87222d47a5c448543ce2bf2a72a64..5537a74783bdf6ae4f251874a8773dc6
      private float bE;
      protected ItemStack activeItem;
 -    protected int bp;
-+    protected int bp; protected final int getEatTimeTicks() { return this.bp; }  protected final void setEatTimeTicks(int value) { this.bp = value; } // Reaper - OBFHELPER
-+    // Reaper start - Lag compensate eating
++    protected int bp; protected final int getEatTimeTicks() { return this.bp; }  protected final void setEatTimeTicks(int value) { this.bp = value; } // Lamius - OBFHELPER
++    // Lamius start - Lag compensate eating
 +    protected long eatStartTime;
 +    protected int totalEatTimeTicks;
-+    // Reaper end
++    // Lamius end
      protected int bq;
      private BlockPosition bF;
      private DamageSource bG;
@@ -30,13 +30,13 @@ index 7355c61bdef87222d47a5c448543ce2bf2a72a64..5537a74783bdf6ae4f251874a8773dc6
                      this.b(this.activeItem, 5);
                  }
  
--                if (--this.bp == 0) { // Reaper - Remove isClientSide check
-+                // Reaper start - Lag compensate eating
+-                if (--this.bp == 0) { // Lamius - Remove isClientSide check
++                // Lamius start - Lag compensate eating
 +                // we add 2 to the expected time to avoid lag compensating when we don't need to
 +                boolean shouldLagCompensate = this.activeItem.getItem() instanceof ItemFood && this.eatStartTime != -1 && (System.nanoTime() - this.eatStartTime) > ((2 + this.totalEatTimeTicks) * 50 * (1000 * 1000));
 +                if (--this.bp == 0 || shouldLagCompensate) {
 +                    this.bp = 0;
-+                    // Reaper end
++                    // Lamius end
                      this.v();
                  }
              } else {
@@ -45,21 +45,21 @@ index 7355c61bdef87222d47a5c448543ce2bf2a72a64..5537a74783bdf6ae4f251874a8773dc6
          if (!itemstack.isEmpty() && !this.isHandRaised()) {
              this.activeItem = itemstack;
 -            this.bp = itemstack.m();
-+            // Reaper start - Lag compensate eating
++            // Lamius start - Lag compensate eating
 +            this.bp = this.totalEatTimeTicks = itemstack.m();
 +            this.eatStartTime = System.nanoTime();
-+            // Reaper end
-             if (true) { // Reaper - Remove isClientSide check
++            // Lamius end
+             if (true) { // Lamius - Remove isClientSide check
                  int i = 1;
  
 @@ -2453,6 +2465,10 @@ public abstract class EntityLiving extends Entity {
              } else if (!this.isHandRaised() && !this.activeItem.isEmpty()) {
                  this.activeItem = ItemStack.a;
                  this.bp = 0;
-+                // Reaper start - Lag compensate eating
++                // Lamius start - Lag compensate eating
 +                this.totalEatTimeTicks = 0;
 +                this.eatStartTime = -1L;
-+                // Reaper end
++                // Lamius end
              }
          }
  
@@ -67,10 +67,10 @@ index 7355c61bdef87222d47a5c448543ce2bf2a72a64..5537a74783bdf6ae4f251874a8773dc6
  
          this.activeItem = ItemStack.a;
          this.bp = 0;
-+        // Reaper start - Lag compensate eating
++        // Lamius start - Lag compensate eating
 +        this.totalEatTimeTicks = 0;
 +        this.eatStartTime = -1L;
-+        // Reaper end
++        // Lamius end
      }
  
      public boolean isBlocking() {

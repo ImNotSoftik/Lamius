@@ -15,10 +15,10 @@ index de67be18f4d267941d884bb118cca2487456c78a..48e199eedcd780bf2464ba8cd5ed8284
  
 -        if (getProfileBans().isBanned(gameprofile) && !getProfileBans().get(gameprofile).hasExpired()) {
 -            GameProfileBanEntry gameprofilebanentry = (GameProfileBanEntry) this.k.get(gameprofile);
-+        // Reaper start - Fix MC-158900
++        // Lamius start - Fix MC-158900
 +        GameProfileBanEntry gameprofilebanentry;
 +        if (getProfileBans().isBanned(gameprofile) && (gameprofilebanentry = getProfileBans().get(gameprofile)) != null) {
-+            // Reaper end
++            // Lamius end
  
              s = "You are banned from this server!\nReason: " + gameprofilebanentry.getReason();
              if (gameprofilebanentry.getExpires() != null) {

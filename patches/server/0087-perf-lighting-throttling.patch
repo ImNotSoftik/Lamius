@@ -13,29 +13,29 @@ index d10b64229aa5a42e345633130f504682282fe028..fd764891ad62de69b404da891f5077e6
          log("Top of the nether void damage: " + netherVoidTopDamage);
      }
  
-+    /* // Reaper start - Remove Paper lighting queue
++    /* // Lamius start - Remove Paper lighting queue
      public boolean queueLightUpdates;
      private void queueLightUpdates() {
          queueLightUpdates = getBoolean("queue-light-updates", false);
          log("Lighting Queue enabled: " + queueLightUpdates);
      }
-+    */ // Reaper end
++    */ // Lamius end
  
      public boolean disableEndCredits;
      private void disableEndCredits() {
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index d02e86391bc0b2321b4d3fa040efa7224976f60e..a59d750229e63810e2efce175d087de392cacfe8 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 @@ -5,6 +5,7 @@ import net.minecraft.server.DispenserRegistry;
  import net.minecraft.server.EntityPlayer;
  import net.minecraft.server.MathHelper;
  import net.minecraft.server.MinecraftServer;
-+import net.minecraft.server.ReaperLightingQueue;
++import net.minecraft.server.LamiusLightingQueue;
  import org.bukkit.Bukkit;
  import org.bukkit.command.Command;
  import org.bukkit.configuration.InvalidConfigurationException;
-@@ -218,4 +219,19 @@ public class ReaperConfig {
+@@ -218,4 +219,19 @@ public class LamiusConfig {
          oldCombatHideAttributes = getBoolean("old-combat.hide-item-attributes", false);
          oldCombatRandom = oldCombatEnabled ? new Random() : null;
      }
@@ -51,7 +51,7 @@ index d02e86391bc0b2321b4d3fa040efa7224976f60e..a59d750229e63810e2efce175d087de3
 +        lightThrottlingRedelaying = getBoolean("light-throttling.redelaying", false);
 +        lightThrottlingAllowBlockRelight = getBoolean("light-throttling.allow-block-relight", true);
 +        if (oldQLU && !queueLightUpdates) {
-+            ReaperLightingQueue.processQueueAnyway();
++            LamiusLightingQueue.processQueueAnyway();
 +        }
 +    }
  }
@@ -64,8 +64,8 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
          }
      }
 -    final PaperLightingQueue.LightingQueue lightingQueue = new PaperLightingQueue.LightingQueue(this);
-+    // final PaperLightingQueue.LightingQueue lightingQueue = new PaperLightingQueue.LightingQueue(this); // Reaper - Remove Paper lighting queue
-+    final ReaperLightingQueue.LightingQueue lightingQueue = new ReaperLightingQueue.LightingQueue(this); // Reaper
++    // final PaperLightingQueue.LightingQueue lightingQueue = new PaperLightingQueue.LightingQueue(this); // Lamius - Remove Paper lighting queue
++    final LamiusLightingQueue.LightingQueue lightingQueue = new LamiusLightingQueue.LightingQueue(this); // Lamius
      // Paper end
      private boolean done;
      private boolean lit;
@@ -74,26 +74,26 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
                      this.initLighting();
                  } else {
 -                    this.runOrQueueLightUpdate(() -> { // Paper - Queue light update
-+                    // this.runOrQueueLightUpdate(() -> { // Reaper - Remove Paper lighting queue // Paper - Queue light update
++                    // this.runOrQueueLightUpdate(() -> { // Lamius - Remove Paper lighting queue // Paper - Queue light update
                      int j1 = iblockdata.c();
                      int k1 = iblockdata1.c();
  
                      if (j1 > 0) {
                          if (j >= i1) {
 -                            this.c(i, j + 1, k);
-+                            this.runOrQueueLightUpdate(i, j + 1, k, 1); // Reaper
++                            this.runOrQueueLightUpdate(i, j + 1, k, 1); // Lamius
                          }
                      } else if (j == i1 - 1) {
 -                        this.c(i, j, k);
-+                        this.runOrQueueLightUpdate(i, j, k, 1); // Reaper
++                        this.runOrQueueLightUpdate(i, j, k, 1); // Lamius
                      }
  
                      if (j1 != k1 && (j1 < k1 || this.getBrightness(EnumSkyBlock.SKY, blockposition) > 0 || this.getBrightness(EnumSkyBlock.BLOCK, blockposition) > 0)) {
 -                        this.d(i, k);
-+                        this.runOrQueueLightUpdate(i, 0, k, 2); // Reaper
++                        this.runOrQueueLightUpdate(i, 0, k, 2); // Lamius
                      }
 -                    }); // Paper
-+                    // }); // Reaper - Remove Paper lighting queue // Paper
++                    // }); // Lamius - Remove Paper lighting queue // Paper
                  }
  
                  TileEntity tileentity;
@@ -101,7 +101,7 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
  
      // Paper start
      public void runOrQueueLightUpdate(Runnable runnable) {
-+        /* // Reaper start - Remove Paper lighting queue
++        /* // Lamius start - Remove Paper lighting queue
          if (this.world.paperConfig.queueLightUpdates) {
              lightingQueue.add(runnable);
          } else {
@@ -109,14 +109,14 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
          }
 +        */
 +        runnable.run();
-+        // Reaper end
++        // Lamius end
      }
      // Paper end
  
-+    // Reaper start
++    // Lamius start
 +    public void runOrQueueLightUpdate(int x, int y, int z, int type) {
-+        if (com.github.ruviolence.reaper.ReaperConfig.queueLightUpdates
-+                && (type != 0 || !com.github.ruviolence.reaper.ReaperConfig.lightThrottlingAllowBlockRelight)) {
++        if (com.github.ruviolence.Lamius.LamiusConfig.queueLightUpdates
++                && (type != 0 || !com.github.ruviolence.Lamius.LamiusConfig.lightThrottlingAllowBlockRelight)) {
 +            lightingQueue.schedule(x, y, z, type);
 +        } else {
 +            runLightTaskByType(x, y, z, type);
@@ -132,7 +132,7 @@ index 87e48475f33a3ad21f0bdc6cf983b6f2411b19a0..8133d9f5232d4cca6e80b1768bcc49d6
 +            this.d(x, z);
 +        }
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public static enum EnumTileEntityState {
  
@@ -145,7 +145,7 @@ index 5ada3fb0ccec92e8c6d090e2e3dd8f27b4695db0..111c421fd7c343719001b6b7c50093a0
  
      public void saveChunk(Chunk chunk, boolean unloaded) { // Spigot
          try (co.aikar.timings.Timing timed = world.timings.chunkSaveData.startTiming()) {
-+            chunk.lightingQueue.processQueueAnyway(); // Reaper
++            chunk.lightingQueue.processQueueAnyway(); // Lamius
              chunk.setLastSaved(this.world.getTime());
              this.chunkLoader.saveChunk(this.world, chunk, unloaded); // Spigot
          } catch (IOException ioexception) {
@@ -157,20 +157,20 @@ index c5446704642d26341d512a52510fd8cda17e270d..0e7223f59c6fe2201daaf52f4358c60c
          // CraftBukkit end
          MinecraftServer.LOGGER.info("Stopping server");
          MinecraftTimings.stopServer(); // Paper
-+        // Reaper start
++        // Lamius start
 +        MinecraftServer.LOGGER.info("Flushing lighting queue");
-+        ReaperLightingQueue.processQueueAnyway();
-+        // Reaper end
++        LamiusLightingQueue.processQueueAnyway();
++        // Lamius end
          // CraftBukkit start
          if (this.server != null) {
              this.server.disablePlugins();
 @@ -841,7 +845,8 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
-         // this.methodProfiler.b(); // Reaper - Remove MethodProfiler
+         // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
  
          org.spigotmc.WatchdogThread.tick(); // Spigot
--        PaperLightingQueue.processQueue(i); // Paper // Reaper - Inline
-+        // PaperLightingQueue.processQueue(i); // Paper // Reaper - Inline
-+        ReaperLightingQueue.processQueue(i); // Reaper
+-        PaperLightingQueue.processQueue(i); // Paper // Lamius - Inline
++        // PaperLightingQueue.processQueue(i); // Paper // Lamius - Inline
++        LamiusLightingQueue.processQueue(i); // Lamius
          this.slackActivityAccountant.tickEnded(tickNanos); // Spigot
          co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper
      }
@@ -277,27 +277,27 @@ index f1c013116fc05b7abe7184eae01b715c02c7a058..00000000000000000000000000000000
 -        return startTime > 0 && System.nanoTime() - startTime > maxTickTime;
 -    }
 -}
-diff --git a/src/main/java/net/minecraft/server/ReaperLightingQueue.java b/src/main/java/net/minecraft/server/ReaperLightingQueue.java
+diff --git a/src/main/java/net/minecraft/server/LamiusLightingQueue.java b/src/main/java/net/minecraft/server/LamiusLightingQueue.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..6471bdfb81cd9439982343d9c1bf86e9aeea575a
 --- /dev/null
-+++ b/src/main/java/net/minecraft/server/ReaperLightingQueue.java
++++ b/src/main/java/net/minecraft/server/LamiusLightingQueue.java
 @@ -0,0 +1,222 @@
 +package net.minecraft.server;
 +
 +import co.aikar.timings.Timing;
-+import com.github.ruviolence.reaper.ReaperConfig;
++import com.github.ruviolence.Lamius.LamiusConfig;
 +import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
 +import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
 +import it.unimi.dsi.fastutil.objects.ObjectCollection;
 +
 +import java.util.ArrayDeque;
 +
-+public class ReaperLightingQueue {
++public class LamiusLightingQueue {
 +    private static final long MAX_TIME = (long) (1000000000 / 20 * 1.15);
 +
 +    public static void processQueue(long curTime) {
-+        if (!ReaperConfig.queueLightUpdates) return;
++        if (!LamiusConfig.queueLightUpdates) return;
 +        final long startTime = System.nanoTime();
 +        final long maxTickTime = MAX_TIME - (startTime - curTime);
 +
@@ -343,7 +343,7 @@ index 0000000000000000000000000000000000000000..6471bdfb81cd9439982343d9c1bf86e9
 +                super.addLast(task);
 +            }
 +
-+            if (ReaperConfig.lightThrottlingRedelaying && isDelayed()) {
++            if (LamiusConfig.lightThrottlingRedelaying && isDelayed()) {
 +                setDelay();
 +            }
 +        }
@@ -410,7 +410,7 @@ index 0000000000000000000000000000000000000000..6471bdfb81cd9439982343d9c1bf86e9
 +        }
 +
 +        private void setDelay() {
-+            int skipDelay = ReaperConfig.lightThrottlingDelay;
++            int skipDelay = LamiusConfig.lightThrottlingDelay;
 +            if (skipDelay > 0) {
 +                nextAllowedTick = MinecraftServer.getServer().aq() + skipDelay;
 +            }
@@ -512,10 +512,10 @@ index 85a67cc32776a8ab569b148f290874be9e29ee00..29c121d9daf88e803489a062855a94fe
 @@ -414,7 +414,8 @@ public abstract class World implements IBlockAccess {
              } else {
                  if (iblockdata.c() != iblockdata1.c() || iblockdata.d() != iblockdata1.d()) {
-                     // this.methodProfiler.a("checkLight"); // Reaper - Remove MethodProfiler
+                     // this.methodProfiler.a("checkLight"); // Lamius - Remove MethodProfiler
 -                    chunk.runOrQueueLightUpdate(() -> this.w(blockposition)); // Paper - Queue light update
-+                    // chunk.runOrQueueLightUpdate(() -> this.w(blockposition)); // Reaper - Remove Paper lighting queue // Paper - Queue light update
-+                    chunk.runOrQueueLightUpdate(blockposition.getX(), blockposition.getY(), blockposition.getZ(), 0); // Reaper
-                     // this.methodProfiler.b(); // Reaper - Remove MethodProfiler
++                    // chunk.runOrQueueLightUpdate(() -> this.w(blockposition)); // Lamius - Remove Paper lighting queue // Paper - Queue light update
++                    chunk.runOrQueueLightUpdate(blockposition.getX(), blockposition.getY(), blockposition.getZ(), 0); // Lamius
+                     // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
                  }
  

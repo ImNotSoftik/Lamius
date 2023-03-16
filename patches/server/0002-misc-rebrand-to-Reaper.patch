@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: ruViolence <78062896+ruViolence@users.noreply.github.com>
 Date: Mon, 23 May 2022 18:52:47 +0500
-Subject: [PATCH] misc: rebrand to Reaper
+Subject: [PATCH] misc: rebrand to Lamius
 
 
 diff --git a/pom.xml b/pom.xml
@@ -15,13 +15,13 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
 -    <groupId>com.destroystokyo.paper</groupId>
 -    <artifactId>paper</artifactId>
 +    <groupId>com.github.ruviolence</groupId>
-+    <artifactId>reaper</artifactId>
++    <artifactId>Lamius</artifactId>
      <packaging>jar</packaging>
      <version>1.12.2-R0.1-SNAPSHOT</version>
 -    <name>Paper</name>
 -    <url>https://github.com/PaperMC/Paper</url>
-+    <name>Reaper</name>
-+    <url>https://github.com/ruViolence/Reaper</url>
++    <name>Lamius</name>
++    <url>https://github.com/ruViolence/Lamius</url>
  
      <properties>
          <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -32,7 +32,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
 -        <groupId>com.destroystokyo.paper</groupId>
 -        <artifactId>paper-parent</artifactId>
 +        <groupId>com.github.ruviolence</groupId>
-+        <artifactId>reaper-parent</artifactId>
++        <artifactId>Lamius-parent</artifactId>
          <version>dev-SNAPSHOT</version>
          <relativePath>../pom.xml</relativePath>
      </parent>
@@ -43,7 +43,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
 -            <groupId>com.destroystokyo.paper</groupId>
 -            <artifactId>paper-api</artifactId>
 +            <groupId>com.github.ruviolence</groupId>
-+            <artifactId>reaper-api</artifactId>
++            <artifactId>Lamius-api</artifactId>
              <version>${project.version}</version>
              <scope>compile</scope>
          </dependency>
@@ -53,7 +53,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
      <build>
 -        <finalName>paper-${minecraft.version}</finalName>
 -        <defaultGoal>clean install</defaultGoal> <!-- Paper -->
-+        <finalName>reaper-${minecraft.version}</finalName>
++        <finalName>Lamius-${minecraft.version}</finalName>
 +        <defaultGoal>install</defaultGoal> <!-- Paper -->
          <plugins>
              <plugin>
@@ -62,7 +62,7 @@ index d600217470ca22243ead794cb1415343bf2ca52d..e23db48f4dd372e9a554fc98a0b3e51d
                  <version>1.3</version>
                  <configuration>
 -                    <outputPrefix>git-Paper-</outputPrefix>
-+                    <outputPrefix>git-Reaper-</outputPrefix>
++                    <outputPrefix>git-Lamius-</outputPrefix>
                      <scmDirectory>..</scmDirectory>
                  </configuration>
                  <executions>
@@ -89,7 +89,7 @@ index 116d1b3bfb899c382cb59174f05d17d84ddcdddd..642d37e9df02c48310a50ea8f4f0927d
      protected LineReader buildReader(LineReaderBuilder builder) {
          return super.buildReader(builder
 -                .appName("Paper")
-+                .appName("Reaper")
++                .appName("Lamius")
                  .completer(new ConsoleCommandCompleter(this.server))
          );
      }
@@ -102,7 +102,7 @@ index 3b982f9906c7212779426b9fb8d9f943a8f1eb6c..d295fa4ceb6864a282634f33778b0e20
  
      public String getServerModName() {
 -        return "Paper"; //Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
-+        return "Reaper"; // Reaper - Reaper > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
++        return "Lamius"; // Lamius - Lamius > // Paper - Paper > // Spigot - Spigot > // CraftBukkit - cb > vanilla!
      }
  
      public CrashReport b(CrashReport crashreport) {
@@ -115,7 +115,7 @@ index 7c82e18b9ff634175749327660b256a7e8e655af..3c57166598bad6907eb4b2f6a8a9e7f0
  
  public final class CraftServer implements Server {
 -    private final String serverName = "Paper";
-+    private final String serverName = "Reaper";
++    private final String serverName = "Lamius";
      private final String serverVersion;
      private final String bukkitVersion = Versioning.getBukkitVersion();
      private final Logger logger = Logger.getLogger("Minecraft");
@@ -128,7 +128,7 @@ index 674096cab190d62622f9947853b056f57d43a2a5..63166c2a2381e75da31216483ce2be04
          String result = "Unknown-Version";
  
 -        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.destroystokyo.paper/paper-api/pom.properties");
-+        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.github.ruviolence/reaper-api/pom.properties"); // Reaper
++        InputStream stream = Bukkit.class.getClassLoader().getResourceAsStream("META-INF/maven/com.github.ruviolence/Lamius-api/pom.properties"); // Lamius
          Properties properties = new Properties();
  
          if (stream != null) {
@@ -143,7 +143,7 @@ index 93dc6983595ace9fa0d024ffbb11e4b98b5fe886..d02fc3247db80d8d059dab6a679ea777
 -                log.log( Level.SEVERE, "Please report this to https://github.com/PaperMC/Paper/issues" );
 -                log.log( Level.SEVERE, "Be sure to include ALL relevant console errors and Minecraft crash reports" );
 -                log.log( Level.SEVERE, "Paper version: " + Bukkit.getServer().getVersion() );
-+                log.log( Level.SEVERE, "Reaper version: " + Bukkit.getServer().getVersion() );
++                log.log( Level.SEVERE, "Lamius version: " + Bukkit.getServer().getVersion() );
                  //
                  if(net.minecraft.server.World.haveWeSilencedAPhysicsCrash)
                  {

@@ -5,11 +5,11 @@ Subject: [PATCH] feat: configurable relative arrow motion
 
 It will help to disable the superbow hack: https://youtu.be/zsJKxT1vOZs?t=165
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index fd3138e7076d7c00950ebbe50e65d2b533bbbf15..0d8e94d70d4150c8fd43d587e301666cf8296b84 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-@@ -249,4 +249,9 @@ public class ReaperConfig {
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+@@ -249,4 +249,9 @@ public class LamiusConfig {
      private static void timeUpdatePeriod() {
          timeUpdatePeriod = getInt("time-update-period", 20);
      }
@@ -27,13 +27,13 @@ index 4cdbcb0993194b327bc7117c05e8da32e55ea893..05d03acbd21cf0a8f3cf3274bc1bf50f
          float f7 = MathHelper.cos(f1 * 0.017453292F) * MathHelper.cos(f * 0.017453292F);
  
          this.shoot((double) f5, (double) f6, (double) f7, f3, f4);
-+        if (com.github.ruviolence.reaper.ReaperConfig.relativeArrowMotion) { // Reaper start
++        if (com.github.ruviolence.Lamius.LamiusConfig.relativeArrowMotion) { // Lamius start
          this.motX += entity.motX;
          this.motZ += entity.motZ;
          if (!entity.onGround) {
              this.motY += entity.motY;
          }
-+        } // Reaper end
++        } // Lamius end
  
      }
  

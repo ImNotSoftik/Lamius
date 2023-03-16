@@ -13,7 +13,7 @@ index 9fd71607d1031493ba90c23253955a52e65dff70..710f357910fce1dc2d8ec3b7a1d01337
              this.playerConnection.sendPacket(new PacketPlayOutWorldEvent(1032, BlockPosition.ZERO, 0, false));
              this.lastSentExp = -1;
              this.lastHealthSent = -1.0F;
-+            this.setSneaking(false); // Reaper - Fix MC-10657
++            this.setSneaking(false); // Lamius - Fix MC-10657
              this.ch = -1;
              return this;
          }
@@ -25,7 +25,7 @@ index 48e199eedcd780bf2464ba8cd5ed8284f2a3952c..9a233711473cb1af473538bda6692790
              entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobEffect));
          }
  
-+        entityplayer.setSneaking(false); // Reaper - Fix MC-10657
++        entityplayer.setSneaking(false); // Lamius - Fix MC-10657
 +
          // Fire advancement trigger
          CriterionTriggers.u.a(entityplayer, ((CraftWorld) fromWorld).getHandle().worldProvider.getDimensionManager(), worldserver.worldProvider.getDimensionManager());

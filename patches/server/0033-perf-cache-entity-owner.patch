@@ -12,7 +12,7 @@ index c56e170a328c354d330f47aa16f105fec0bf9c04..f074ac108438b63e035970e86f90dfa0
      protected boolean bF = true;
      protected int bG;
      public int maxDomestication = 100; // CraftBukkit - store max domestication value
-+    private Optional<UUID> cachedOwnerId; // Reaper - Cache entity owner
++    private Optional<UUID> cachedOwnerId; // Lamius - Cache entity owner
  
      public EntityHorseAbstract(World world) {
          super(world);
@@ -21,18 +21,18 @@ index c56e170a328c354d330f47aa16f105fec0bf9c04..f074ac108438b63e035970e86f90dfa0
      @Nullable
      public UUID getOwnerUUID() {
 -        return (UUID) ((Optional) this.datawatcher.get(EntityHorseAbstract.bJ)).orNull();
-+        // Reaper start - Cache entity owner
++        // Lamius start - Cache entity owner
 +        if (cachedOwnerId == null) cachedOwnerId = this.datawatcher.get(EntityHorseAbstract.bJ);
 +        return cachedOwnerId.orNull();
-+        // Reaper end
++        // Lamius end
      }
  
      public void setOwnerUUID(@Nullable UUID uuid) {
 -        this.datawatcher.set(EntityHorseAbstract.bJ, Optional.fromNullable(uuid));
-+        // Reaper start - Cache entity owner
++        // Lamius start - Cache entity owner
 +        this.cachedOwnerId = Optional.fromNullable(uuid);
 +        this.datawatcher.set(EntityHorseAbstract.bJ, this.cachedOwnerId);
-+        // Reaper end
++        // Lamius end
      }
  
      public float dw() {
@@ -44,7 +44,7 @@ index e0e65b614e9bb288a463651db7eab0dbf7218281..4c678a30e968c79012ce9ac4ddd12a8d
      protected static final DataWatcherObject<Byte> bx = DataWatcher.a(EntityTameableAnimal.class, DataWatcherRegistry.a);
      protected static final DataWatcherObject<Optional<UUID>> by = DataWatcher.a(EntityTameableAnimal.class, DataWatcherRegistry.m);
      protected PathfinderGoalSit goalSit;
-+    private Optional<UUID> cachedOwnerId; // Reaper - Cache entity owner
++    private Optional<UUID> cachedOwnerId; // Lamius - Cache entity owner
  
      public EntityTameableAnimal(World world) {
          super(world);
@@ -53,18 +53,18 @@ index e0e65b614e9bb288a463651db7eab0dbf7218281..4c678a30e968c79012ce9ac4ddd12a8d
      @Nullable
      public UUID getOwnerUUID() {
 -        return (UUID) ((Optional) this.datawatcher.get(EntityTameableAnimal.by)).orNull();
-+        // Reaper start - Cache entity owner
++        // Lamius start - Cache entity owner
 +        if (cachedOwnerId == null) cachedOwnerId = this.datawatcher.get(EntityTameableAnimal.by);
 +        return cachedOwnerId.orNull();
-+        // Reaper end
++        // Lamius end
      }
  
      public void setOwnerUUID(@Nullable UUID uuid) {
 -        this.datawatcher.set(EntityTameableAnimal.by, Optional.fromNullable(uuid));
-+        // Reaper start - Cache entity owner
++        // Lamius start - Cache entity owner
 +        this.cachedOwnerId = Optional.fromNullable(uuid);
 +        this.datawatcher.set(EntityTameableAnimal.by, this.cachedOwnerId);
-+        // Reaper end
++        // Lamius end
      }
  
      public void c(EntityHuman entityhuman) {

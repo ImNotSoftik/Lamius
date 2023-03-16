@@ -11,14 +11,14 @@ index 3ce010078065e367e04cf19c2bcc103a0cbed0a0..a39bc9d75aa5677d51a05d37d031237a
 @@ -157,6 +157,13 @@
              <scope>compile</scope>
          </dependency>
-         <!-- Reaper end -->
-+        <!-- Reaper start - Add FastUUID -->
+         <!-- Lamius end -->
++        <!-- Lamius start - Add FastUUID -->
 +        <dependency>
 +            <groupId>com.eatthepath</groupId>
 +            <artifactId>fast-uuid</artifactId>
 +            <version>0.2.0</version>
 +        </dependency>
-+        <!-- Reaper end -->
++        <!-- Lamius end -->
      </dependencies>
  
      <repositories>
@@ -31,7 +31,7 @@ index 39b770ab27c23369385aba281d405ce73587d5a0..779efa3f770a6b1c424ea0cfc26f4e39
          if (entityplayer == null) {
              try {
 -                entityplayer = minecraftserver.getPlayerList().a(UUID.fromString(s));
-+                entityplayer = minecraftserver.getPlayerList().a(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Reaper - Use FastUUID
++                entityplayer = minecraftserver.getPlayerList().a(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Lamius - Use FastUUID
              } catch (IllegalArgumentException illegalargumentexception) {
                  ;
              }
@@ -40,7 +40,7 @@ index 39b770ab27c23369385aba281d405ce73587d5a0..779efa3f770a6b1c424ea0cfc26f4e39
          if (object == null) {
              try {
 -                UUID uuid = UUID.fromString(s);
-+                UUID uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Reaper - Use FastUUID
++                UUID uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Lamius - Use FastUUID
  
                  object = minecraftserver.a(uuid);
                  if (object == null) {
@@ -53,7 +53,7 @@ index 16ffeced2dd31dae87e5fc51ce8c99de7140bb0b..79c868f6ef283886da0a0103d2f7460a
          this.justCreated = true;
          this.uniqueID = MathHelper.a(this.random);
 -        this.ar = this.uniqueID.toString();
-+        this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Reaper - Use FastUUID
++        this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Lamius - Use FastUUID
          this.aG = new CommandObjectiveExecutor();
          this.aH = Sets.newHashSet();
          this.aJ = new double[] { 0.0D, 0.0D, 0.0D};
@@ -62,7 +62,7 @@ index 16ffeced2dd31dae87e5fc51ce8c99de7140bb0b..79c868f6ef283886da0a0103d2f7460a
              if (nbttagcompound.b("UUID")) {
                  this.uniqueID = nbttagcompound.a("UUID");
 -                this.ar = this.uniqueID.toString();
-+                this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Reaper - Use FastUUID
++                this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Lamius - Use FastUUID
              }
  
              this.setPosition(this.locX, this.locY, this.locZ);
@@ -71,7 +71,7 @@ index 16ffeced2dd31dae87e5fc51ce8c99de7140bb0b..79c868f6ef283886da0a0103d2f7460a
  
      public String toString() {
 -        return String.format("%s[\'%s\'/%d, uuid=\'%s\', l=\'%s\', x=%.2f, y=%.2f, z=%.2f, cx=%d, cd=%d, tl=%d, v=%b, d=%b]", new Object[] { this.getClass().getSimpleName(), this.getName(), Integer.valueOf(this.id), this.uniqueID.toString(), this.world == null ? "~NULL~" : this.world.getWorldData().getName(), Double.valueOf(this.locX), Double.valueOf(this.locY), Double.valueOf(this.locZ), getChunkX(), getChunkZ(), this.ticksLived, this.valid, this.dead}); // Paper - add more information
-+        return String.format("%s[\'%s\'/%d, uuid=\'%s\', l=\'%s\', x=%.2f, y=%.2f, z=%.2f, cx=%d, cd=%d, tl=%d, v=%b, d=%b]", new Object[] { this.getClass().getSimpleName(), this.getName(), Integer.valueOf(this.id), com.eatthepath.uuid.FastUUID.toString(this.uniqueID), this.world == null ? "~NULL~" : this.world.getWorldData().getName(), Double.valueOf(this.locX), Double.valueOf(this.locY), Double.valueOf(this.locZ), getChunkX(), getChunkZ(), this.ticksLived, this.valid, this.dead}); // Paper - add more information // Reaper - Use FastUUID
++        return String.format("%s[\'%s\'/%d, uuid=\'%s\', l=\'%s\', x=%.2f, y=%.2f, z=%.2f, cx=%d, cd=%d, tl=%d, v=%b, d=%b]", new Object[] { this.getClass().getSimpleName(), this.getName(), Integer.valueOf(this.id), com.eatthepath.uuid.FastUUID.toString(this.uniqueID), this.world == null ? "~NULL~" : this.world.getWorldData().getName(), Double.valueOf(this.locX), Double.valueOf(this.locY), Double.valueOf(this.locZ), getChunkX(), getChunkZ(), this.ticksLived, this.valid, this.dead}); // Paper - add more information // Lamius - Use FastUUID
      }
  
      public boolean isInvulnerable(DamageSource damagesource) {
@@ -80,7 +80,7 @@ index 16ffeced2dd31dae87e5fc51ce8c99de7140bb0b..79c868f6ef283886da0a0103d2f7460a
      public void a(UUID uuid) {
          this.uniqueID = uuid;
 -        this.ar = this.uniqueID.toString();
-+        this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Reaper - Use FastUUID
++        this.ar = com.eatthepath.uuid.FastUUID.toString(this.uniqueID); // Lamius - Use FastUUID
      }
  
      public UUID getUniqueID() {
@@ -93,7 +93,7 @@ index 2cb70f749452d07b17377f2d32d25d1ace9f6496..702cece6e3745e1daca1fc233b478ab8
  public abstract class EntityCreature extends EntityInsentient {
  
 -    public static final UUID bv = UUID.fromString("E199AD21-BA8A-4C53-8D13-6182D5C69D3A");
-+    public static final UUID bv = com.eatthepath.uuid.FastUUID.parseUUID("E199AD21-BA8A-4C53-8D13-6182D5C69D3A"); // Reaper - Use FastUUID
++    public static final UUID bv = com.eatthepath.uuid.FastUUID.parseUUID("E199AD21-BA8A-4C53-8D13-6182D5C69D3A"); // Lamius - Use FastUUID
      public static final AttributeModifier bw = (new AttributeModifier(EntityCreature.bv, "Fleeing speed bonus", 2.0D, 2)).a(false);
      public BlockPosition movingTarget = null; public BlockPosition getMovingTarget() { return movingTarget; } // Paper
      private BlockPosition a;
@@ -106,7 +106,7 @@ index 65f88cd5209f8581842cefd076daffbb47a6bc7a..043096096d46aa05c3ad056b3d4b3241
  public class EntityEnderman extends EntityMonster {
  
 -    private static final UUID a = UUID.fromString("020E0DFB-87AE-4653-9556-831010E291A0");
-+    private static final UUID a = com.eatthepath.uuid.FastUUID.parseUUID("020E0DFB-87AE-4653-9556-831010E291A0"); // Reaper - Use FastUUID
++    private static final UUID a = com.eatthepath.uuid.FastUUID.parseUUID("020E0DFB-87AE-4653-9556-831010E291A0"); // Lamius - Use FastUUID
      private static final AttributeModifier b = (new AttributeModifier(EntityEnderman.a, "Attacking speed boost", 0.15000000596046448D, 0)).a(false);
      private static final Set<Block> c = Sets.newIdentityHashSet();
      private static final DataWatcherObject<Optional<IBlockData>> bx = DataWatcher.a(EntityEnderman.class, DataWatcherRegistry.g);
@@ -119,10 +119,10 @@ index 03bb8cd396e683b5e5b4a9beae352095c55f16fe..b5a70589f1aec477905b7d15a589a35a
  public class EntityHorse extends EntityHorseAbstract {
  
 -    private static final UUID bH = UUID.fromString("556E1665-8B10-40C8-8F9D-CF9B1667F295");
-+    private static final UUID bH = com.eatthepath.uuid.FastUUID.parseUUID("556E1665-8B10-40C8-8F9D-CF9B1667F295"); // Reaper - Use FastUUID
++    private static final UUID bH = com.eatthepath.uuid.FastUUID.parseUUID("556E1665-8B10-40C8-8F9D-CF9B1667F295"); // Lamius - Use FastUUID
      private static final DataWatcherObject<Integer> bI = DataWatcher.a(EntityHorse.class, DataWatcherRegistry.b);
      private static final DataWatcherObject<Integer> bJ = DataWatcher.a(EntityHorse.class, DataWatcherRegistry.b);
-     /* // Reaper start - Clientside texture fields
+     /* // Lamius start - Clientside texture fields
 diff --git a/src/main/java/net/minecraft/server/EntityHorseAbstract.java b/src/main/java/net/minecraft/server/EntityHorseAbstract.java
 index f074ac108438b63e035970e86f90dfa0e8a287f1..967f67615313a032aab148204eea3df2751792b8 100644
 --- a/src/main/java/net/minecraft/server/EntityHorseAbstract.java
@@ -132,7 +132,7 @@ index f074ac108438b63e035970e86f90dfa0e8a287f1..967f67615313a032aab148204eea3df2
          nbttagcompound.setBoolean("Tame", this.isTamed());
          if (this.getOwnerUUID() != null) {
 -            nbttagcompound.setString("OwnerUUID", this.getOwnerUUID().toString());
-+            nbttagcompound.setString("OwnerUUID", com.eatthepath.uuid.FastUUID.toString(this.getOwnerUUID())); // Reaper - Use FastUUID
++            nbttagcompound.setString("OwnerUUID", com.eatthepath.uuid.FastUUID.toString(this.getOwnerUUID())); // Lamius - Use FastUUID
          }
          nbttagcompound.setInt("Bukkit.MaxDomestication", this.maxDomestication); // CraftBukkit
  
@@ -141,7 +141,7 @@ index f074ac108438b63e035970e86f90dfa0e8a287f1..967f67615313a032aab148204eea3df2
  
          if (!s.isEmpty()) {
 -            this.setOwnerUUID(UUID.fromString(s));
-+            this.setOwnerUUID(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Reaper - Use FastUUID
++            this.setOwnerUUID(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Lamius - Use FastUUID
          }
          // CraftBukkit start
          if (nbttagcompound.hasKey("Bukkit.MaxDomestication")) {
@@ -154,7 +154,7 @@ index 5537a74783bdf6ae4f251874a8773dc6bc18d29a..d13d42c30bfdf00cd597ffb55575b8a6
  
      private static final Logger a = LogManager.getLogger();
 -    private static final UUID b = UUID.fromString("662A6B8D-DA3E-4C1C-8813-96EA6097278D");
-+    private static final UUID b = com.eatthepath.uuid.FastUUID.parseUUID("662A6B8D-DA3E-4C1C-8813-96EA6097278D"); // Reaper - Use FastUUID
++    private static final UUID b = com.eatthepath.uuid.FastUUID.parseUUID("662A6B8D-DA3E-4C1C-8813-96EA6097278D"); // Lamius - Use FastUUID
      private static final AttributeModifier c = (new AttributeModifier(EntityLiving.b, "Sprinting speed boost", 0.30000001192092896D, 2)).a(false);
      protected static final DataWatcherObject<Byte> at = DataWatcher.a(EntityLiving.class, DataWatcherRegistry.a);
      public static final DataWatcherObject<Float> HEALTH = DataWatcher.a(EntityLiving.class, DataWatcherRegistry.c);
@@ -167,7 +167,7 @@ index 23a502cecd5121b6456ef5f166a5ed8ec9399fc4..1feba1c699ceef1039e9e7d42894fcc7
              if (this.shooter == null && this.world instanceof WorldServer) {
                  try {
 -                    Entity entity = ((WorldServer) this.world).getEntity(UUID.fromString(this.shooterName));
-+                    Entity entity = ((WorldServer) this.world).getEntity(com.eatthepath.uuid.FastUUID.parseUUID(this.shooterName)); // Reaper - Use FastUUID
++                    Entity entity = ((WorldServer) this.world).getEntity(com.eatthepath.uuid.FastUUID.parseUUID(this.shooterName)); // Lamius - Use FastUUID
  
                      if (entity instanceof EntityLiving) {
                          this.shooter = (EntityLiving) entity;
@@ -180,7 +180,7 @@ index 8a5e909f63c0b0298351070675daa46557c39a6d..00839007d469a46a342c0bd5457d4d74
  public class EntityShulker extends EntityGolem implements IMonster {
  
 -    private static final UUID bz = UUID.fromString("7E0292F2-9434-48D5-A29F-9583AF7DF27F");
-+    private static final UUID bz = com.eatthepath.uuid.FastUUID.parseUUID("7E0292F2-9434-48D5-A29F-9583AF7DF27F"); // Reaper - Use FastUUID
++    private static final UUID bz = com.eatthepath.uuid.FastUUID.parseUUID("7E0292F2-9434-48D5-A29F-9583AF7DF27F"); // Lamius - Use FastUUID
      private static final AttributeModifier bA = (new AttributeModifier(EntityShulker.bz, "Covered armor bonus", 20.0D, 0)).a(false);
      protected static final DataWatcherObject<EnumDirection> a = DataWatcher.a(EntityShulker.class, DataWatcherRegistry.l);
      protected static final DataWatcherObject<Optional<BlockPosition>> b = DataWatcher.a(EntityShulker.class, DataWatcherRegistry.k);
@@ -193,7 +193,7 @@ index 4c678a30e968c79012ce9ac4ddd12a8d86c1b505..8271ab3b7cf13d506ddb747f8c77b5c6
              nbttagcompound.setString("OwnerUUID", "");
          } else {
 -            nbttagcompound.setString("OwnerUUID", this.getOwnerUUID().toString());
-+            nbttagcompound.setString("OwnerUUID", com.eatthepath.uuid.FastUUID.toString(this.getOwnerUUID())); // Reaper - Use FastUUID
++            nbttagcompound.setString("OwnerUUID", com.eatthepath.uuid.FastUUID.toString(this.getOwnerUUID())); // Lamius - Use FastUUID
          }
  
          nbttagcompound.setBoolean("Sitting", this.isSitting());
@@ -202,7 +202,7 @@ index 4c678a30e968c79012ce9ac4ddd12a8d86c1b505..8271ab3b7cf13d506ddb747f8c77b5c6
          if (!s.isEmpty()) {
              try {
 -                this.setOwnerUUID(UUID.fromString(s));
-+                this.setOwnerUUID(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Reaper - Use FastUUID
++                this.setOwnerUUID(com.eatthepath.uuid.FastUUID.parseUUID(s)); // Lamius - Use FastUUID
                  this.setTamed(true);
              } catch (Throwable throwable) {
                  this.setTamed(false);
@@ -215,7 +215,7 @@ index 105eccfa3d21d6ea486803626ed90eedf71d6729..44973b45038d6c8855f99203b0e7f7bd
  public class EntityWitch extends EntityMonster implements IRangedEntity {
  
 -    private static final UUID a = UUID.fromString("5CD17E52-A79A-43D3-A529-90FDE04B181E");
-+    private static final UUID a = com.eatthepath.uuid.FastUUID.parseUUID("5CD17E52-A79A-43D3-A529-90FDE04B181E"); // Reaper - Use FastUUID
++    private static final UUID a = com.eatthepath.uuid.FastUUID.parseUUID("5CD17E52-A79A-43D3-A529-90FDE04B181E"); // Lamius - Use FastUUID
      private static final AttributeModifier b = (new AttributeModifier(EntityWitch.a, "Drinking speed penalty", -0.25D, 0)).a(false);
      private static final DataWatcherObject<Boolean> c = DataWatcher.a(EntityWitch.class, DataWatcherRegistry.h);
      private int bx;
@@ -228,7 +228,7 @@ index 8091049992b6d822eb705df8616c49e6ef16c239..c62aeed29d81b2a3eb36db1981465af0
  
      protected static final IAttribute a = (new AttributeRanged((IAttribute) null, "zombie.spawnReinforcements", 0.0D, 0.0D, 1.0D)).a("Spawn Reinforcements Chance");
 -    private static final UUID b = UUID.fromString("B9766B59-9566-4402-BC1F-2EE2A276D836");
-+    private static final UUID b = com.eatthepath.uuid.FastUUID.parseUUID("B9766B59-9566-4402-BC1F-2EE2A276D836"); // Reaper - Use FastUUID
++    private static final UUID b = com.eatthepath.uuid.FastUUID.parseUUID("B9766B59-9566-4402-BC1F-2EE2A276D836"); // Lamius - Use FastUUID
      private final AttributeModifier c = new AttributeModifier(EntityZombie.b, "Baby speed boost", world.paperConfig.babyZombieMovementSpeed, 1); // Paper - Remove static - Make baby speed configurable
      private static final DataWatcherObject<Boolean> bx = DataWatcher.a(EntityZombie.class, DataWatcherRegistry.h);
      private static final DataWatcherObject<Integer> by = DataWatcher.a(EntityZombie.class, DataWatcherRegistry.b);
@@ -241,7 +241,7 @@ index 16fe4819341b97dc889084652387921dfbf41e89..7ec8c7b97754233bef69b1183f0495c1
      protected void a(JsonObject jsonobject) {
          if (this.getKey() != null) {
 -            jsonobject.addProperty("uuid", ((GameProfile) this.getKey()).getId() == null ? "" : ((GameProfile) this.getKey()).getId().toString());
-+            jsonobject.addProperty("uuid", ((GameProfile) this.getKey()).getId() == null ? "" : com.eatthepath.uuid.FastUUID.toString(((GameProfile) this.getKey()).getId())); // Reaper - Use FastUUID
++            jsonobject.addProperty("uuid", ((GameProfile) this.getKey()).getId() == null ? "" : com.eatthepath.uuid.FastUUID.toString(((GameProfile) this.getKey()).getId())); // Lamius - Use FastUUID
              jsonobject.addProperty("name", ((GameProfile) this.getKey()).getName());
              super.a(jsonobject);
          }
@@ -250,7 +250,7 @@ index 16fe4819341b97dc889084652387921dfbf41e89..7ec8c7b97754233bef69b1183f0495c1
  
              try {
 -                uuid = UUID.fromString(s);
-+                uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Reaper - Use FastUUID
++                uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Lamius - Use FastUUID
              } catch (Throwable throwable) {
              }
  
@@ -263,7 +263,7 @@ index 921cddd2095f4cf131ac63992ae9aba5cfa215c5..cc83165acfdda7eef2f1511909e802e8
  
      private static final int[] n = new int[] { 13, 15, 16, 11};
 -    private static final UUID[] o = new UUID[] { UUID.fromString("845DB27C-C624-495F-8C9F-6020A9A58B6B"), UUID.fromString("D8499B04-0E66-4726-AB29-64469D734E0D"), UUID.fromString("9F3D476D-C118-4544-8365-64846904B48E"), UUID.fromString("2AD3F246-FEE1-4E67-B886-69FD380BB150")};
-+    private static final UUID[] o = new UUID[] { com.eatthepath.uuid.FastUUID.parseUUID("845DB27C-C624-495F-8C9F-6020A9A58B6B"), com.eatthepath.uuid.FastUUID.parseUUID("D8499B04-0E66-4726-AB29-64469D734E0D"), com.eatthepath.uuid.FastUUID.parseUUID("9F3D476D-C118-4544-8365-64846904B48E"), com.eatthepath.uuid.FastUUID.parseUUID("2AD3F246-FEE1-4E67-B886-69FD380BB150")}; // Reaper - Use FastUUID
++    private static final UUID[] o = new UUID[] { com.eatthepath.uuid.FastUUID.parseUUID("845DB27C-C624-495F-8C9F-6020A9A58B6B"), com.eatthepath.uuid.FastUUID.parseUUID("D8499B04-0E66-4726-AB29-64469D734E0D"), com.eatthepath.uuid.FastUUID.parseUUID("9F3D476D-C118-4544-8365-64846904B48E"), com.eatthepath.uuid.FastUUID.parseUUID("2AD3F246-FEE1-4E67-B886-69FD380BB150")}; // Lamius - Use FastUUID
      public static final String[] a = new String[] { "minecraft:items/empty_armor_slot_boots", "minecraft:items/empty_armor_slot_leggings", "minecraft:items/empty_armor_slot_chestplate", "minecraft:items/empty_armor_slot_helmet"};
      public static final IDispenseBehavior b = new DispenseBehaviorItem() {
          protected ItemStack b(ISourceBlock isourceblock, ItemStack itemstack) {
@@ -276,7 +276,7 @@ index 5fcba6969ea9a2fe899f86ee838a97f468883d9d..df0d975c8dcd88ed16e085d5ba810929
  
              String s1 = "."; // PAIL?
 -            YggdrasilAuthenticationService yggdrasilauthenticationservice = new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY, UUID.randomUUID().toString()); // Paper
-+            YggdrasilAuthenticationService yggdrasilauthenticationservice = new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY, com.eatthepath.uuid.FastUUID.toString(UUID.randomUUID())); // Paper // Reaper - Use FastUUID
++            YggdrasilAuthenticationService yggdrasilauthenticationservice = new com.destroystokyo.paper.profile.PaperAuthenticationService(Proxy.NO_PROXY, com.eatthepath.uuid.FastUUID.toString(UUID.randomUUID())); // Paper // Lamius - Use FastUUID
              MinecraftSessionService minecraftsessionservice = yggdrasilauthenticationservice.createMinecraftSessionService();
              GameProfileRepository gameprofilerepository = yggdrasilauthenticationservice.createProfileRepository();
              UserCache usercache = new UserCache(gameprofilerepository, new File(s1, MinecraftServer.a.getName()));
@@ -289,7 +289,7 @@ index 426e7b27f0df8ea169972540d13189c4ebfd380c..a01afedda2e82bb2a5a838ad65d2ab74
  
      public MobEffectList a(IAttribute iattribute, String s, double d0, int i) {
 -        AttributeModifier attributemodifier = new AttributeModifier(UUID.fromString(s), this.a(), d0, i);
-+        AttributeModifier attributemodifier = new AttributeModifier(com.eatthepath.uuid.FastUUID.parseUUID(s), this.a(), d0, i); // Reaper - Use FastUUID
++        AttributeModifier attributemodifier = new AttributeModifier(com.eatthepath.uuid.FastUUID.parseUUID(s), this.a(), d0, i); // Lamius - Use FastUUID
  
          this.a.put(iattribute, attributemodifier);
          return this;
@@ -302,8 +302,8 @@ index beed783a40a1b39f287e240744172cc28d59065e..3ab23439ed21f5c233dffa8e72419ffa
  
              if (gameprofile != null && gameprofile.getId() != null) {
 -                return gameprofile.getId().toString();
-+                return com.eatthepath.uuid.FastUUID.toString(gameprofile.getId()); // Reaper - Use FastUUID
-             } else if (/*!minecraftserver.R()*/true && minecraftserver.getOnlineMode()) { // Reaper - Remove singleplayer code
++                return com.eatthepath.uuid.FastUUID.toString(gameprofile.getId()); // Lamius - Use FastUUID
+             } else if (/*!minecraftserver.R()*/true && minecraftserver.getOnlineMode()) { // Lamius - Remove singleplayer code
                  final ArrayList arraylist = Lists.newArrayList();
                  ProfileLookupCallback profilelookupcallback = new ProfileLookupCallback() {
 @@ -295,9 +295,9 @@ public class NameReferencingFileConverter {
@@ -311,10 +311,10 @@ index beed783a40a1b39f287e240744172cc28d59065e..3ab23439ed21f5c233dffa8e72419ffa
  
                  a(minecraftserver, Lists.newArrayList(new String[] { s}), profilelookupcallback);
 -                return !arraylist.isEmpty() && ((GameProfile) arraylist.get(0)).getId() != null ? ((GameProfile) arraylist.get(0)).getId().toString() : "";
-+                return !arraylist.isEmpty() && ((GameProfile) arraylist.get(0)).getId() != null ? com.eatthepath.uuid.FastUUID.toString(((GameProfile) arraylist.get(0)).getId()) : ""; // Reaper - Use FastUUID
++                return !arraylist.isEmpty() && ((GameProfile) arraylist.get(0)).getId() != null ? com.eatthepath.uuid.FastUUID.toString(((GameProfile) arraylist.get(0)).getId()) : ""; // Lamius - Use FastUUID
              } else {
 -                return EntityHuman.a(new GameProfile((UUID) null, s)).toString();
-+                return com.eatthepath.uuid.FastUUID.toString(EntityHuman.a(new GameProfile((UUID) null, s))); // Reaper - Use FastUUID
++                return com.eatthepath.uuid.FastUUID.toString(EntityHuman.a(new GameProfile((UUID) null, s))); // Lamius - Use FastUUID
              }
          } else {
              return s;
@@ -323,7 +323,7 @@ index beed783a40a1b39f287e240744172cc28d59065e..3ab23439ed21f5c233dffa8e72419ffa
                              throw new NameReferencingFileConverter.FileConversionException("Missing UUID for user profile " + gameprofile.getName(), null);
                          } else {
 -                            this.a(file, this.a(gameprofile), uuid.toString());
-+                            this.a(file, this.a(gameprofile), com.eatthepath.uuid.FastUUID.toString(uuid)); // Reaper - Use FastUUID
++                            this.a(file, this.a(gameprofile), com.eatthepath.uuid.FastUUID.toString(uuid)); // Lamius - Use FastUUID
                          }
                      }
  
@@ -336,7 +336,7 @@ index 9a233711473cb1af473538bda669279023f9ca2f..b9e3fc6e7375a2cdeed57345ecbcf11a
          if (serverstatisticmanager == null) {
              File file = new File(this.server.getWorldServer(0).getDataManager().getDirectory(), "stats");
 -            File file1 = new File(file, uuid + ".json");
-+            File file1 = new File(file, com.eatthepath.uuid.FastUUID.toString(uuid) + ".json"); // Reaper - Use FastUUID
++            File file1 = new File(file, com.eatthepath.uuid.FastUUID.toString(uuid) + ".json"); // Lamius - Use FastUUID
  
              if (!file1.exists()) {
                  File file2 = new File(file, entityhuman.getName() + ".json");
@@ -345,7 +345,7 @@ index 9a233711473cb1af473538bda669279023f9ca2f..b9e3fc6e7375a2cdeed57345ecbcf11a
          if (advancementdataplayer == null) {
              File file = new File(this.server.getWorldServer(0).getDataManager().getDirectory(), "advancements");
 -            File file1 = new File(file, uuid + ".json");
-+            File file1 = new File(file, com.eatthepath.uuid.FastUUID.toString(uuid) + ".json"); // Reaper - Use FastUUID
++            File file1 = new File(file, com.eatthepath.uuid.FastUUID.toString(uuid) + ".json"); // Lamius - Use FastUUID
  
              advancementdataplayer = new AdvancementDataPlayer(this.server, file1, entityplayer);
              // this.p.put(uuid, advancementdataplayer); // CraftBukkit
@@ -358,7 +358,7 @@ index ac161f5059a43c9b6937cf11f3cf6273472e23c0..885e4f5f7e8a41b56a5a5dfc4f907aa8
                              String s = ChatDeserializer.h(jsonobject1, "id");
  
 -                            agameprofile[i] = new GameProfile(UUID.fromString(s), ChatDeserializer.h(jsonobject1, "name"));
-+                            agameprofile[i] = new GameProfile(com.eatthepath.uuid.FastUUID.parseUUID(s), ChatDeserializer.h(jsonobject1, "name")); // Reaper - Use FastUUID
++                            agameprofile[i] = new GameProfile(com.eatthepath.uuid.FastUUID.parseUUID(s), ChatDeserializer.h(jsonobject1, "name")); // Lamius - Use FastUUID
                          }
  
                          serverping_serverpingplayersample.a(agameprofile);
@@ -367,7 +367,7 @@ index ac161f5059a43c9b6937cf11f3cf6273472e23c0..885e4f5f7e8a41b56a5a5dfc4f907aa8
                          UUID uuid = serverping_serverpingplayersample.c()[i].getId();
  
 -                        jsonobject1.addProperty("id", uuid == null ? "" : uuid.toString());
-+                        jsonobject1.addProperty("id", uuid == null ? "" : com.eatthepath.uuid.FastUUID.toString(uuid)); // Reaper - Use FastUUID
++                        jsonobject1.addProperty("id", uuid == null ? "" : com.eatthepath.uuid.FastUUID.toString(uuid)); // Lamius - Use FastUUID
                          jsonobject1.addProperty("name", serverping_serverpingplayersample.c()[i].getName());
                          jsonarray.add(jsonobject1);
                      }
@@ -380,7 +380,7 @@ index 8d75289cd76d8a101d9b8a1bee93ad4b3406a0f0..2aeb6542e0e50dccfb6129d7adcb4aac
              UUID uuid = usercache_usercacheentry.a().getId();
  
 -            jsonobject.addProperty("uuid", uuid == null ? "" : uuid.toString());
-+            jsonobject.addProperty("uuid", uuid == null ? "" : com.eatthepath.uuid.FastUUID.toString(uuid)); // Reaper - Use FastUUID
++            jsonobject.addProperty("uuid", uuid == null ? "" : com.eatthepath.uuid.FastUUID.toString(uuid)); // Lamius - Use FastUUID
              jsonobject.addProperty("expiresOn", UserCache.a.format(usercache_usercacheentry.b()));
              return jsonobject;
          }
@@ -389,7 +389,7 @@ index 8d75289cd76d8a101d9b8a1bee93ad4b3406a0f0..2aeb6542e0e50dccfb6129d7adcb4aac
  
                          try {
 -                            uuid = UUID.fromString(s);
-+                            uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Reaper - Use FastUUID
++                            uuid = com.eatthepath.uuid.FastUUID.parseUUID(s); // Lamius - Use FastUUID
                          } catch (Throwable throwable) {
                              return null;
                          }
@@ -402,7 +402,7 @@ index 634cc51777fbbb3256d57805da3a25dba3b12aa3..105a6726d8e83f9628459bb1ead39690
              if (nbttagcompound2.hasKey("UUID") && this.a != null && this.a.getMinecraftServer() != null) {
                  UserCache usercache = this.a.getMinecraftServer().getUserCache();
 -                GameProfile gameprofile = usercache.a(UUID.fromString(nbttagcompound2.getString("UUID")));
-+                GameProfile gameprofile = usercache.a(com.eatthepath.uuid.FastUUID.parseUUID(nbttagcompound2.getString("UUID"))); // Reaper - Use FastUUID
++                GameProfile gameprofile = usercache.a(com.eatthepath.uuid.FastUUID.parseUUID(nbttagcompound2.getString("UUID"))); // Lamius - Use FastUUID
  
                  if (gameprofile != null) {
                      this.j.put(gameprofile.getName(), Integer.valueOf(nbttagcompound2.getInt("S")));
@@ -411,7 +411,7 @@ index 634cc51777fbbb3256d57805da3a25dba3b12aa3..105a6726d8e83f9628459bb1ead39690
  
                  if (gameprofile != null) {
 -                    nbttagcompound2.setString("UUID", gameprofile.getId().toString());
-+                    nbttagcompound2.setString("UUID", com.eatthepath.uuid.FastUUID.toString(gameprofile.getId())); // Reaper - Use FastUUID
++                    nbttagcompound2.setString("UUID", com.eatthepath.uuid.FastUUID.toString(gameprofile.getId())); // Lamius - Use FastUUID
                      nbttagcompound2.setInt("S", ((Integer) this.j.get(s)).intValue());
                      nbttaglist1.add(nbttagcompound2);
                  }
@@ -420,11 +420,11 @@ index 8b113eac32c732d15cd5b146153c08cbf0e25fd6..ceca6c6e80981c08b3e863fc0082c648
 --- a/src/main/java/net/minecraft/server/WorldNBTStorage.java
 +++ b/src/main/java/net/minecraft/server/WorldNBTStorage.java
 @@ -171,7 +171,7 @@ public class WorldNBTStorage implements IDataManager, IPlayerFileData {
-             boolean normalFile = file.exists() && file.isFile(); // Reaper - Ensures normal file
-             if ( org.bukkit.Bukkit.getOnlineMode() && !normalFile ) // Paper - Check online mode first // Reaper - Ensures normal file
+             boolean normalFile = file.exists() && file.isFile(); // Lamius - Ensures normal file
+             if ( org.bukkit.Bukkit.getOnlineMode() && !normalFile ) // Paper - Check online mode first // Lamius - Ensures normal file
              {
 -                file = new File( this.playerDir, UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + entityhuman.getName() ).getBytes( "UTF-8" ) ).toString() + ".dat");
-+                file = new File( this.playerDir, com.eatthepath.uuid.FastUUID.toString(UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + entityhuman.getName() ).getBytes( "UTF-8" ) )) + ".dat"); // Reaper - Use FastUUID
++                file = new File( this.playerDir, com.eatthepath.uuid.FastUUID.toString(UUID.nameUUIDFromBytes( ( "OfflinePlayer:" + entityhuman.getName() ).getBytes( "UTF-8" ) )) + ".dat"); // Lamius - Use FastUUID
                  if ( file.exists() )
                  {
                      usingWrongFile = true;
@@ -433,7 +433,7 @@ index 8b113eac32c732d15cd5b146153c08cbf0e25fd6..ceca6c6e80981c08b3e863fc0082c648
                  CraftPlayer player = (CraftPlayer) entityhuman.getBukkitEntity();
                  // Only update first played if it is older than the one we have
 -                long modified = new File(this.playerDir, entityhuman.getUniqueID().toString() + ".dat").lastModified();
-+                long modified = new File(this.playerDir, com.eatthepath.uuid.FastUUID.toString(entityhuman.getUniqueID()) + ".dat").lastModified(); // Reaper - Use FastUUID
++                long modified = new File(this.playerDir, com.eatthepath.uuid.FastUUID.toString(entityhuman.getUniqueID()) + ".dat").lastModified(); // Lamius - Use FastUUID
                  if (modified < player.getFirstPlayed()) {
                      player.setFirstPlayed(modified);
                  }
@@ -446,7 +446,7 @@ index 62d27871e6594ec87437a42cc833427ed679a587..3172f8ea4ceeb825ee1a51698d41e5e2
          Map<String, Object> result = new LinkedHashMap<String, Object>();
  
 -        result.put("UUID", profile.getId().toString());
-+        result.put("UUID", com.eatthepath.uuid.FastUUID.toString(profile.getId())); // Reaper - Use FastUUID
++        result.put("UUID", com.eatthepath.uuid.FastUUID.toString(profile.getId())); // Lamius - Use FastUUID
  
          return result;
      }
@@ -455,13 +455,13 @@ index 62d27871e6594ec87437a42cc833427ed679a587..3172f8ea4ceeb825ee1a51698d41e5e2
          }
  
 -        return Bukkit.getServer().getOfflinePlayer(UUID.fromString((String) args.get("UUID")));
-+        return Bukkit.getServer().getOfflinePlayer(com.eatthepath.uuid.FastUUID.parseUUID((String) args.get("UUID"))); // Reaper - Use FastUUID
++        return Bukkit.getServer().getOfflinePlayer(com.eatthepath.uuid.FastUUID.parseUUID((String) args.get("UUID"))); // Lamius - Use FastUUID
      }
  
      @Override
      public String toString() {
 -        return getClass().getSimpleName() + "[UUID=" + profile.getId() + "]";
-+        return getClass().getSimpleName() + "[UUID=" + com.eatthepath.uuid.FastUUID.toString(profile.getId()) + "]"; // Reaper - Use FastUUID
++        return getClass().getSimpleName() + "[UUID=" + com.eatthepath.uuid.FastUUID.toString(profile.getId()) + "]"; // Lamius - Use FastUUID
      }
  
      public Player getPlayer() {
@@ -470,7 +470,7 @@ index 62d27871e6594ec87437a42cc833427ed679a587..3172f8ea4ceeb825ee1a51698d41e5e2
  
      private NBTTagCompound getData() {
 -        return storage.getPlayerData(getUniqueId().toString());
-+        return storage.getPlayerData(com.eatthepath.uuid.FastUUID.toString(getUniqueId())); // Reaper - Use FastUUID
++        return storage.getPlayerData(com.eatthepath.uuid.FastUUID.toString(getUniqueId())); // Lamius - Use FastUUID
      }
  
      private NBTTagCompound getBukkitData() {
@@ -479,7 +479,7 @@ index 62d27871e6594ec87437a42cc833427ed679a587..3172f8ea4ceeb825ee1a51698d41e5e2
  
      private File getDataFile() {
 -        return new File(storage.getPlayerDir(), getUniqueId() + ".dat");
-+        return new File(storage.getPlayerDir(), com.eatthepath.uuid.FastUUID.toString(getUniqueId()) + ".dat"); // Reaper - Use FastUUID
++        return new File(storage.getPlayerDir(), com.eatthepath.uuid.FastUUID.toString(getUniqueId()) + ".dat"); // Lamius - Use FastUUID
      }
  
      public long getFirstPlayed() {
@@ -492,7 +492,7 @@ index 56ef78618da942b9074e4bcd2222efd4a624b62f..afe3e23a0567a8c229fef78f27fa3c61
          for (String file : files) {
              try {
 -                players.add(getOfflinePlayer(UUID.fromString(file.substring(0, file.length() - 4))));
-+                players.add(getOfflinePlayer(com.eatthepath.uuid.FastUUID.parseUUID(file.substring(0, file.length() - 4)))); // Reaper - Use FastUUID
++                players.add(getOfflinePlayer(com.eatthepath.uuid.FastUUID.parseUUID(file.substring(0, file.length() - 4)))); // Lamius - Use FastUUID
              } catch (IllegalArgumentException ex) {
                  // Who knows what is in this directory, just ignore invalid files
              }
@@ -505,7 +505,7 @@ index 5bf8ef62aaaa4e646c55044b38d17bd32db53d4e..0d80f70151dfe4cb77d37f984cf4c095
                          lastSender = bSender;
                          try {
 -                            as[i] = entity.getUniqueID().toString();
-+                            as[i] = com.eatthepath.uuid.FastUUID.toString(entity.getUniqueID()); // Reaper - Use FastUUID
++                            as[i] = com.eatthepath.uuid.FastUUID.toString(entity.getUniqueID()); // Lamius - Use FastUUID
                              vanillaCommand.execute(server, icommandlistener, as);
                              j++;
                          } catch (ExceptionUsage exceptionusage) {
@@ -518,7 +518,7 @@ index 35c484f46c7d24d3b87339d9e31da38269fad0de..64abb5b555b2a4ecbe8fc7556df1c6b1
      @Override
      protected String disambiguate(Entity entity, String metadataKey) {
 -        return entity.getUniqueId().toString() + ":" + metadataKey;
-+        return com.eatthepath.uuid.FastUUID.toString(entity.getUniqueId()) + ":" + metadataKey; // Reaper - Use FastUUID
++        return com.eatthepath.uuid.FastUUID.toString(entity.getUniqueId()) + ":" + metadataKey; // Lamius - Use FastUUID
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/metadata/PlayerMetadataStore.java b/src/main/java/org/bukkit/craftbukkit/metadata/PlayerMetadataStore.java
@@ -530,7 +530,7 @@ index bac5c9e434cdf28ef67d24604a4a01be4ad0c57d..64caed64aea748b061b22ae16a5ae368
      @Override
      protected String disambiguate(OfflinePlayer player, String metadataKey) {
 -        return player.getUniqueId() + ":" + metadataKey;
-+        return com.eatthepath.uuid.FastUUID.toString(player.getUniqueId()) + ":" + metadataKey; // Reaper - Use FastUUID
++        return com.eatthepath.uuid.FastUUID.toString(player.getUniqueId()) + ":" + metadataKey; // Lamius - Use FastUUID
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/metadata/WorldMetadataStore.java b/src/main/java/org/bukkit/craftbukkit/metadata/WorldMetadataStore.java
@@ -542,7 +542,7 @@ index dd37ed29492d6f2fb65af9d5e5fce647c63b6081..9a99579d134e2fbd749d7e4ebe848af5
      @Override
      protected String disambiguate(World world, String metadataKey) {
 -        return world.getUID().toString() + ":" + metadataKey;
-+        return com.eatthepath.uuid.FastUUID.toString(world.getUID()) + ":" + metadataKey; // Reaper - Use FastUUID
++        return com.eatthepath.uuid.FastUUID.toString(world.getUID()) + ":" + metadataKey; // Lamius - Use FastUUID
      }
  }
 diff --git a/src/main/java/org/bukkit/craftbukkit/util/MojangNameLookup.java b/src/main/java/org/bukkit/craftbukkit/util/MojangNameLookup.java
@@ -553,8 +553,8 @@ index ed8159abce324ec5f205530e8ad02559d26d17bc..49c742f99537ad16265c27cc195c3aa9
  
          InputStream inputStream = null;
          try {
--            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + org.apache.commons.lang3.StringUtils.remove(id.toString(), '-')); // Reaper - Optimize
-+            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + org.apache.commons.lang3.StringUtils.remove(com.eatthepath.uuid.FastUUID.toString(id), '-')); // Reaper - Optimize // Reaper - Use FastUUID
+-            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + org.apache.commons.lang3.StringUtils.remove(id.toString(), '-')); // Lamius - Optimize
++            URL url = new URL("https://sessionserver.mojang.com/session/minecraft/profile/" + org.apache.commons.lang3.StringUtils.remove(com.eatthepath.uuid.FastUUID.toString(id), '-')); // Lamius - Optimize // Lamius - Use FastUUID
              URLConnection connection = url.openConnection();
              connection.setConnectTimeout(15000);
              connection.setReadTimeout(15000);

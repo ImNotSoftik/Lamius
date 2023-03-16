@@ -60,7 +60,7 @@ index 29a2e7e26da789cabaa0b58d0ccad8851df7e4a5..13091d1806b53165e20bc787c03d85c6
                          this.a((ChannelFuture) future);
                      }
 -                }, new GenericFutureListener[0]);
-+                }); // Reaper
++                }); // Lamius
              }
  
              this.networkManager.sendPacket(new PacketLoginOutSuccess(this.i));
@@ -72,12 +72,12 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
      public java.net.InetSocketAddress virtualHost;
      private static boolean enableExplicitFlush = Boolean.getBoolean("paper.explicit-flush");
      // Paper end
-+    // Reaper start - Optimize network
++    // Lamius start - Optimize network
 +    boolean isPending = true;
 +    EnumProtocol protocol;
-+    // Reaper end
++    // Lamius end
 +
-+    // Reaper start - allow controlled flushing
++    // Lamius start - allow controlled flushing
 +    volatile boolean canFlush = true;
 +    private final java.util.concurrent.atomic.AtomicInteger packetWrites = new java.util.concurrent.atomic.AtomicInteger();
 +    private int flushPacketsStart;
@@ -108,7 +108,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +            });
 +        }
 +    }
-+    // Reaper end - allow controlled flushing
++    // Lamius end - allow controlled flushing
  
      public NetworkManager(EnumProtocolDirection enumprotocoldirection) {
          this.h = enumprotocoldirection;
@@ -116,7 +116,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
      }
  
      public void setProtocol(EnumProtocol enumprotocol) {
-+        protocol = enumprotocol; // Reaper
++        protocol = enumprotocol; // Lamius
          this.channel.attr(NetworkManager.c).set(enumprotocol);
          this.channel.config().setAutoRead(true);
          NetworkManager.g.debug("Enabled auto read");
@@ -129,7 +129,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 -        if (this.isConnected()) {
 -            this.m();
 -            this.a(packet, (GenericFutureListener[]) null);
-+    // Reaper start
++    // Lamius start
 +    EntityPlayer getPlayer() {
 +        if (m instanceof PlayerConnection) {
 +            return ((PlayerConnection) m).player;
@@ -171,10 +171,10 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +                    packet instanceof PacketPlayOutBoss;
 +        }
 +    }
-+    // Reaper end
++    // Lamius end
  
 +    public void sendPacket(Packet<?> packet) {
-+        this.sendPacket(packet, (GenericFutureListener) null); // Reaper
++        this.sendPacket(packet, (GenericFutureListener) null); // Lamius
      }
  
 -    public void sendPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> genericfuturelistener, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
@@ -182,7 +182,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 -            this.m();
 -            this.a(packet, (GenericFutureListener[]) ArrayUtils.add(agenericfuturelistener, 0, genericfuturelistener));
 +    public void sendPacket(Packet<?> packet, @Nullable GenericFutureListener<? extends Future<? super Void>> genericfuturelistener) {
-+        // Reaper start - handle oversized packets better
++        // Lamius start - handle oversized packets better
 +        boolean connected = this.isConnected();
 +        if (!connected && !preparing) {
 +            return; // Do nothing
@@ -192,7 +192,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +                MinecraftServer.getServer().isMainThread() && packet.isReady() && this.i.isEmpty() &&
 +                        (packet.getExtraPackets() == null || packet.getExtraPackets().isEmpty())
 +        ))) {
-+            this.writePacket(packet, genericfuturelistener, null); // Reaper
++            this.writePacket(packet, genericfuturelistener, null); // Lamius
 +            return;
 +        }
 +        // write the packets to the queue, then flush - antixray hooks there already
@@ -219,14 +219,14 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +            this.i.addAll(packets); // atomic
 +        }
 +        this.sendPacketQueue();
-+        // Reaper end
++        // Lamius end
      }
  
 -    private void dispatchPacket(final Packet<?> packet, @Nullable final GenericFutureListener<? extends Future<? super Void>>[] genericFutureListeners) { this.a(packet, genericFutureListeners); } // Paper - OBFHELPER
 -    private void a(final Packet<?> packet, @Nullable final GenericFutureListener<? extends Future<? super Void>>[] agenericfuturelistener) {
-+    private void dispatchPacket(final Packet<?> packet, @Nullable final GenericFutureListener<? extends Future<? super Void>> genericFutureListener) { this.a(packet, genericFutureListener); } // Reaper - OBFHELPER
++    private void dispatchPacket(final Packet<?> packet, @Nullable final GenericFutureListener<? extends Future<? super Void>> genericFutureListener) { this.a(packet, genericFutureListener); } // Lamius - OBFHELPER
 +    private void a(final Packet<?> packet, @Nullable final GenericFutureListener<? extends Future<? super Void>> genericfuturelistener) {
-+        // Reaper start - add flush parameter
++        // Lamius start - add flush parameter
 +        this.writePacket(packet, genericfuturelistener, Boolean.TRUE);
 +    }
 +    private void writePacket(Packet<?> packet, @Nullable GenericFutureListener<? extends Future<? super Void>> agenericfuturelistener, Boolean flushConditional) {
@@ -240,80 +240,80 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
              this.channel.config().setAutoRead(false);
          }
  
-+        EntityPlayer player = getPlayer(); // Reaper
++        EntityPlayer player = getPlayer(); // Lamius
          if (this.channel.eventLoop().inEventLoop()) {
              if (enumprotocol != enumprotocol1) {
                  this.setProtocol(enumprotocol);
              }
 -
 -            ChannelFuture channelfuture = this.channel.writeAndFlush(packet);
-+            // Reaper start
++            // Lamius start
 +            if (!isConnected()) {
 +                packet.onPacketDispatchFinish(player, null);
 +                return;
 +            }
 +            try {
-+            ChannelFuture channelfuture = (flush) ? this.channel.writeAndFlush(packet) : this.channel.write(packet); // Reaper - add flush parameter
-+            // Reaper end
++            ChannelFuture channelfuture = (flush) ? this.channel.writeAndFlush(packet) : this.channel.write(packet); // Lamius - add flush parameter
++            // Lamius end
  
              if (agenericfuturelistener != null) {
 -                channelfuture.addListeners(agenericfuturelistener);
-+                channelfuture.addListener(agenericfuturelistener); // Reaper
++                channelfuture.addListener(agenericfuturelistener); // Lamius
 +            }
-+            // Reaper start
++            // Lamius start
 +            if (packet.hasFinishListener()) {
 +                channelfuture.addListener((ChannelFutureListener) channelFuture -> packet.onPacketDispatchFinish(player, channelFuture));
              }
-+            // Reaper end
++            // Lamius end
  
              channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-+            // Reaper start
++            // Lamius start
 +            } catch (Exception e) {
 +            g.error("NetworkException: " + player, e);
 +            close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
 +            packet.onPacketDispatchFinish(player, null);
 +            }
-+        // Reaper end
++        // Lamius end
          } else {
 -            this.channel.eventLoop().execute(new Runnable() {
 -                public void run() {
 -                    if (enumprotocol != enumprotocol1) {
 -                        NetworkManager.this.setProtocol(enumprotocol);
 -                    }
-+            // Reaper start
++            // Lamius start
 +            this.channel.eventLoop().execute((Runnable) () -> {
 +                if (enumprotocol != enumprotocol1) {
 +                    NetworkManager.this.setProtocol(enumprotocol);
 +                }
-+                // Reaper end
++                // Lamius end
  
 -                    ChannelFuture channelfuture = NetworkManager.this.channel.writeAndFlush(packet);
-+                // Reaper start
++                // Lamius start
 +                if (!isConnected()) {
 +                    packet.onPacketDispatchFinish(player, null);
 +                    return;
 +                }
 +                try {
-+                    // Reaper end
-+                    ChannelFuture channelfuture = (flush) ? NetworkManager.this.channel.writeAndFlush(packet) : this.channel.write(packet); // Reaper - add flush parameter
++                    // Lamius end
++                    ChannelFuture channelfuture = (flush) ? NetworkManager.this.channel.writeAndFlush(packet) : this.channel.write(packet); // Lamius - add flush parameter
  
                      if (agenericfuturelistener != null) {
 -                        channelfuture.addListeners(agenericfuturelistener);
-+                        channelfuture.addListener(agenericfuturelistener); // Reaper
++                        channelfuture.addListener(agenericfuturelistener); // Lamius
 +                    }
-+                    // Reaper start
++                    // Lamius start
 +                    if (packet.hasFinishListener()) {
 +                        channelfuture.addListener((ChannelFutureListener) channelFuture -> packet.onPacketDispatchFinish(player, channelFuture));
                      }
-+                    // Reaper end
++                    // Lamius end
  
                      channelfuture.addListener(ChannelFutureListener.FIRE_EXCEPTION_ON_FAILURE);
-+                    // Reaper start
++                    // Lamius start
 +                } catch (Exception e) {
 +                    g.error("NetworkException: " + player, e);
 +                    close(new ChatMessage("disconnect.genericReason", "Internal Exception: " + e.getMessage()));;
 +                    packet.onPacketDispatchFinish(player, null);
-+                    // Reaper end
++                    // Lamius end
                  }
              });
          }
@@ -328,7 +328,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 -            try {
 -                while (!this.i.isEmpty()) {
 -                    NetworkManager.QueuedPacket networkmanager_queuedpacket = (NetworkManager.QueuedPacket) this.i.poll();
-+    // Reaper start - rewrite this to be safer if ran off main thread
++    // Lamius start - rewrite this to be safer if ran off main thread
 +    private boolean sendPacketQueue() { return this.m(); } // OBFHELPER // void -> boolean
 +    private boolean m() { // void -> boolean
 +        if (!isConnected()) {
@@ -346,7 +346,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +    }
 +    private boolean processQueue() {
 +        if (this.i.isEmpty()) return true;
-+        final boolean needsFlush = this.canFlush; // Reaper - make only one flush call per sendPacketQueue() call
++        final boolean needsFlush = this.canFlush; // Lamius - make only one flush call per sendPacketQueue() call
 +        boolean hasWrotePacket = false;
 +        // If we are on main, we are safe here in that nothing else should be processing queue off main anymore
 +        // But if we are not on main due to login/status, the parent is synchronized on packetQueue
@@ -355,31 +355,31 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +            NetworkManager.QueuedPacket queued = iterator.next(); // poll -> peek
 +
 +            // Fix NPE (Spigot bug caused by handleDisconnection())
-+            if (false && queued == null) { // Reaper - diff on change, this logic is redundant: iterator guarantees ret of an element - on change, hook the flush logic here
++            if (false && queued == null) { // Lamius - diff on change, this logic is redundant: iterator guarantees ret of an element - on change, hook the flush logic here
 +                return true;
 +            }
  
 -                    this.a(networkmanager_queuedpacket.a, networkmanager_queuedpacket.b);
 +            Packet<?> packet = queued.getPacket();
 +            if (!packet.isReady()) {
-+                // Reaper start - make only one flush call per sendPacketQueue() call
++                // Lamius start - make only one flush call per sendPacketQueue() call
 +                if (hasWrotePacket && (needsFlush || this.canFlush)) {
 +                    this.flush();
                  }
 -            } finally {
 -                this.j.readLock().unlock();
-+                // Reaper end - make only one flush call per sendPacketQueue() call
++                // Lamius end - make only one flush call per sendPacketQueue() call
 +                return false;
 +            } else {
 +                iterator.remove();
-+                this.writePacket(packet, queued.getGenericFutureListener(), (!iterator.hasNext() && (needsFlush || this.canFlush)) ? Boolean.TRUE : Boolean.FALSE); // Reaper - make only one flush call per sendPacketQueue() call
-+                hasWrotePacket = true; // Reaper - make only one flush call per sendPacketQueue() call
++                this.writePacket(packet, queued.getGenericFutureListener(), (!iterator.hasNext() && (needsFlush || this.canFlush)) ? Boolean.TRUE : Boolean.FALSE); // Lamius - make only one flush call per sendPacketQueue() call
++                hasWrotePacket = true; // Lamius - make only one flush call per sendPacketQueue() call
              }
 -
          }
 +        return true;
      }
-+    // Reaper end
++    // Lamius end
  
      public void a() {
          this.m();
@@ -387,7 +387,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
          return this.l;
      }
  
-+    // Reaper start
++    // Lamius start
 +    public void clearPacketQueue() {
 +        EntityPlayer player = getPlayer();
 +        i.forEach(queuedPacket -> {
@@ -398,11 +398,11 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
 +        });
 +        i.clear();
 +    }
-+    // Reaper end
++    // Lamius end
      public void close(IChatBaseComponent ichatbasecomponent) {
          // Spigot Start
          this.preparing = false;
-+        clearPacketQueue(); // Reaper
++        clearPacketQueue(); // Lamius
          // Spigot End
          if (this.channel.isOpen()) {
              this.channel.close(); // We can't wait as this may be called from an event loop.
@@ -411,7 +411,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
          if (this.channel != null && !this.channel.isOpen()) {
              if (this.p) {
 -                NetworkManager.g.warn("handleDisconnection() called twice");
-+                // NetworkManager.LOGGER.warn("handleDisconnection() called twice"); // Reaper - Do not log useless message
++                // NetworkManager.LOGGER.warn("handleDisconnection() called twice"); // Lamius - Do not log useless message
              } else {
                  this.p = true;
                  if (this.j() != null) {
@@ -420,7 +420,7 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
                      this.i().a(new ChatMessage("multiplayer.disconnect.generic", new Object[0]));
                  }
 -                this.i.clear(); // Free up packet queue.
-+                clearPacketQueue(); // Reaper
++                clearPacketQueue(); // Lamius
              }
  
          }
@@ -430,8 +430,8 @@ index 1a03c3ff0810b9c43f3b7553e78cb92f28ea5773..4467c9edce2425a91c7f4428b879e364
  
 -        private final Packet<?> a;
 -        private final GenericFutureListener<? extends Future<? super Void>>[] b;
-+        private final Packet<?> a; final Packet<?> getPacket() { return this.a; } // Reaper - OBFHELPER
-+        private final GenericFutureListener<? extends Future<? super Void>> b; final GenericFutureListener<? extends Future<? super Void>> getGenericFutureListener() { return this.b; } // Reaper - OBFHELPER
++        private final Packet<?> a; final Packet<?> getPacket() { return this.a; } // Lamius - OBFHELPER
++        private final GenericFutureListener<? extends Future<? super Void>> b; final GenericFutureListener<? extends Future<? super Void>> getGenericFutureListener() { return this.b; } // Lamius - OBFHELPER
  
 -        public QueuedPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>>... agenericfuturelistener) {
 +        public QueuedPacket(Packet<?> packet, GenericFutureListener<? extends Future<? super Void>> agenericfuturelistener) {
@@ -470,7 +470,7 @@ index 331de13e0eace3dd9b8f1ff3cb92c18691bb2683..8930722e8ae5c0efd82c53c5865dac9a
                  PlayerConnection.this.networkManager.close(chatcomponenttext);
              }
 -        }, new GenericFutureListener[0]);
-+        }); // Reaper
++        }); // Lamius
          this.a(chatcomponenttext); // CraftBukkit - fire quit instantly
          this.networkManager.stopReading();
          // CraftBukkit - Don't wait
@@ -483,7 +483,7 @@ index 696760dfdca1610f36602c145dfc86cbca55d3c5..e9781c37cf3a35d0e0bfee17ede785ef
      private final List<NetworkManager> h = Collections.synchronizedList(Lists.newArrayList());
      // Paper start - prevent blocking on adding a new network manager while the server is ticking
 -    private final List<NetworkManager> pending = Collections.synchronizedList(Lists.<NetworkManager>newArrayList());
-+    // Reaper start
++    // Lamius start
 +    private final java.util.Queue<NetworkManager> pending = new java.util.concurrent.ConcurrentLinkedQueue<>();
 +    private static final boolean disableFlushConsolidation = Boolean.getBoolean("Paper.disableFlushConsolidate"); // Paper
      private void addPending() {
@@ -494,7 +494,7 @@ index 696760dfdca1610f36602c145dfc86cbca55d3c5..e9781c37cf3a35d0e0bfee17ede785ef
 +        while ((manager = pending.poll()) != null) {
 +            this.h.add(manager);
 +            manager.isPending = false;
-+            // Reaper end
++            // Lamius end
          }
      }
      // Paper end
@@ -503,7 +503,7 @@ index 696760dfdca1610f36602c145dfc86cbca55d3c5..e9781c37cf3a35d0e0bfee17ede785ef
                          ;
                      }
 -
-+                    if (!disableFlushConsolidation) channel.pipeline().addFirst(new io.netty.handler.flush.FlushConsolidationHandler()); // Reaper
++                    if (!disableFlushConsolidation) channel.pipeline().addFirst(new io.netty.handler.flush.FlushConsolidationHandler()); // Lamius
                      channel.pipeline().addLast("timeout", new ReadTimeoutHandler(30)).addLast("legacy_query", new LegacyPingHandler(ServerConnection.this)).addLast("splitter", new PacketSplitter()).addLast("decoder", new PacketDecoder(EnumProtocolDirection.SERVERBOUND)).addLast("prepender", new PacketPrepender()).addLast("encoder", new PacketEncoder(EnumProtocolDirection.CLIENTBOUND));
                      NetworkManager networkmanager = new NetworkManager(EnumProtocolDirection.SERVERBOUND);
  
@@ -512,7 +512,7 @@ index 696760dfdca1610f36602c145dfc86cbca55d3c5..e9781c37cf3a35d0e0bfee17ede785ef
                                      networkmanager.close(chatcomponenttext);
                                  }
 -                            }, new GenericFutureListener[0]);
-+                            }); // Reaper
++                            }); // Lamius
                              networkmanager.stopReading();
                          }
                      } else {

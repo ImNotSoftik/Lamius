@@ -13,7 +13,7 @@ index 6185213046b55695dcc4a265fa73d35b39450a51..58dc5ce8bbd5095b731f2fbd02272677
      }
  
      public void d(@Nullable EntityHuman entityhuman) {
-+        if (entityhuman == null) return; // Reaper - Don't trigger Lootable Refresh for non player interaction
++        if (entityhuman == null) return; // Lamius - Don't trigger Lootable Refresh for non player interaction
          if (lootableData.shouldReplenish(entityhuman)) { // Paper
              LootTable loottable = this.world.getLootTableRegistry().a(this.m);
  

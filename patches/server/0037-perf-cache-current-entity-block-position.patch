@@ -13,7 +13,7 @@ index c5b712f88e5a8a56e6cb78ddd0cbf69344950acc..f31d777a3c6a40b23bc3bde85a1820bc
                          double d11 = this.f.locZ - d8;
  
 -                        this.a.world.a((EntityHuman) null, 1017, new BlockPosition(this.a), 0);
-+                        this.a.world.a((EntityHuman) null, 1017, this.a.blockPos, 0); // Reaper - Cache current block pos
++                        this.a.world.a((EntityHuman) null, 1017, this.a.blockPos, 0); // Lamius - Cache current block pos
                          EntityDragonFireball entitydragonfireball = new EntityDragonFireball(this.a.world, this.a, d9, d10, d11);
  
                          entitydragonfireball.setPositionRotation(d6, d7, d8, 0.0F, 0.0F);
@@ -26,7 +26,7 @@ index 286069746a8eab03ca6ed06c626ec40ffd12cdb7..c37e3c743d845e4bdb3dc4f384baecab
  
              if (entity instanceof EntityEnderDragon) {
 -                ((EntityEnderDragon) entity).a(entityendercrystal, new BlockPosition(entityendercrystal), damagesource);
-+                ((EntityEnderDragon) entity).a(entityendercrystal, entityendercrystal.blockPos, damagesource); // Reaper - Cache current block pos
++                ((EntityEnderDragon) entity).a(entityendercrystal, entityendercrystal.blockPos, damagesource); // Lamius - Cache current block pos
              }
          }
  
@@ -38,15 +38,15 @@ index 4281ab1ba4da46a5a15b8609f735fd247a0c380b..35bc094758b8f1fcaa58356a0adb865b
      public float lastYaw;
      public float lastPitch;
      private AxisAlignedBB boundingBox;
-+    public BlockPosition blockPos; // Reaper - Cache current block pos
++    public BlockPosition blockPos; // Lamius - Cache current block pos
      public boolean onGround;
      public boolean positionChanged;
      public boolean B;
 @@ -200,10 +201,26 @@ public abstract class Entity implements ICommandListener, KeyedObject { // Paper
      private int lastLavaCheck = -1;
-     // Reaper end
+     // Lamius end
  
-+    // Reaper start - Cache current block pos
++    // Lamius start - Cache current block pos
 +    void resetBlockPos() {
 +        resetBlockPos(locX, locY, locZ);
 +    }
@@ -59,13 +59,13 @@ index 4281ab1ba4da46a5a15b8609f735fd247a0c380b..35bc094758b8f1fcaa58356a0adb865b
 +            this.blockPos = new BlockPosition(blockX, blockY, blockZ);
 +        }
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public Entity(World world) {
          this.id = Entity.entityCount++;
          this.passengers = Lists.newArrayList();
          this.boundingBox = Entity.c;
-+        this.blockPos = BlockPosition.ZERO; // Reaper - Cache current block pos
++        this.blockPos = BlockPosition.ZERO; // Lamius - Cache current block pos
          this.width = 0.6F;
          this.length = 1.8F;
          this.ax = 1;
@@ -73,7 +73,7 @@ index 4281ab1ba4da46a5a15b8609f735fd247a0c380b..35bc094758b8f1fcaa58356a0adb865b
          this.locZ = d2;
          float f = this.width / 2.0F;
          float f1 = this.length;
-+        resetBlockPos(d0, d1, d2); // Reaper - Cache current block pos
++        resetBlockPos(d0, d1, d2); // Lamius - Cache current block pos
  
          this.a(new AxisAlignedBB(d0 - (double) f, d1, d2 - (double) f, d0 + (double) f, d1 + (double) f1, d2 + (double) f));
          if (valid) world.entityJoinedWorld(this, false); // CraftBukkit
@@ -81,7 +81,7 @@ index 4281ab1ba4da46a5a15b8609f735fd247a0c380b..35bc094758b8f1fcaa58356a0adb865b
          this.locX = (axisalignedbb.a + axisalignedbb.d) / 2.0D;
          this.locY = axisalignedbb.b;
          this.locZ = (axisalignedbb.c + axisalignedbb.f) / 2.0D;
-+        resetBlockPos(); // Reaper - Cache current block pos
++        resetBlockPos(); // Lamius - Cache current block pos
          if (valid) world.entityJoinedWorld(this, false); // CraftBukkit
      }
  
@@ -93,7 +93,7 @@ index 57130ae2425c80d261d6bcdeab308789a5a2d6d9..6ca68349f241546c6e799fc04590b2ba
              this.locX -= this.motX / (double) f2 * 0.05000000074505806D;
              this.locY -= this.motY / (double) f2 * 0.05000000074505806D;
              this.locZ -= this.motZ / (double) f2 * 0.05000000074505806D;
-+            resetBlockPos(); // Reaper - Cache current block pos
++            resetBlockPos(); // Lamius - Cache current block pos
              this.a(SoundEffects.u, 1.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
              this.inGround = true;
              this.shake = 7;
@@ -106,7 +106,7 @@ index 30763d0706af76d488350a4a3cc47369d71a14f5..72efa158e1c0cbd62fecfd721c05413d
      protected void M() {
          super.M();
 -        BlockPosition blockposition = new BlockPosition(this);
-+        BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
          BlockPosition blockposition1 = blockposition.up();
  
          if (this.isAsleep()) {
@@ -119,7 +119,7 @@ index 8f00f772957c50661025e81a880add8d9225a6fc..ed124c113e830301fcf2e6c4f3ef7316
  
                  this.fallDistance = 0.0F;
 -            } else if (this.world.getType((new BlockPosition(this)).down()).getMaterial() != Material.WATER && d0 < 0.0D) {
-+            } else if (this.world.getType((this.blockPos).down()).getMaterial() != Material.WATER && d0 < 0.0D) { // Reaper - Cache current block pos
++            } else if (this.world.getType((this.blockPos).down()).getMaterial() != Material.WATER && d0 < 0.0D) { // Lamius - Cache current block pos
                  this.fallDistance = (float) ((double) this.fallDistance - d0);
              }
  
@@ -132,7 +132,7 @@ index 9659a45efaf24fe83f0cdc12860fe1c15bff9ed4..2cb70f749452d07b17377f2d32d25d1a
  
      public boolean df() {
 -        return this.f(new BlockPosition(this));
-+        return this.f(this.blockPos); // Reaper - Cache current block pos
++        return this.f(this.blockPos); // Lamius - Cache current block pos
      }
  
      public boolean f(BlockPosition blockposition) {
@@ -143,9 +143,9 @@ index 64e3ebaffa048b2c96814e41bd1a221c809a7f3d..98df73cd2249de533aa6642fd952d497
 @@ -41,7 +41,7 @@ public class EntityEnderCrystal extends Entity {
          this.lastZ = this.locZ;
          ++this.a;
-         if (true) { // Reaper - Remove isClientSide check
+         if (true) { // Lamius - Remove isClientSide check
 -            BlockPosition blockposition = new BlockPosition(this);
-+            BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
              if (this.world.worldProvider instanceof WorldProviderTheEnd && this.world.getType(blockposition).getBlock() != Blocks.FIRE) {
                  // CraftBukkit start
@@ -158,7 +158,7 @@ index 11b6ff496ac40b7a8e738eb5171bc70ebe1b433b..16017460bfd437c1db06fa754e090641
                      this.world.addEntity(new EntityItem(this.world, this.locX, this.locY, this.locZ, new ItemStack(Items.ENDER_EYE)));
                  } else {
 -                    this.world.triggerEffect(2003, new BlockPosition(this), 0);
-+                    this.world.triggerEffect(2003, this.blockPos, 0); // Reaper - Cache current block pos
++                    this.world.triggerEffect(2003, this.blockPos, 0); // Lamius - Cache current block pos
                  }
              }
          }
@@ -171,7 +171,7 @@ index 8472ec9c3884d980f9675a416b47b120a918dd2b..26f08a7be0a49313ce0596a26f65410e
              float f = this.aw();
  
 -            if (f > 0.5F && this.world.h(new BlockPosition(this)) && this.random.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && tryEscape(EndermanEscapeEvent.Reason.RUNAWAY)) { // Paper
-+            if (f > 0.5F && this.world.h(this.blockPos) && this.random.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && tryEscape(EndermanEscapeEvent.Reason.RUNAWAY)) { // Reaper - Cache current block pos // Paper
++            if (f > 0.5F && this.world.h(this.blockPos) && this.random.nextFloat() * 30.0F < (f - 0.4F) * 2.0F && tryEscape(EndermanEscapeEvent.Reason.RUNAWAY)) { // Lamius - Cache current block pos // Paper
                  this.setGoalTarget((EntityLiving) null);
                  this.dm();
              }
@@ -184,7 +184,7 @@ index 6515bd1b1e1271b575e5007bad5feffbae4c26e5..bb8c05dee84c5ee09d68fb7b0d3c9c04
          protected void j() {
              for (int i = 0; i < 3; ++i) {
 -                BlockPosition blockposition = (new BlockPosition(EntityEvoker.this)).a(-2 + EntityEvoker.this.random.nextInt(5), 1, -2 + EntityEvoker.this.random.nextInt(5));
-+                BlockPosition blockposition = (EntityEvoker.this.blockPos).a(-2 + EntityEvoker.this.random.nextInt(5), 1, -2 + EntityEvoker.this.random.nextInt(5)); // Reaper - Cache current block pos
++                BlockPosition blockposition = (EntityEvoker.this.blockPos).a(-2 + EntityEvoker.this.random.nextInt(5), 1, -2 + EntityEvoker.this.random.nextInt(5)); // Lamius - Cache current block pos
                  EntityVex entityvex = new EntityVex(EntityEvoker.this.world);
  
                  entityvex.setPositionRotation(blockposition, 0.0F, 0.0F);
@@ -197,7 +197,7 @@ index f3535466a55c397da936c9d1f0ea488ca0247038..a316e44b8d8b3017fc682b1acae19c3b
          }
  
 -        if (this.world.getType(new BlockPosition(this)).getMaterial() == Material.LAVA) {
-+        if (this.world.getType(this.blockPos).getMaterial() == Material.LAVA) { // Reaper - Cache current block pos
++        if (this.world.getType(this.blockPos).getMaterial() == Material.LAVA) { // Lamius - Cache current block pos
              this.motY = 0.20000000298023224D;
              this.motX = (double) ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
              this.motZ = (double) ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -210,7 +210,7 @@ index dcf84e6937bfe910539e51c269d80b50f1d52a04..dd1fe59e2dfcc07f4a4ab7a3574606a0
          this.lastY = d1;
          this.lastZ = d2;
 -        this.a(new BlockPosition(this));
-+        this.a(this.blockPos); // Reaper - Cache current block pos
++        this.a(this.blockPos); // Lamius - Cache current block pos
      }
  
      public boolean bd() {
@@ -219,16 +219,16 @@ index dcf84e6937bfe910539e51c269d80b50f1d52a04..dd1fe59e2dfcc07f4a4ab7a3574606a0
  
              if (this.ticksLived++ == 0) {
 -                blockposition = new BlockPosition(this);
-+                blockposition = this.blockPos; // Reaper - Cache current block pos
++                blockposition = this.blockPos; // Lamius - Cache current block pos
                  if (this.world.getType(blockposition).getBlock() == block && !CraftEventFactory.callEntityChangeBlockEvent(this, blockposition, Blocks.AIR, 0).isCancelled()) {
                      this.world.setAir(blockposition);
-                 } else if (true) { // Reaper - Remove isClientSide check
+                 } else if (true) { // Lamius - Remove isClientSide check
 @@ -97,7 +97,7 @@ public class EntityFallingBlock extends Entity {
              // Paper end
  
-             if (true) { // Reaper - Remove isClientSide check
+             if (true) { // Lamius - Remove isClientSide check
 -                blockposition = new BlockPosition(this);
-+                blockposition = this.blockPos; // Reaper - Cache current block pos
++                blockposition = this.blockPos; // Lamius - Cache current block pos
                  boolean flag = this.block.getBlock() == Blocks.dS;
                  boolean flag1 = flag && this.world.getType(blockposition).getMaterial() == Material.WATER;
                  double d0 = this.motX * this.motX + this.motY * this.motY + this.motZ * this.motZ;
@@ -240,8 +240,8 @@ index 4fcd71c5f9651c4e13a37480c9cd75725424ce3d..cba359bda87155897a13a0817996d5b2
      }
  
      public void B_() {
--        if (this.shooter != null && this.shooter.dead || !this.world.isLoaded(new BlockPosition(this))) { // Reaper - Remove isClientSide check
-+        if (this.shooter != null && this.shooter.dead || !this.world.isLoaded(this.blockPos)) { // Reaper - Remove isClientSide check // Reaper - Cache current block pos
+-        if (this.shooter != null && this.shooter.dead || !this.world.isLoaded(new BlockPosition(this))) { // Lamius - Remove isClientSide check
++        if (this.shooter != null && this.shooter.dead || !this.world.isLoaded(this.blockPos)) { // Lamius - Remove isClientSide check // Lamius - Cache current block pos
              this.die();
          } else {
              super.B_();
@@ -254,7 +254,7 @@ index 8ee041670aa6fde88b65ff7fff9e3a78fa87c5f7..c7b2b4bedd31e30dc0444ffbfd33aaa0
  
              float f = 0.0F;
 -            BlockPosition blockposition = new BlockPosition(this);
-+            BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
              IBlockData iblockdata = this.world.getType(blockposition);
  
              if (iblockdata.getMaterial() == Material.WATER) {
@@ -267,7 +267,7 @@ index 1173081b0137ce0859f86bf28c8dccdbeb00d9c9..c10bb48aca23c9d6e6497ee8326db103
                  ++this.a;
                  if (this.a == 10) {
 -                    world.a((EntityHuman) null, 1015, new BlockPosition(this.ghast), 0);
-+                    world.a((EntityHuman) null, 1015, this.ghast.blockPos, 0); // Reaper - Cache current block pos
++                    world.a((EntityHuman) null, 1015, this.ghast.blockPos, 0); // Lamius - Cache current block pos
                  }
  
                  if (this.a == 20) {
@@ -276,7 +276,7 @@ index 1173081b0137ce0859f86bf28c8dccdbeb00d9c9..c10bb48aca23c9d6e6497ee8326db103
                      double d4 = entityliving.locZ - (this.ghast.locZ + vec3d.z * 4.0D);
  
 -                    world.a((EntityHuman) null, 1016, new BlockPosition(this.ghast), 0);
-+                    world.a((EntityHuman) null, 1016, this.ghast.blockPos, 0); // Reaper - Cache current block pos
++                    world.a((EntityHuman) null, 1016, this.ghast.blockPos, 0); // Lamius - Cache current block pos
                      EntityLargeFireball entitylargefireball = new EntityLargeFireball(world, this.ghast, d2, d3, d4);
  
                      // CraftBukkit - set bukkitYield when setting explosionpower
@@ -284,7 +284,7 @@ index 1173081b0137ce0859f86bf28c8dccdbeb00d9c9..c10bb48aca23c9d6e6497ee8326db103
                      entitylargefireball.locX = this.ghast.locX + vec3d.x * 4.0D;
                      entitylargefireball.locY = this.ghast.locY + (double) (this.ghast.length / 2.0F) + 0.5D;
                      entitylargefireball.locZ = this.ghast.locZ + vec3d.z * 4.0D;
-+                    entitylargefireball.resetBlockPos(); // Reaper - Cache current block pos
++                    entitylargefireball.resetBlockPos(); // Lamius - Cache current block pos
                      world.addEntity(entitylargefireball);
                      this.a = -40;
                  }
@@ -297,7 +297,7 @@ index 2f718d48c0b05c0651d2ad1bc7f9d0c9c0c30187..34625178c9e1b4791a0a9220dfe8b60a
  
      public boolean P() {
 -        return (this.random.nextInt(20) == 0 || !this.world.i(new BlockPosition(this))) && super.P();
-+        return (this.random.nextInt(20) == 0 || !this.world.i(this.blockPos)) && super.P(); // Reaper - Cache current block pos
++        return (this.random.nextInt(20) == 0 || !this.world.i(this.blockPos)) && super.P(); // Lamius - Cache current block pos
      }
  
      public boolean damageEntity(DamageSource damagesource, float f) {
@@ -310,7 +310,7 @@ index 40b04730d34d31529f96ced1693ea05fa6734772..35e9e0758d798af442055b0caa3f835f
  
          if (!this.dj()) {
 -            this.a(new BlockPosition(this), 16);
-+            this.a(this.blockPos, 16); // Reaper - Cache current block pos
++            this.a(this.blockPos, 16); // Lamius - Cache current block pos
          }
  
      }
@@ -322,7 +322,7 @@ index db222d8a3004d0edb3fb865e105853f3d76154e6..cd5c5f37748eb7d93f5bfbfdb3aca643
              entity.locX = d0;
              entity.locY = d1;
              entity.locZ = d2;
-+            entity.resetBlockPos(); // Reaper - Cache current block pos
++            entity.resetBlockPos(); // Lamius - Cache current block pos
          }
          double d6 = (double) width;
          double d7 = (double) height;
@@ -331,7 +331,7 @@ index db222d8a3004d0edb3fb865e105853f3d76154e6..cd5c5f37748eb7d93f5bfbfdb3aca643
              if (!this.dead && !this.survives()) {
                  // CraftBukkit start - fire break events
 -                Material material = this.world.getType(new BlockPosition(this)).getMaterial();
-+                Material material = this.world.getType(this.blockPos).getMaterial(); // Reaper - Cache current block pos
++                Material material = this.world.getType(this.blockPos).getMaterial(); // Lamius - Cache current block pos
                  HangingBreakEvent.RemoveCause cause;
  
                  if (!material.equals(Material.AIR)) {
@@ -344,7 +344,7 @@ index 471580f01bb27fe0e4df55e12bce8a1f20ddab0c..16a9e06438cd6f499beba7bee37fcc87
          this.setScore(nbttagcompound.getInt("Score"));
          if (this.sleeping) {
 -            this.bedPosition = new BlockPosition(this);
-+            this.bedPosition = this.blockPos; // Reaper - Cache current block pos
++            this.bedPosition = this.blockPos; // Lamius - Cache current block pos
              this.a(true, true, false);
          }
  
@@ -357,7 +357,7 @@ index 6c90b11f8644f9b4f459bfb856913a4e6b89f1f0..1426acffe1af74563da5e12ba2ff7010
  
          public boolean a() {
 -            return !super.a() ? false : (EntityIllagerIllusioner.this.getGoalTarget() == null ? false : (EntityIllagerIllusioner.this.getGoalTarget().getId() == this.b ? false : EntityIllagerIllusioner.this.world.D(new BlockPosition(EntityIllagerIllusioner.this)).a((float) EnumDifficulty.NORMAL.ordinal())));
-+            return !super.a() ? false : (EntityIllagerIllusioner.this.getGoalTarget() == null ? false : (EntityIllagerIllusioner.this.getGoalTarget().getId() == this.b ? false : EntityIllagerIllusioner.this.world.D(EntityIllagerIllusioner.this.blockPos).a((float) EnumDifficulty.NORMAL.ordinal()))); // Reaper - Cache current block pos
++            return !super.a() ? false : (EntityIllagerIllusioner.this.getGoalTarget() == null ? false : (EntityIllagerIllusioner.this.getGoalTarget().getId() == this.b ? false : EntityIllagerIllusioner.this.world.D(EntityIllagerIllusioner.this.blockPos).a((float) EnumDifficulty.NORMAL.ordinal()))); // Lamius - Cache current block pos
          }
  
          public void c() {
@@ -370,7 +370,7 @@ index ac0fab568afee1da9c936d52510fe156ae5c2366..4faae5384f91a992b6aa2a6b7da69b7c
  
      public boolean P() {
 -        IBlockData iblockdata = this.world.getType((new BlockPosition(this)).down());
-+        IBlockData iblockdata = this.world.getType((this.blockPos).down()); // Reaper - Cache current block pos
++        IBlockData iblockdata = this.world.getType((this.blockPos).down()); // Lamius - Cache current block pos
  
          return iblockdata.a((Entity) this);
      }
@@ -383,7 +383,7 @@ index 3a27fd9273c4a22be83de7d9bb188d2aeb58ab32..cb696def76d8afd2269e84dcfb5e3e69
          if (--this.c <= 0) {
              this.c = 70 + this.random.nextInt(50);
 -            this.b = this.world.ak().getClosestVillage(new BlockPosition(this), 32);
-+            this.b = this.world.ak().getClosestVillage(this.blockPos, 32); // Reaper - Cache current block pos
++            this.b = this.world.ak().getClosestVillage(this.blockPos, 32); // Lamius - Cache current block pos
              if (this.b == null) {
                  this.di();
              } else {
@@ -396,7 +396,7 @@ index ee571529d5ac0359d7740ab04f3f44b1ecffd5b7..cff8f29b3bde3bfc16f8437000f11ab3
  
              if (flag || this.ticksLived % 25 == 0) {
 -                if (this.world.getType(new BlockPosition(this)).getMaterial() == Material.LAVA) {
-+                if (this.world.getType(this.blockPos).getMaterial() == Material.LAVA) { // Reaper - Cache current block pos
++                if (this.world.getType(this.blockPos).getMaterial() == Material.LAVA) { // Lamius - Cache current block pos
                      this.motY = 0.20000000298023224D;
                      this.motX = (double) ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
                      this.motZ = (double) ((this.random.nextFloat() - this.random.nextFloat()) * 0.2F);
@@ -408,7 +408,7 @@ index 41ce95f98e78afb64ddc684878a605760ddd6196..7c9ebe03c21ee2fa500410719fc5959b
          this.locX = (double) this.blockPosition.getX() + 0.5D;
          this.locY = (double) this.blockPosition.getY() + 0.5D;
          this.locZ = (double) this.blockPosition.getZ() + 0.5D;
-+        resetBlockPos(); // Reaper - Cache current block pos
++        resetBlockPos(); // Lamius - Cache current block pos
          if (valid) world.entityJoinedWorld(this, false); // CraftBukkit
      }
  
@@ -421,16 +421,16 @@ index 28fbbfd6a57345c01b3ca0db8d7ee39d6997cb23..427512dc52d93e8a63d1eecda5ff3b8c
          this.c = this.random.nextInt(3) + 1;
          this.d = flag;
 -        BlockPosition blockposition = new BlockPosition(this);
-+        BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
-         if (!flag && world.getGameRules().getBoolean("doFireTick") && (world.getDifficulty() == EnumDifficulty.NORMAL || world.getDifficulty() == EnumDifficulty.HARD) && world.areChunksLoaded(blockposition, 10)) { // Reaper - Remove isClientSide check
+         if (!flag && world.getGameRules().getBoolean("doFireTick") && (world.getDifficulty() == EnumDifficulty.NORMAL || world.getDifficulty() == EnumDifficulty.HARD) && world.areChunksLoaded(blockposition, 10)) { // Lamius - Remove isClientSide check
              if (world.getType(blockposition).getMaterial() == Material.AIR && Blocks.FIRE.canPlace(world, blockposition)) {
 @@ -92,7 +92,7 @@ public class EntityLightning extends EntityWeather {
                  this.lifeTicks = 1;
-                 if (!this.d) { // Reaper - Remove isClientSide check
+                 if (!this.d) { // Lamius - Remove isClientSide check
                      this.a = this.random.nextLong();
 -                    BlockPosition blockposition = new BlockPosition(this);
-+                    BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++                    BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
                      if (this.world.getGameRules().getBoolean("doFireTick") && this.world.areChunksLoaded(blockposition, 10) && this.world.getType(blockposition).getMaterial() == Material.AIR && Blocks.FIRE.canPlace(this.world, blockposition)) {
                          // CraftBukkit start - add "!isEffect"
@@ -441,9 +441,9 @@ index de0ae73fad05172778c8d7eb7ca59e6e77b229e5..b9886c68045c783c7ced0874411f0363
 @@ -265,7 +265,7 @@ public abstract class EntityLiving extends Entity {
              }
  
-             if (true) { // Reaper - Remove isClientSide check
+             if (true) { // Lamius - Remove isClientSide check
 -                BlockPosition blockposition = new BlockPosition(this);
-+                BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++                BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
                  if (!Objects.equal(this.bF, blockposition)) {
                      this.bF = blockposition;
@@ -451,12 +451,12 @@ index de0ae73fad05172778c8d7eb7ca59e6e77b229e5..b9886c68045c783c7ced0874411f0363
          this.locX = d0;
          this.locY = d1;
          this.locZ = d2;
-+        resetBlockPos(); // Reaper - Cache current block pos
++        resetBlockPos(); // Lamius - Cache current block pos
          boolean flag = false;
 -        BlockPosition blockposition = new BlockPosition(this);
-+        BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
          World world = this.world;
-         // Random random = this.getRandom(); // Reaper - Optimize
+         // Random random = this.getRandom(); // Lamius - Optimize
          boolean flag1;
 diff --git a/src/main/java/net/minecraft/server/EntityMinecartAbstract.java b/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
 index 68d010bd981252bee7ddb7706bb27602821fc4cc..0eadde0968e12bd5e2535363a0b412cf4a57f04e 100644
@@ -466,7 +466,7 @@ index 68d010bd981252bee7ddb7706bb27602821fc4cc..0eadde0968e12bd5e2535363a0b412cf
          this.locZ = d2;
          float f = this.width / 2.0F;
          float f1 = this.length;
-+        resetBlockPos(d0, d1, d2); // Reaper - Cache current block pos
++        resetBlockPos(d0, d1, d2); // Lamius - Cache current block pos
  
          this.a(new AxisAlignedBB(d0 - (double) f, d1, d2 - (double) f, d0 + (double) f, d1 + (double) f1, d2 + (double) f));
      }
@@ -477,9 +477,9 @@ index 56c460b1923fa8352b66f0c9fdadb096eec430ab..84143ff1f106e8916aee41aaac143b19
 @@ -78,7 +78,7 @@ public class EntityMinecartHopper extends EntityMinecartContainer implements IHo
      public void B_() {
          super.B_();
-         if (this.isAlive() && this.isEnabled()) { // Reaper - Remove isClientSide check
+         if (this.isAlive() && this.isEnabled()) { // Lamius - Remove isClientSide check
 -            BlockPosition blockposition = new BlockPosition(this);
-+            BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
              if (blockposition.equals(this.c)) {
                  --this.b;
@@ -492,7 +492,7 @@ index 5dd648e51ad9f7bdbf254ff39b69daf1acc6b51e..f76f3eaf906537433cea7c55b78046b2
  
          public BlockPosition b() {
 -            return new BlockPosition(EntityMinecartMobSpawner.this);
-+            return EntityMinecartMobSpawner.this.blockPos; // Reaper - Cache current block pos
++            return EntityMinecartMobSpawner.this.blockPos; // Lamius - Cache current block pos
          }
      };
  
@@ -505,7 +505,7 @@ index a0869d47f62555a6c348ab2e6a44d96d1f80b71a..0385d8ca8be264658a09e1dcf4fa70b0
              int i = potionregistry.c() ? 2007 : 2002;
  
 -            this.world.triggerEffect(i, new BlockPosition(this), PotionUtil.c(itemstack));
-+            this.world.triggerEffect(i, this.blockPos, PotionUtil.c(itemstack)); // Reaper - Cache current block pos
++            this.world.triggerEffect(i, this.blockPos, PotionUtil.c(itemstack)); // Lamius - Cache current block pos
              this.die();
          }
      }
@@ -518,7 +518,7 @@ index 2ab94c3c00b055531263cff5fefe32a54d24c810..e441f15c5b1421baba9ca6b1ad744538
  
      private int dw() {
 -        BiomeBase biomebase = this.world.getBiome(new BlockPosition(this));
-+        BiomeBase biomebase = this.world.getBiome(this.blockPos); // Reaper - Cache current block pos
++        BiomeBase biomebase = this.world.getBiome(this.blockPos); // Lamius - Cache current block pos
          int i = this.random.nextInt(100);
  
          return biomebase.p() ? (i < 80 ? 1 : 3) : (biomebase instanceof BiomeDesert ? 4 : (i < 50 ? 0 : (i < 90 ? 5 : 2)));
@@ -529,9 +529,9 @@ index 8776ca60b2b3a31138060336a8e12df5061363fe..cb3985d7604417f8ec6f9f6b2a0947cb
 @@ -141,7 +141,7 @@ public class EntityShulker extends EntityGolem implements IMonster {
          BlockPosition blockposition = (BlockPosition) ((Optional) this.datawatcher.get(EntityShulker.b)).orNull();
  
-         if (blockposition == null) { // Reaper - Remove isClientSide check
+         if (blockposition == null) { // Lamius - Remove isClientSide check
 -            blockposition = new BlockPosition(this);
-+            blockposition = this.blockPos; // Reaper - Cache current block pos
++            blockposition = this.blockPos; // Lamius - Cache current block pos
              this.datawatcher.set(EntityShulker.b, Optional.of(blockposition));
          }
  
@@ -539,7 +539,7 @@ index 8776ca60b2b3a31138060336a8e12df5061363fe..cb3985d7604417f8ec6f9f6b2a0947cb
              this.locX = (double) blockposition.getX() + 0.5D;
              this.locY = (double) blockposition.getY();
              this.locZ = (double) blockposition.getZ() + 0.5D;
-+            resetBlockPos(); // Reaper - Cache current block pos
++            resetBlockPos(); // Lamius - Cache current block pos
              if (valid) world.entityJoinedWorld(this, false); // CraftBukkit
              this.lastX = this.locX;
              this.lastY = this.locY;
@@ -548,7 +548,7 @@ index 8776ca60b2b3a31138060336a8e12df5061363fe..cb3985d7604417f8ec6f9f6b2a0947cb
      protected boolean p() {
          if (!this.isNoAI() && this.isAlive()) {
 -            BlockPosition blockposition = new BlockPosition(this);
-+            BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
              for (int i = 0; i < 5; ++i) {
                  BlockPosition blockposition1 = blockposition.a(8 - this.random.nextInt(17), 8 - this.random.nextInt(17), 8 - this.random.nextInt(17));
@@ -561,7 +561,7 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
          this(world);
          this.shooter = entityliving;
 -        BlockPosition blockposition = new BlockPosition(entityliving);
-+        BlockPosition blockposition = entityliving.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = entityliving.blockPos; // Lamius - Cache current block pos
          double d0 = (double) blockposition.getX() + 0.5D;
          double d1 = (double) blockposition.getY() + 0.5D;
          double d2 = (double) blockposition.getZ() + 0.5D;
@@ -570,7 +570,7 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
  
          if (this.shooter != null) {
 -            blockposition = new BlockPosition(this.shooter);
-+            blockposition = this.shooter.blockPos; // Reaper - Cache current block pos
++            blockposition = this.shooter.blockPos; // Lamius - Cache current block pos
              nbttagcompound1 = GameProfileSerializer.a(this.shooter.getUniqueID());
              nbttagcompound1.setInt("X", blockposition.getX());
              nbttagcompound1.setInt("Y", blockposition.getY());
@@ -579,7 +579,7 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
  
          if (this.target != null) {
 -            blockposition = new BlockPosition(this.target);
-+            blockposition = this.target.blockPos; // Reaper - Cache current block pos
++            blockposition = this.target.blockPos; // Lamius - Cache current block pos
              nbttagcompound1 = GameProfileSerializer.a(this.target.getUniqueID());
              nbttagcompound1.setInt("X", blockposition.getX());
              nbttagcompound1.setInt("Y", blockposition.getY());
@@ -588,7 +588,7 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
  
          if (this.target == null) {
 -            blockposition = (new BlockPosition(this)).down();
-+            blockposition = this.blockPos.down(); // Reaper - Cache current block pos
++            blockposition = this.blockPos.down(); // Lamius - Cache current block pos
          } else {
              d0 = (double) this.target.length * 0.5D;
              blockposition = new BlockPosition(this.target.locX, this.target.locY + d0, this.target.locZ);
@@ -597,7 +597,7 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
  
          if (blockposition.g(this.locX, this.locY, this.locZ) >= 4.0D) {
 -            BlockPosition blockposition1 = new BlockPosition(this);
-+            BlockPosition blockposition1 = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition1 = this.blockPos; // Lamius - Cache current block pos
              ArrayList arraylist = Lists.newArrayList();
  
              if (enumdirection_enumaxis != EnumDirection.EnumAxis.X) {
@@ -606,14 +606,14 @@ index b90bf20b6a61913790d5b4c1c377b2f11212687f..72f8f69ee21f8ac3130bd4eb16edb45c
  
                  if (this.c != null) {
 -                    BlockPosition blockposition = new BlockPosition(this);
-+                    BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++                    BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
                      EnumDirection.EnumAxis enumdirection_enumaxis = this.c.k();
  
                      if (this.world.d(blockposition.shift(this.c), false)) {
                          this.a(enumdirection_enumaxis);
                      } else {
 -                        BlockPosition blockposition1 = new BlockPosition(this.target);
-+                        BlockPosition blockposition1 = this.target.blockPos; // Reaper - Cache current block pos
++                        BlockPosition blockposition1 = this.target.blockPos; // Lamius - Cache current block pos
  
                          if (enumdirection_enumaxis == EnumDirection.EnumAxis.X && blockposition.getX() == blockposition1.getX() || enumdirection_enumaxis == EnumDirection.EnumAxis.Z && blockposition.getZ() == blockposition1.getZ() || enumdirection_enumaxis == EnumDirection.EnumAxis.Y && blockposition.getY() == blockposition1.getY()) {
                              this.a(enumdirection_enumaxis);
@@ -626,7 +626,7 @@ index 57552c522179a146c026b7863c236be43563ec85..de00d67e6987ee85105a485b9f302ef0
                  World world = this.silverfish.world;
                  Random random = this.silverfish.getRandom();
 -                BlockPosition blockposition = new BlockPosition(this.silverfish);
-+                BlockPosition blockposition = this.silverfish.blockPos; // Reaper - Cache current block pos
++                BlockPosition blockposition = this.silverfish.blockPos; // Lamius - Cache current block pos
  
                  for (int i = 0; i <= 5 && i >= -5; i = (i <= 0 ? 1 : 0) - i) {
                      for (int j = 0; j <= 10 && j >= -10; j = (j <= 0 ? 1 : 0) - j) {
@@ -639,7 +639,7 @@ index 54ef44210078c50aa86917e91e058ceee1186581..6b4c5ecf324a2fca6e82ccda189bedcf
  
      public boolean P() {
 -        return super.P() && this.world.h(new BlockPosition(this));
-+        return super.P() && this.world.h(this.blockPos); // Reaper - Cache current block pos
++        return super.P() && this.world.h(this.blockPos); // Lamius - Cache current block pos
      }
  
      @Nullable
@@ -652,7 +652,7 @@ index 767b74bd6e21e5585ca77ca193ab58e06e7c24a4..552d365ef53911b673691d63c2cc0556
                  BiomeBase biomebase = this.world.getBiome(blockposition);
  
 -                if (biomebase == Biomes.h && this.locY > 50.0D && this.locY < 70.0D && this.random.nextFloat() < 0.5F && this.random.nextFloat() < this.world.G() && this.world.getLightLevel(new BlockPosition(this)) <= this.random.nextInt(8)) {
-+                if (biomebase == Biomes.h && this.locY > 50.0D && this.locY < 70.0D && this.random.nextFloat() < 0.5F && this.random.nextFloat() < this.world.G() && this.world.getLightLevel(this.blockPos) <= this.random.nextInt(8)) { // Reaper - Cache current block pos
++                if (biomebase == Biomes.h && this.locY > 50.0D && this.locY < 70.0D && this.random.nextFloat() < 0.5F && this.random.nextFloat() < this.world.G() && this.world.getLightLevel(this.blockPos) <= this.random.nextInt(8)) { // Lamius - Cache current block pos
                      return super.P();
                  }
                  boolean isSlimeChunk = world.paperConfig.allChunksAreSlimeChunks || chunk.a(world.spigotConfig.slimeSeed).nextInt(10) == 0; // Spigot // Paper
@@ -665,7 +665,7 @@ index 4a49ea52bc3942119fd7eb615ade255558cb6f2f..297046827abe807d4e6043414df3817a
              i = event.getExperience();
              if (event.getShowEffect()) {
 -                this.world.triggerEffect(2002, new BlockPosition(this), PotionUtil.a(Potions.b));
-+                this.world.triggerEffect(2002, this.blockPos, PotionUtil.a(Potions.b)); // Reaper - Cache current block pos
++                this.world.triggerEffect(2002, this.blockPos, PotionUtil.a(Potions.b)); // Lamius - Cache current block pos
              }
              // CraftBukkit end
  
@@ -678,7 +678,7 @@ index 30b6a91144eedc09369f437e4ffc10ad0653b64e..d7fbfad3e64cf043dd5c17474c095988
  
                          if (entityhuman.isSleeping()) {
 -                            entityplayer.playerConnection.sendPacket(new PacketPlayOutBed(entityhuman, new BlockPosition(this.tracker)));
-+                            entityplayer.playerConnection.sendPacket(new PacketPlayOutBed(entityhuman, this.tracker.blockPos)); // Reaper - Cache current block pos
++                            entityplayer.playerConnection.sendPacket(new PacketPlayOutBed(entityhuman, this.tracker.blockPos)); // Lamius - Cache current block pos
                          }
                      }
  
@@ -691,7 +691,7 @@ index 673c3ff3c60724da8bef377a92dc45a9622d8ece..9450d7446bb3514e2b7237ebd353d600
  
              if (blockposition == null) {
 -                blockposition = new BlockPosition(EntityVex.this);
-+                blockposition = EntityVex.this.blockPos; // Reaper - Cache current block pos
++                blockposition = EntityVex.this.blockPos; // Lamius - Cache current block pos
              }
  
              for (int i = 0; i < 3; ++i) {
@@ -704,7 +704,7 @@ index 9781b129ff692e47b2b16331eb5fc3aca8a2660c..96c9fcacf5b3a1302099a40359724da8
      protected void M() {
          if (--this.profession <= 0) {
 -            BlockPosition blockposition = new BlockPosition(this);
-+            BlockPosition blockposition = this.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.blockPos; // Lamius - Cache current block pos
  
              this.world.ak().a(blockposition);
              this.profession = 70 + this.random.nextInt(50);
@@ -713,7 +713,7 @@ index 9781b129ff692e47b2b16331eb5fc3aca8a2660c..96c9fcacf5b3a1302099a40359724da8
  
      public BlockPosition v_() {
 -        return new BlockPosition(this);
-+        return this.blockPos; // Reaper - Cache current block pos
++        return this.blockPos; // Lamius - Cache current block pos
      }
  
      public IChatBaseComponent getScoreboardDisplayName() {
@@ -722,7 +722,7 @@ index 9781b129ff692e47b2b16331eb5fc3aca8a2660c..96c9fcacf5b3a1302099a40359724da8
          EntityVillager entityvillager = new EntityVillager(this.world);
  
 -        entityvillager.prepare(this.world.D(new BlockPosition(entityvillager)), (GroupDataEntity) null);
-+        entityvillager.prepare(this.world.D(entityvillager.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++        entityvillager.prepare(this.world.D(entityvillager.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
          return entityvillager;
      }
  
@@ -731,7 +731,7 @@ index 9781b129ff692e47b2b16331eb5fc3aca8a2660c..96c9fcacf5b3a1302099a40359724da8
  
              entitywitch.setPositionRotation(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
 -            entitywitch.prepare(this.world.D(new BlockPosition(entitywitch)), (GroupDataEntity) null);
-+            entitywitch.prepare(this.world.D(entitywitch.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++            entitywitch.prepare(this.world.D(entitywitch.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
              entitywitch.setNoAI(this.isNoAI());
              if (this.hasCustomName()) {
                  entitywitch.setCustomName(this.getCustomName());
@@ -744,7 +744,7 @@ index 79967dc687d770d78db36a735b91147469441798..934019251db1dade3317c2464035d462
  
                      if (flag) {
 -                        this.world.a((EntityHuman) null, 1022, new BlockPosition(this), 0);
-+                        this.world.a((EntityHuman) null, 1022, this.blockPos, 0); // Reaper - Cache current block pos
++                        this.world.a((EntityHuman) null, 1022, this.blockPos, 0); // Lamius - Cache current block pos
                      }
                  }
              }
@@ -753,7 +753,7 @@ index 79967dc687d770d78db36a735b91147469441798..934019251db1dade3317c2464035d462
  
      private void a(int i, double d0, double d1, double d2, boolean flag) {
 -        this.world.a((EntityHuman) null, 1024, new BlockPosition(this), 0);
-+        this.world.a(null, 1024, this.blockPos, 0); // Reaper - Cache current block pos
++        this.world.a(null, 1024, this.blockPos, 0); // Lamius - Cache current block pos
          double d3 = this.n(i);
          double d4 = this.o(i);
          double d5 = this.p(i);
@@ -761,7 +761,7 @@ index 79967dc687d770d78db36a735b91147469441798..934019251db1dade3317c2464035d462
          entitywitherskull.locY = d4;
          entitywitherskull.locX = d3;
          entitywitherskull.locZ = d5;
-+        resetBlockPos(); // Reaper - Cache current block pos
++        resetBlockPos(); // Lamius - Cache current block pos
          this.world.addEntity(entitywitherskull);
      }
  
@@ -774,7 +774,7 @@ index 9805999042b2c6dd5a9876156ce14a83a2875a55..9d9b58def1f8aa1679ae9e3804113b21
                              this.world.addEntity(entityzombie, CreatureSpawnEvent.SpawnReason.REINFORCEMENTS); // CraftBukkit
                              entityzombie.setGoalTarget(entityliving, EntityTargetEvent.TargetReason.REINFORCEMENT_TARGET, true);
 -                            entityzombie.prepare(this.world.D(new BlockPosition(entityzombie)), (GroupDataEntity) null);
-+                            entityzombie.prepare(this.world.D(entityzombie.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++                            entityzombie.prepare(this.world.D(entityzombie.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
                              this.getAttributeInstance(EntityZombie.a).b(new AttributeModifier("Zombie reinforcement caller charge", -0.05000000074505806D, 0));
                              entityzombie.getAttributeInstance(EntityZombie.a).b(new AttributeModifier("Zombie reinforcement callee charge", -0.05000000074505806D, 0));
                              break;
@@ -783,7 +783,7 @@ index 9805999042b2c6dd5a9876156ce14a83a2875a55..9d9b58def1f8aa1679ae9e3804113b21
  
          if (flag) {
 -            float f = this.world.D(new BlockPosition(this)).b();
-+            float f = this.world.D(this.blockPos).b(); // Reaper - Cache current block pos
++            float f = this.world.D(this.blockPos).b(); // Lamius - Cache current block pos
  
              if (this.getItemInMainHand().isEmpty() && this.isBurning() && this.random.nextFloat() < f * 0.3F) {
                  // CraftBukkit start
@@ -792,7 +792,7 @@ index 9805999042b2c6dd5a9876156ce14a83a2875a55..9d9b58def1f8aa1679ae9e3804113b21
              entityzombievillager.u(entityvillager);
              this.world.kill(entityvillager);
 -            entityzombievillager.prepare(this.world.D(new BlockPosition(entityzombievillager)), new EntityZombie.GroupDataZombie(false, null));
-+            entityzombievillager.prepare(this.world.D(entityzombievillager.blockPos), new EntityZombie.GroupDataZombie(false, null)); // Reaper - Cache current block pos
++            entityzombievillager.prepare(this.world.D(entityzombievillager.blockPos), new EntityZombie.GroupDataZombie(false, null)); // Lamius - Cache current block pos
              entityzombievillager.setProfession(entityvillager.getProfession());
              entityzombievillager.setBaby(entityvillager.isBaby());
              entityzombievillager.setNoAI(entityvillager.isNoAI());
@@ -801,7 +801,7 @@ index 9805999042b2c6dd5a9876156ce14a83a2875a55..9d9b58def1f8aa1679ae9e3804113b21
  
              this.world.addEntity(entityzombievillager, CreatureSpawnEvent.SpawnReason.INFECTION); // CraftBukkit - add SpawnReason
 -            this.world.a((EntityHuman) null, 1026, new BlockPosition(this), 0);
-+            this.world.a((EntityHuman) null, 1026, this.blockPos, 0); // Reaper - Cache current block pos
++            this.world.a((EntityHuman) null, 1026, this.blockPos, 0); // Lamius - Cache current block pos
          }
  
      }
@@ -814,7 +814,7 @@ index 5dda2c4936e98bfa1b6f4a69a25e7422101e4197..49643b37a545eff3243c5644e30e7d39
  
      public boolean P() {
 -        return super.P() && this.world.h(new BlockPosition(this));
-+        return super.P() && this.world.h(this.blockPos); // Reaper - Cache current block pos
++        return super.P() && this.world.h(this.blockPos); // Lamius - Cache current block pos
      }
  
      protected boolean p() {
@@ -823,7 +823,7 @@ index 5dda2c4936e98bfa1b6f4a69a25e7422101e4197..49643b37a545eff3243c5644e30e7d39
  
          if (flag && this.getItemInMainHand().isEmpty() && entity instanceof EntityLiving) {
 -            float f = this.world.D(new BlockPosition(this)).b();
-+            float f = this.world.D(this.blockPos).b(); // Reaper - Cache current block pos
++            float f = this.world.D(this.blockPos).b(); // Lamius - Cache current block pos
  
              ((EntityLiving) entity).addEffect(new MobEffect(MobEffects.HUNGER, 140 * (int) f));
          }
@@ -836,7 +836,7 @@ index 1b919680db980a637531530294fcdde4643379db..6e8ae6458e5894b3a6cabe3ff1226ca1
          entityvillager.u(this);
          entityvillager.setProfession(this.getProfession());
 -        entityvillager.a(this.world.D(new BlockPosition(entityvillager)), (GroupDataEntity) null, false);
-+        entityvillager.a(this.world.D(entityvillager.blockPos), (GroupDataEntity) null, false); // Reaper - Cache current block pos
++        entityvillager.a(this.world.D(entityvillager.blockPos), (GroupDataEntity) null, false); // Lamius - Cache current block pos
          entityvillager.dp();
          if (this.isBaby()) {
              entityvillager.setAgeRaw(-24000);
@@ -847,9 +847,9 @@ index c3a899aa09939202dc1bd97de2e38cd7c21d7e40..34de6c739336f3534c8f8f6a20ff0484
 @@ -62,7 +62,7 @@ public class ItemEnderEye extends Item {
          } else {
              entityhuman.c(enumhand);
-             if (true) { // Reaper - Remove isClientSide check
+             if (true) { // Lamius - Remove isClientSide check
 -                BlockPosition blockposition = ((WorldServer) world).getChunkProviderServer().a(world, "Stronghold", new BlockPosition(entityhuman), false);
-+                BlockPosition blockposition = ((WorldServer) world).getChunkProviderServer().a(world, "Stronghold", entityhuman.blockPos, false); // Reaper - Cache current block pos
++                BlockPosition blockposition = ((WorldServer) world).getChunkProviderServer().a(world, "Stronghold", entityhuman.blockPos, false); // Lamius - Cache current block pos
  
                  if (blockposition != null) {
                      EntityEnderSignal entityendersignal = new EntityEnderSignal(world, entityhuman.locX, entityhuman.locY + (double) (entityhuman.length / 2.0F), entityhuman.locZ);
@@ -858,7 +858,7 @@ index c3a899aa09939202dc1bd97de2e38cd7c21d7e40..34de6c739336f3534c8f8f6a20ff0484
  
                      world.a((EntityHuman) null, entityhuman.locX, entityhuman.locY, entityhuman.locZ, SoundEffects.bc, SoundCategory.NEUTRAL, 0.5F, 0.4F / (ItemEnderEye.j.nextFloat() * 0.4F + 0.8F));
 -                    world.a((EntityHuman) null, 1003, new BlockPosition(entityhuman), 0);
-+                    world.a((EntityHuman) null, 1003, entityhuman.blockPos, 0); // Reaper - Cache current block pos
++                    world.a((EntityHuman) null, 1003, entityhuman.blockPos, 0); // Lamius - Cache current block pos
                      if (!entityhuman.abilities.canInstantlyBuild) {
                          itemstack.subtract(1);
                      }
@@ -871,7 +871,7 @@ index a39c91f8ccc3f4904ced77109b744b14fb0c0e1a..75ac04e2ba43ef68776f80455f5203e3
                      entityinsentient.aP = entityinsentient.yaw;
                      entityinsentient.aN = entityinsentient.yaw;
 -                    entityinsentient.prepare(world.D(new BlockPosition(entityinsentient)), (GroupDataEntity) null);
-+                    entityinsentient.prepare(world.D(entityinsentient.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++                    entityinsentient.prepare(world.D(entityinsentient.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
                      // CraftBukkit start - don't return an entity when CreatureSpawnEvent is canceled
                      if (!world.addEntity(entity, spawnReason)) {
                          entity = null;
@@ -884,7 +884,7 @@ index ba84d528604941bfb9a91a39b1bb9caac29c4b6e..f7619e78f649ee113e7a1c5099e074e7
                      if (entityinsentient == null || entityinsentient.P() && entityinsentient.canSpawn()) {
                          if (this.spawnData.b().d() == 1 && this.spawnData.b().hasKeyOfType("id", 8) && entity instanceof EntityInsentient) {
 -                            ((EntityInsentient) entity).prepare(world.D(new BlockPosition(entity)), (GroupDataEntity) null);
-+                            ((EntityInsentient) entity).prepare(world.D(entity.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++                            ((EntityInsentient) entity).prepare(world.D(entity.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
                          }
                          entity.spawnedViaMobSpawner = true; // Paper
                          // Spigot Start
@@ -897,7 +897,7 @@ index 21ec7abe89a3ab09c3aee0c469ac753a50e74e08..426ab596055884cacd6579ce225075d4
  
      public PathEntity a(Entity entity) {
 -        return this.b(new BlockPosition(entity));
-+        return this.b(entity.blockPos); // Reaper - Cache current block pos
++        return this.b(entity.blockPos); // Lamius - Cache current block pos
      }
  
      private int s() {
@@ -908,9 +908,9 @@ index f614126c8db0d152449b7b2bf18fd57a9ebff4da..5f9460842a9f43ad536aeb2307112b71
 @@ -80,7 +80,7 @@ public abstract class NavigationAbstract {
              float f = this.i();
  
-             // this.b.methodProfiler.a("pathfind"); // Reaper - Remove MethodProfiler
+             // this.b.methodProfiler.a("pathfind"); // Lamius - Remove MethodProfiler
 -            BlockPosition blockposition1 = new BlockPosition(this.a);
-+            BlockPosition blockposition1 = this.a.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition1 = this.a.blockPos; // Lamius - Cache current block pos
              int i = (int) (f + 8.0F);
              ChunkCache chunkcache = new ChunkCache(this.b, blockposition1.a(-i, -i, -i), blockposition1.a(i, i, i), 0);
              PathEntity pathentity = this.r.a(chunkcache, this.a, this.q, f);
@@ -919,16 +919,16 @@ index f614126c8db0d152449b7b2bf18fd57a9ebff4da..5f9460842a9f43ad536aeb2307112b71
              return null;
          } else {
 -            BlockPosition blockposition = new BlockPosition(entity);
-+            BlockPosition blockposition = entity.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = entity.blockPos; // Lamius - Cache current block pos
              if (!getEntity().getWorld().getWorldBorder().isInBounds(blockposition)) return null; // Paper - don't path out of world border
  
              if (this.c != null && !this.c.b() && blockposition.equals(this.q)) {
 @@ -106,7 +106,7 @@ public abstract class NavigationAbstract {
                  float f = this.i();
  
-                 // this.b.methodProfiler.a("pathfind"); // Reaper - Remove MethodProfiler
+                 // this.b.methodProfiler.a("pathfind"); // Lamius - Remove MethodProfiler
 -                BlockPosition blockposition1 = (new BlockPosition(this.a)).up();
-+                BlockPosition blockposition1 = (this.a.blockPos).up(); // Reaper - Cache current block pos
++                BlockPosition blockposition1 = (this.a.blockPos).up(); // Lamius - Cache current block pos
                  int i = (int) (f + 16.0F);
                  ChunkCache chunkcache = new ChunkCache(this.b, blockposition1.a(-i, -i, -i), blockposition1.a(i, i, i), 0);
                  PathEntity pathentity = this.r.a(chunkcache, this.a, entity, f);
@@ -941,7 +941,7 @@ index da58f3f68dd926a5ffd2b6f7e0a75392916afa08..3cad773f49e3e7e39342cb5dd3e763e5
  
      public PathEntity a(Entity entity) {
 -        return this.b(new BlockPosition(entity));
-+        return this.b(entity.blockPos); // Reaper - Cache current block pos
++        return this.b(entity.blockPos); // Lamius - Cache current block pos
      }
  
      public void d() {
@@ -954,7 +954,7 @@ index e654bb902b4770319ac35faf6293b9663e4ecf0a..77af80b6766bd1f3712836624fefab42
  
      public PathEntity a(Entity entity) {
 -        this.i = new BlockPosition(entity);
-+        this.i = entity.blockPos; // Reaper - Cache current block pos
++        this.i = entity.blockPos; // Lamius - Cache current block pos
          return super.a(entity);
      }
  
@@ -963,7 +963,7 @@ index e654bb902b4770319ac35faf6293b9663e4ecf0a..77af80b6766bd1f3712836624fefab42
              return this.a(pathentity, d0);
          } else {
 -            this.i = new BlockPosition(entity);
-+            this.i = entity.blockPos; // Reaper - Cache current block pos
++            this.i = entity.blockPos; // Lamius - Cache current block pos
              this.d = d0;
              return true;
          }
@@ -976,7 +976,7 @@ index c94e960d7ff5e0b49fa84a45e08a341d42b0fc20..65ddaed02822eee7d1bd3596bd07c418
          }
  
 -        BlockPosition blockposition = new BlockPosition(this.b);
-+        BlockPosition blockposition = this.b.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.b.blockPos; // Lamius - Cache current block pos
          PathType pathtype = this.a(this.b, blockposition.getX(), i, blockposition.getZ());
  
          if (this.b.a(pathtype) < 0.0F) {
@@ -985,7 +985,7 @@ index c94e960d7ff5e0b49fa84a45e08a341d42b0fc20..65ddaed02822eee7d1bd3596bd07c418
          EnumSet enumset = EnumSet.noneOf(PathType.class);
          PathType pathtype = PathType.BLOCKED;
 -        BlockPosition blockposition = new BlockPosition(entityinsentient);
-+        BlockPosition blockposition = entityinsentient.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = entityinsentient.blockPos; // Lamius - Cache current block pos
  
          pathtype = this.a(iblockaccess, i, j, k, l, i1, j1, flag, flag1, enumset, pathtype, blockposition);
          if (enumset.contains(PathType.FENCE)) {
@@ -998,7 +998,7 @@ index 4ba48c119352dceff5665686b97a3ef0ebcb8553..0044a83aea398b82315cfd06ac753d60
                  }
  
 -                this.b = (new BlockPosition(this.a)).up();
-+                this.b = this.a.blockPos.up(); // Reaper - Cache current block pos
++                this.b = this.a.blockPos.up(); // Lamius - Cache current block pos
                  this.c = this.a(this.b);
                  return this.c != null;
              } else {
@@ -1011,7 +1011,7 @@ index e3781f3a8b8de6885445fac7f46d640a1b912b9e..e239703e5b2ac457bc946ea35f42998e
          int i = this.h;
          boolean flag = true;
 -        BlockPosition blockposition = new BlockPosition(this.c);
-+        BlockPosition blockposition = this.c.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.c.blockPos; // Lamius - Cache current block pos
  
          for (int j = 0; j <= 1; j = j > 0 ? -j : 1 - j) {
              for (int k = 0; k < i; ++k) {
@@ -1024,7 +1024,7 @@ index cfe493307f9ecd18c5a9f1cee3ff7112d5c2a59d..7d051691ab5297a504acf9a428dc9390
  
      public void e() {
 -        DifficultyDamageScaler difficultydamagescaler = this.a.world.D(new BlockPosition(this.a));
-+        DifficultyDamageScaler difficultydamagescaler = this.a.world.D(this.a.blockPos); // Reaper - Cache current block pos
++        DifficultyDamageScaler difficultydamagescaler = this.a.world.D(this.a.blockPos); // Lamius - Cache current block pos
  
          this.a.p(false);
          this.a.setTamed(true);
@@ -1037,7 +1037,7 @@ index c2221106e4ad37c78540f2472246f811a6333782..1135f0aeaaf5a8fce4ae536ded28e6d1
              return false;
          } else {
 -            this.a = this.d.ak().getClosestVillage(new BlockPosition(this.b), 0);
-+            this.a = this.d.ak().getClosestVillage(this.b.blockPos, 0); // Reaper - Cache current block pos
++            this.a = this.d.ak().getClosestVillage(this.b.blockPos, 0); // Lamius - Cache current block pos
              if (this.a == null) {
                  return false;
              } else if (this.f() && this.b.r(true)) {
@@ -1050,7 +1050,7 @@ index 1e2462d43e89ecc05fd23bf816b9743832efbd88..d100d2fcbef49d6f4744375635733591
          EntityLiving entityliving = this.b.getGoalTarget();
  
 -        return entityliving == null ? false : (!entityliving.isAlive() ? false : (!this.e ? !this.b.getNavigation().o() : (!this.b.f(new BlockPosition(entityliving)) ? false : !(entityliving instanceof EntityHuman) || !((EntityHuman) entityliving).isSpectator() && !((EntityHuman) entityliving).z())));
-+        return entityliving == null ? false : (!entityliving.isAlive() ? false : (!this.e ? !this.b.getNavigation().o() : (!this.b.f(entityliving.blockPos) ? false : !(entityliving instanceof EntityHuman) || !((EntityHuman) entityliving).isSpectator() && !((EntityHuman) entityliving).z()))); // Reaper - Cache current block pos
++        return entityliving == null ? false : (!entityliving.isAlive() ? false : (!this.e ? !this.b.getNavigation().o() : (!this.b.f(entityliving.blockPos) ? false : !(entityliving instanceof EntityHuman) || !((EntityHuman) entityliving).isSpectator() && !((EntityHuman) entityliving).z()))); // Lamius - Cache current block pos
      }
  
      public void c() {
@@ -1063,7 +1063,7 @@ index d72f7ab0de5fa9f888f287c6c9f949957b5011a8..858e2806c71c29fb5d5675e2100c4acd
  
      public boolean a() {
 -        BlockPosition blockposition = new BlockPosition(this.a);
-+        BlockPosition blockposition = this.a.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.a.blockPos; // Lamius - Cache current block pos
  
          if ((!this.a.world.D() || this.a.world.isRaining() && !this.a.world.getBiome(blockposition).d()) && this.a.world.worldProvider.m()) {
              if (this.a.getRandom().nextInt(50) != 0) {
@@ -1076,7 +1076,7 @@ index ae606cc478b004c1d9b4000c2e92b5d39a9b83fb..b82639a9f8c55ac7da635a7500b7c7aa
              return false;
          } else {
 -            Village village = this.a.world.ak().getClosestVillage(new BlockPosition(this.a), 0);
-+            Village village = this.a.world.ak().getClosestVillage(this.a.blockPos, 0); // Reaper - Cache current block pos
++            Village village = this.a.world.ak().getClosestVillage(this.a.blockPos, 0); // Lamius - Cache current block pos
  
              if (village == null) {
                  return false;
@@ -1089,7 +1089,7 @@ index 29c1bc7632ebb327374d30b992896f41c62a1627..47cafb896956ed4df0cb8e6a795e9f53
      @Nullable
      private BlockPosition a(World world, Entity entity, int i, int j) {
 -        BlockPosition blockposition = new BlockPosition(entity);
-+        BlockPosition blockposition = new BlockPosition(entity.blockPos); // Reaper - Cache current block pos
++        BlockPosition blockposition = new BlockPosition(entity.blockPos); // Lamius - Cache current block pos
          int k = blockposition.getX();
          int l = blockposition.getY();
          int i1 = blockposition.getZ();
@@ -1102,7 +1102,7 @@ index c5730d21c0fd061e4991f309b32f068b4fdf8a77..5f83703f87530143452fafd48fe87fe6
      @Nullable
      private Vec3D j() {
 -        BlockPosition blockposition = new BlockPosition(this.a);
-+        BlockPosition blockposition = this.a.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = this.a.blockPos; // Lamius - Cache current block pos
          BlockPosition.MutableBlockPosition blockposition_mutableblockposition = new BlockPosition.MutableBlockPosition();
          BlockPosition.MutableBlockPosition blockposition_mutableblockposition1 = new BlockPosition.MutableBlockPosition();
          Iterable iterable = BlockPosition.MutableBlockPosition.b(MathHelper.floor(this.a.locX - 3.0D), MathHelper.floor(this.a.locY - 6.0D), MathHelper.floor(this.a.locZ - 3.0D), MathHelper.floor(this.a.locX + 3.0D), MathHelper.floor(this.a.locY + 6.0D), MathHelper.floor(this.a.locZ + 3.0D));
@@ -1115,7 +1115,7 @@ index 159f4d1598152c511239eba5629bd77700002816..17b326a8b9262ed41e31f13c35d5f3a9
              return false;
          } else {
 -            BlockPosition blockposition = new BlockPosition(this.a);
-+            BlockPosition blockposition = this.a.blockPos; // Reaper - Cache current block pos
++            BlockPosition blockposition = this.a.blockPos; // Lamius - Cache current block pos
              Village village = this.a.world.ak().getClosestVillage(blockposition, 16);
  
              if (village == null) {
@@ -1124,7 +1124,7 @@ index 159f4d1598152c511239eba5629bd77700002816..17b326a8b9262ed41e31f13c35d5f3a9
  
      public boolean b() {
 -        return this.a.world.D() ? false : !this.b.i() && this.b.c(new BlockPosition(this.a));
-+        return this.a.world.D() ? false : !this.b.i() && this.b.c(this.a.blockPos); // Reaper - Cache current block pos
++        return this.a.world.D() ? false : !this.b.i() && this.b.c(this.a.blockPos); // Lamius - Cache current block pos
      }
  
      public void c() {
@@ -1137,7 +1137,7 @@ index ba8c1480bc83f8996c59056649fedd169f7f7daf..ba07493ce61ff95e609f46c6b9cd4217
          if (!a(this.e, entityliving, flag, this.f)) {
              return false;
 -        } else if (!this.e.f(new BlockPosition(entityliving))) {
-+        } else if (!this.e.f(entityliving.blockPos)) { // Reaper - Cache current block pos
++        } else if (!this.e.f(entityliving.blockPos)) { // Lamius - Cache current block pos
              return false;
          } else {
              if (this.a) {
@@ -1150,7 +1150,7 @@ index 63eab603805d77489384fa1ec5da2a93c45eaa3b..a0e17cba05148860c9d539140e0dc344
              i = MathHelper.floor(this.b.getBoundingBox().b + 0.5D);
          } else {
 -            for (blockposition = new BlockPosition(this.b); (this.a.getType(blockposition).getMaterial() == Material.AIR || this.a.getType(blockposition).getBlock().b(this.a, blockposition)) && blockposition.getY() > 0; blockposition = blockposition.down()) {
-+            for (blockposition = this.b.blockPos; (this.a.getType(blockposition).getMaterial() == Material.AIR || this.a.getType(blockposition).getBlock().b(this.a, blockposition)) && blockposition.getY() > 0; blockposition = blockposition.down()) { // Reaper - Cache current block pos
++            for (blockposition = this.b.blockPos; (this.a.getType(blockposition).getMaterial() == Material.AIR || this.a.getType(blockposition).getBlock().b(this.a, blockposition)) && blockposition.getY() > 0; blockposition = blockposition.down()) { // Lamius - Cache current block pos
                  ;
              }
  
@@ -1158,7 +1158,7 @@ index 63eab603805d77489384fa1ec5da2a93c45eaa3b..a0e17cba05148860c9d539140e0dc344
          }
  
 -        blockposition = new BlockPosition(this.b);
-+        blockposition = this.b.blockPos; // Reaper - Cache current block pos
++        blockposition = this.b.blockPos; // Lamius - Cache current block pos
          PathType pathtype = this.a(this.b, blockposition.getX(), i, blockposition.getZ());
  
          if (this.b.a(pathtype) < 0.0F) {
@@ -1167,7 +1167,7 @@ index 63eab603805d77489384fa1ec5da2a93c45eaa3b..a0e17cba05148860c9d539140e0dc344
          PathType pathtype = PathType.BLOCKED;
          double d0 = (double) entityinsentient.width / 2.0D;
 -        BlockPosition blockposition = new BlockPosition(entityinsentient);
-+        BlockPosition blockposition = entityinsentient.blockPos; // Reaper - Cache current block pos
++        BlockPosition blockposition = entityinsentient.blockPos; // Lamius - Cache current block pos
  
          pathtype = this.a(iblockaccess, i, j, k, l, i1, j1, flag, flag1, enumset, pathtype, blockposition);
          if (enumset.contains(PathType.FENCE)) {
@@ -1179,7 +1179,7 @@ index b665611e2143e1869daf72be95deff66b8f7818b..bf6c511f3ce8305b22f2e460e2dd1cf4
          entityplayer.yaw = newLoc.getYaw();
          entityplayer.pitch = newLoc.getPitch();
          entityplayer.dimension = ((CraftWorld) newLoc.getWorld()).getHandle().dimension;
-+        entityplayer.resetBlockPos(); // Reaper - Cache current block pos
++        entityplayer.resetBlockPos(); // Lamius - Cache current block pos
          // Paper end
  
          entityplayer.spawnIn(this.server.getWorldServer(entityplayer.dimension));
@@ -1192,7 +1192,7 @@ index adfdecbc2048c50b28784214f5d97e2a6ea77696..a754bf88bba0b552190a34338750f585
                                                          entityinsentient.setPositionRotation((double) f, (double) j2, (double) f1, worldserver.random.nextFloat() * 360.0F, 0.0F);
                                                          if (entityinsentient.P() && entityinsentient.canSpawn()) {
 -                                                            groupdataentity = entityinsentient.prepare(worldserver.D(new BlockPosition(entityinsentient)), groupdataentity);
-+                                                            groupdataentity = entityinsentient.prepare(worldserver.D(entityinsentient.blockPos), groupdataentity); // Reaper - Cache current block pos
++                                                            groupdataentity = entityinsentient.prepare(worldserver.D(entityinsentient.blockPos), groupdataentity); // Lamius - Cache current block pos
                                                              if (entityinsentient.canSpawn()) {
                                                                  // CraftBukkit start
                                                                  if (worldserver.addEntity(entityinsentient, SpawnReason.NATURAL)) {
@@ -1201,7 +1201,7 @@ index adfdecbc2048c50b28784214f5d97e2a6ea77696..a754bf88bba0b552190a34338750f585
                              entityinsentient.setPositionRotation((double) ((float) j1 + 0.5F), (double) blockposition.getY(), (double) ((float) k1 + 0.5F), random.nextFloat() * 360.0F, 0.0F);
                              // CraftBukkit start - Added a reason for spawning this creature, moved entityinsentient.prepare(groupdataentity) up
 -                            groupdataentity = entityinsentient.prepare(world.D(new BlockPosition(entityinsentient)), groupdataentity);
-+                            groupdataentity = entityinsentient.prepare(world.D(entityinsentient.blockPos), groupdataentity); // Reaper - Cache current block pos
++                            groupdataentity = entityinsentient.prepare(world.D(entityinsentient.blockPos), groupdataentity); // Lamius - Cache current block pos
                              world.addEntity(entityinsentient, SpawnReason.CHUNK_GEN);
                              // CraftBukkit end
                              flag = true;
@@ -1214,7 +1214,7 @@ index 6fce3015f4032c1d609cd87906e01c0098fd62f9..ff2b55dab0e4c3fb9ae04cfac8b75397
  
              if (!entityhuman.isSpectator()) {
 -                this.f = this.a.ak().getClosestVillage(new BlockPosition(entityhuman), 1);
-+                this.f = this.a.ak().getClosestVillage(entityhuman.blockPos, 1); // Reaper - Cache current block pos
++                this.f = this.a.ak().getClosestVillage(entityhuman.blockPos, 1); // Lamius - Cache current block pos
                  if (this.f != null && this.f.c() >= 10 && this.f.d() >= 20 && this.f.e() >= 20) {
                      BlockPosition blockposition = this.f.a();
                      float f = (float) this.f.b();
@@ -1223,7 +1223,7 @@ index 6fce3015f4032c1d609cd87906e01c0098fd62f9..ff2b55dab0e4c3fb9ae04cfac8b75397
              try {
                  entityzombie = new EntityZombie(this.a);
 -                entityzombie.prepare(this.a.D(new BlockPosition(entityzombie)), (GroupDataEntity) null);
-+                entityzombie.prepare(this.a.D(entityzombie.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++                entityzombie.prepare(this.a.D(entityzombie.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
              } catch (Exception exception) {
                  exception.printStackTrace();
                  ServerInternalException.reportInternalException(exception); // Paper
@@ -1236,7 +1236,7 @@ index 012cb6bcc8bbed95a41781995ffe173cb2032b18..287025b8f9f97734ab15456b47b29862
  
                          entityzombievillager.setPositionRotation((double) j1 + 0.5D, (double) k1, (double) l1 + 0.5D, 0.0F, 0.0F);
 -                        entityzombievillager.prepare(world.D(new BlockPosition(entityzombievillager)), (GroupDataEntity) null);
-+                        entityzombievillager.prepare(world.D(entityzombievillager.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++                        entityzombievillager.prepare(world.D(entityzombievillager.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
                          entityzombievillager.setProfession(this.c(i1, 0));
                          entityzombievillager.cW();
                          world.addEntity(entityzombievillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN); // CraftBukkit - add SpawnReason
@@ -1245,7 +1245,7 @@ index 012cb6bcc8bbed95a41781995ffe173cb2032b18..287025b8f9f97734ab15456b47b29862
                          entityvillager.setPositionRotation((double) j1 + 0.5D, (double) k1, (double) l1 + 0.5D, 0.0F, 0.0F);
                          entityvillager.setProfession(this.c(i1, world.random.nextInt(6)));
 -                        entityvillager.a(world.D(new BlockPosition(entityvillager)), (GroupDataEntity) null, false);
-+                        entityvillager.a(world.D(entityvillager.blockPos), (GroupDataEntity) null, false); // Reaper - Cache current block pos
++                        entityvillager.a(world.D(entityvillager.blockPos), (GroupDataEntity) null, false); // Lamius - Cache current block pos
                          world.addEntity(entityvillager, org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason.CHUNK_GEN); // CraftBukkit - add SpawnReason
                      }
                  }
@@ -1258,7 +1258,7 @@ index f8b9760dc9c852011b807ec6eb4c6509725565da..8a109f6736e804b8c88bf1ef9230acc0
  
          if (entity instanceof EntityInsentient) {
 -            ((EntityInsentient) entity).prepare(getHandle().D(new BlockPosition(entity)), (GroupDataEntity) null);
-+            ((EntityInsentient) entity).prepare(getHandle().D(entity.blockPos), (GroupDataEntity) null); // Reaper - Cache current block pos
++            ((EntityInsentient) entity).prepare(getHandle().D(entity.blockPos), (GroupDataEntity) null); // Lamius - Cache current block pos
          }
  
          if (function != null) {

@@ -12,7 +12,7 @@ index 9308ccc85f6243193e49c9a4dd8762ab388a4823..fb5822f7c2c1d96e2711fb081b632ee5
  
              if (!this.getOnlineMode()) {
                  DedicatedServer.LOGGER.warn("**** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!");
-+                /* // Reaper start - Reduce offline mode warn
++                /* // Lamius start - Reduce offline mode warn
                  DedicatedServer.LOGGER.warn("The server will make no attempt to authenticate usernames. Beware.");
                  // Spigot start
                  if (org.spigotmc.SpigotConfig.bungee) {
@@ -20,7 +20,7 @@ index 9308ccc85f6243193e49c9a4dd8762ab388a4823..fb5822f7c2c1d96e2711fb081b632ee5
                  }
                  // Spigot end
                  DedicatedServer.LOGGER.warn("To change this, set \"online-mode\" to \"true\" in the server.properties file.");
-+                */ // Reaper end
++                */ // Lamius end
              }
  
              if (this.aS()) {

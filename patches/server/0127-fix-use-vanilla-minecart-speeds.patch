@@ -16,9 +16,9 @@ index 0eadde0968e12bd5e2535363a0b412cf4a57f04e..aaa05f6693cb7e92fbbaeee8e81906f2
 -    private double flyingX = 0.95;
 -    private double flyingY = 0.95;
 -    private double flyingZ = 0.95;
-+    private double flyingX = 0.94999998807907104D; // Reaper - Restore vanilla precision
-+    private double flyingY = 0.94999998807907104D; // Reaper - Restore vanilla precision
-+    private double flyingZ = 0.94999998807907104D; // Reaper - Restore vanilla precision
++    private double flyingX = 0.94999998807907104D; // Lamius - Restore vanilla precision
++    private double flyingY = 0.94999998807907104D; // Lamius - Restore vanilla precision
++    private double flyingZ = 0.94999998807907104D; // Lamius - Restore vanilla precision
      public double maxSpeed = 0.4D;
      // CraftBukkit end
  

@@ -12,7 +12,7 @@ index eb2dbbe53498177d2ba45c32068ee7baacb7d51a..df9ce67f4010a9359b62f4dac3615cc1
      }
  
      public void e() {
-+        if (!(this.world.worldProvider instanceof WorldProviderTheEnd)) return; // Reaper - Don't tick if not in the end world
++        if (!(this.world.worldProvider instanceof WorldProviderTheEnd)) return; // Lamius - Don't tick if not in the end world
          boolean flag = this.a();
          boolean flag1 = this.f();
  

@@ -12,14 +12,14 @@ index 208fdbe93ed25bab64d62e7bda4a56af4c6152ac..7fd06792d7feaff91c1140c6655143fe
              <version>3.0.3</version>
              <scope>compile</scope>
          </dependency>
-+        <!-- Reaper start - Add caffeine dependency -->
++        <!-- Lamius start - Add caffeine dependency -->
 +        <dependency>
 +            <groupId>com.github.ben-manes.caffeine</groupId>
 +            <artifactId>caffeine</artifactId>
 +            <version>2.9.3</version>
 +            <scope>compile</scope>
 +        </dependency>
-+        <!-- Reaper end -->
++        <!-- Lamius end -->
  
          <dependency>
              <groupId>net.minecrell</groupId>

@@ -13,7 +13,7 @@ index e68a7d0662372d10806039c66e7833801e773b68..e8f06f20da203db5151f49ce4aa0ea64
      public void setRecipes(List<NamespacedKey> recipes) {
          this.recipes.clear();
 -        for (NamespacedKey recipe : this.recipes) {
-+        for (NamespacedKey recipe : recipes) { // Reaper - Fix Bukkit API
++        for (NamespacedKey recipe : recipes) { // Lamius - Fix Bukkit API
              addRecipe(recipe);
          }
      }

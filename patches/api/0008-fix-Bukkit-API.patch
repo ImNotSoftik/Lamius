@@ -13,7 +13,7 @@ index 8401d33657f97827c57c29a041eed612bf7f1da8..553a52e5fcc8b8f594f4e79ff9c4625a
      }
      public long decrement(T key, long amount) {
 -        return decrement(key, -amount);
-+        return increment(key, -amount); // Reaper - Fix Bukkit API
++        return increment(key, -amount); // Lamius - Fix Bukkit API
      }
      public long increment(T key, long amount) {
          long count = this.getCount(key);
@@ -26,14 +26,14 @@ index 69d2fce4a92e9ce6f7b087d58761172bf4ca791c..3028a5e3c57f929bfd19a56bae86581b
       */
      public void setVelocity(Vector velocity) {
 -        this.velocity = velocity;
-+        // Reaper start - Catch bad plugins
++        // Lamius start - Catch bad plugins
 +        try {
 +            velocity.checkFinite();
 +            this.velocity = velocity;
 +        } catch (Exception e) {
 +            e.printStackTrace();
 +        }
-+        // Reaper end
++        // Lamius end
      }
  
      @Override

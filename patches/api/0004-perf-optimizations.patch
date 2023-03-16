@@ -207,7 +207,7 @@ index a8a5a7858807778be8214921fae80c5f8f0e0afa..5f98dc6091ceaf9cbb56b026afd4c703
  
      private final int value;
 -    private final static Map<Integer, Difficulty> BY_ID = Maps.newHashMap();
-+    private final static Int2ObjectOpenHashMap<Difficulty> BY_ID = new Int2ObjectOpenHashMap<>(); // Reaper - FastUtil optimization
++    private final static Int2ObjectOpenHashMap<Difficulty> BY_ID = new Int2ObjectOpenHashMap<>(); // Lamius - FastUtil optimization
  
      private Difficulty(final int value) {
          this.value = value;
@@ -228,7 +228,7 @@ index eeb258126397ca6207750bd1b4b3b14f3beb07ed..11cb54dc9f0477592c75a766c9c6f82f
      private final Type type;
      private final Class<?> data;
 -    private static final Map<Integer, Effect> BY_ID = Maps.newHashMap();
-+    private static final Int2ObjectOpenHashMap<Effect> BY_ID = new Int2ObjectOpenHashMap<>(); // Reaper - FastUtil optimization
++    private static final Int2ObjectOpenHashMap<Effect> BY_ID = new Int2ObjectOpenHashMap<>(); // Lamius - FastUtil optimization
      private static final Map<String, Effect> BY_NAME = Maps.newHashMap();
      private final String particleName;
  
@@ -249,7 +249,7 @@ index 803944eaeffafffc0eb7dad6641cf7e6f4685d1e..adfe67f319f813b0dff95a8f3a4a65af
  
      private final int value;
 -    private final static Map<Integer, GameMode> BY_ID = Maps.newHashMap();
-+    private final static Int2ObjectOpenHashMap<GameMode> BY_ID = new Int2ObjectOpenHashMap<>(); // Reaper - FastUtil optimization
++    private final static Int2ObjectOpenHashMap<GameMode> BY_ID = new Int2ObjectOpenHashMap<>(); // Lamius - FastUtil optimization
  
      private GameMode(final int value) {
          this.value = value;
@@ -320,7 +320,7 @@ index d5058634982be099a35ff69a1425e53019ea5056..206b83e8e73577cf5a51d4fcf1b71ba2
  
          private final int id;
 -        private static final Map<Integer, Environment> lookup = new HashMap<Integer, Environment>();
-+        private static final Int2ObjectOpenHashMap<Environment> lookup = new Int2ObjectOpenHashMap<>(); // Reaper - FastUtil optimization
++        private static final Int2ObjectOpenHashMap<Environment> lookup = new Int2ObjectOpenHashMap<>(); // Lamius - FastUtil optimization
  
          private Environment(int id) {
              this.id = id;
@@ -353,7 +353,7 @@ index 3df37d0dce4d7ce5fee3fb2e1f27f3c1c404dd8e..f22d35ebae6d07a445e459abcdf51abd
  
      private int id;
 -    private static Map<Integer, PistonMoveReaction> byId = new HashMap<Integer, PistonMoveReaction>();
-+    private static Int2ObjectOpenHashMap<PistonMoveReaction> byId = new Int2ObjectOpenHashMap<>(); // Reaper - FastUtil optimization
++    private static Int2ObjectOpenHashMap<PistonMoveReaction> byId = new Int2ObjectOpenHashMap<>(); // Lamius - FastUtil optimization
      static {
          for (PistonMoveReaction reaction : PistonMoveReaction.values()) {
              byId.put(reaction.id, reaction);
@@ -713,7 +713,7 @@ index f2095f6180aaa6421522869402976381ab89e343..7628b84cb6f9af2c898285d3c75e5492
           */
          public static List<Career> getCareers(Profession profession) {
 -            return careerMap.containsKey(profession) ? ImmutableList.copyOf(careerMap.get(profession)) : ImmutableList.<Career>of();
-+            java.util.Collection<Career> cO = careerMap.get(profession); return cO != null ? ImmutableList.copyOf(cO) : ImmutableList.<Career>of(); // Reaper - Optimize map get
++            java.util.Collection<Career> cO = careerMap.get(profession); return cO != null ? ImmutableList.copyOf(cO) : ImmutableList.<Career>of(); // Lamius - Optimize map get
          }
  
          static {
@@ -929,7 +929,7 @@ index 6525ab45451952a134bf58c627bfdf4b760c8c61..586260d81af7e345f350f19858f68c47
      ALL_STEM(15, null);
      private final static Map<Byte, MushroomBlockTexture> BY_DATA = Maps.newHashMap();
 -    private final static Map<BlockFace, MushroomBlockTexture> BY_BLOCKFACE = Maps.newHashMap();
-+    private final static Map<BlockFace, MushroomBlockTexture> BY_BLOCKFACE = new EnumMap<>(BlockFace.class); // Reaper - Optimize
++    private final static Map<BlockFace, MushroomBlockTexture> BY_BLOCKFACE = new EnumMap<>(BlockFace.class); // Lamius - Optimize
  
      private final Byte data;
      private final BlockFace capFace;
@@ -962,7 +962,7 @@ index 6da6abd8ebdcd7ba2a4e6c05fd023201d1c508f7..10ba9ab88a1b91c609122838ded4216d
 -            if (values.containsKey(owningPlugin)) {
 -                values.get(owningPlugin).invalidate();
 -            }
-+            MetadataValue vO = values.get(owningPlugin); if (vO != null) vO.invalidate(); // Reaper - Optimize map get
++            MetadataValue vO = values.get(owningPlugin); if (vO != null) vO.invalidate(); // Lamius - Optimize map get
          }
      }
  
@@ -1259,11 +1259,11 @@ index bdf8f6d5d64eaa07b758a428868d1f4fd31385ca..7f0330ac2c2009ee583cfb79b5f6d93d
 -        if (args.containsKey("z")) {
 -            z = (Double) args.get("z");
 -        }
-+        // Reaper start - Optimize map get
++        // Lamius start - Optimize map get
 +        Object xO = args.get("x"); if (xO != null) x = (Double) xO;
 +        Object yO = args.get("y"); if (yO != null) y = (Double) yO;
 +        Object zO = args.get("z"); if (zO != null) z = (Double) zO;
-+        // Reaper end
++        // Lamius end
  
          return new BlockVector(x, y, z);
      }
@@ -1345,7 +1345,7 @@ index 0e7b6667e4068f7891a8ecedea9278c1e9135134..abb85b70da1d482ca6b0f5d512b75c77
                  assertThat("Constructed with correct texture", mushroom.getBlockTexture(), equalTo(texture));
              }
          }
-+        assertThat(MushroomBlockTexture.getCapByFace(null), IsEqual.equalTo(MushroomBlockTexture.ALL_STEM)); // Reaper
++        assertThat(MushroomBlockTexture.getCapByFace(null), IsEqual.equalTo(MushroomBlockTexture.ALL_STEM)); // Lamius
      }
  
      @Test

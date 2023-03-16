@@ -12,14 +12,14 @@ index 4eebd9fae940dd6bc51f8cfd30ab7b5cba5ce201..fc5ce2ff6c86c3021e0f08edf3d9c5ac
      public final Timing chunkSaveData;
  
      public final Timing lightingQueueTimer;
-+    // Reaper start
++    // Lamius start
 +    public final Timing chunkTicksCheckNextLight;
 +    public final Timing chunkTicksRecheckGaps;
 +    public final Timing chunkTicksTileEntityCreateQueue;
 +    public final Timing chunkTicksThunder;
 +    public final Timing chunkTicksIceAndSnow;
 +    public final Timing updateWeather;
-+    // Reaper end
++    // Lamius end
  
      public WorldTimingsHandler(World server) {
          String name = server.worldData.getName() +" - ";
@@ -27,14 +27,14 @@ index 4eebd9fae940dd6bc51f8cfd30ab7b5cba5ce201..fc5ce2ff6c86c3021e0f08edf3d9c5ac
          tickEntities = Timings.ofSafe(name + "tickEntities");
  
          lightingQueueTimer = Timings.ofSafe(name + "Lighting Queue");
-+        // Reaper start
++        // Lamius start
 +        chunkTicksCheckNextLight = Timings.ofSafe(name + "Chunk Ticks - Check Next Light");
 +        chunkTicksRecheckGaps = Timings.ofSafe(name + "Chunk Ticks - recheck Gaps");
 +        chunkTicksTileEntityCreateQueue = Timings.ofSafe(name + "Chunk Ticks - Tile Entity Create Queue");
 +        chunkTicksThunder = Timings.ofSafe(name + "Chunk Ticks - Thunder");
 +        chunkTicksIceAndSnow = Timings.ofSafe(name + "Chunk Ticks - Ice And Snow");
 +        updateWeather = Timings.ofSafe(name + "Update Weather");
-+        // Reaper end
++        // Lamius end
      }
  }
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
@@ -45,9 +45,9 @@ index 4b7b02b7796dc0107868cd5dc5f32869a494cf64..87e48475f33a3ad21f0bdc6cf983b6f2
  
      public void b(boolean flag) {
          if (this.m && this.world.worldProvider.m() && !flag) {
-+            world.timings.chunkTicksRecheckGaps.startTiming(); // Reaper
-             this.h(false); // Reaper - Remove isClientSide check
-+            world.timings.chunkTicksRecheckGaps.stopTiming(); // Reaper
++            world.timings.chunkTicksRecheckGaps.startTiming(); // Lamius
+             this.h(false); // Lamius - Remove isClientSide check
++            world.timings.chunkTicksRecheckGaps.stopTiming(); // Lamius
          }
  
          this.r = true;
@@ -55,7 +55,7 @@ index 4b7b02b7796dc0107868cd5dc5f32869a494cf64..87e48475f33a3ad21f0bdc6cf983b6f2
              this.o();
          }
  
-+        world.timings.chunkTicksTileEntityCreateQueue.startTiming(); // Reaper
++        world.timings.chunkTicksTileEntityCreateQueue.startTiming(); // Lamius
          while (!this.y.isEmpty()) {
              BlockPosition blockposition = (BlockPosition) this.y.poll();
  
@@ -63,7 +63,7 @@ index 4b7b02b7796dc0107868cd5dc5f32869a494cf64..87e48475f33a3ad21f0bdc6cf983b6f2
                  this.world.b(blockposition, blockposition);
              }
          }
-+        world.timings.chunkTicksTileEntityCreateQueue.stopTiming(); // Reaper
++        world.timings.chunkTicksTileEntityCreateQueue.stopTiming(); // Lamius
  
      }
  
@@ -71,7 +71,7 @@ index 4b7b02b7796dc0107868cd5dc5f32869a494cf64..87e48475f33a3ad21f0bdc6cf983b6f2
  
      public void n() {
          if (this.x < 4096) {
-+            world.timings.chunkTicksCheckNextLight.startTiming(); // Reaper
++            world.timings.chunkTicksCheckNextLight.startTiming(); // Lamius
              BlockPosition blockposition = new BlockPosition(this.locX << 4, 0, this.locZ << 4);
  
              for (int i = 0; i < 8; ++i) {
@@ -79,7 +79,7 @@ index 4b7b02b7796dc0107868cd5dc5f32869a494cf64..87e48475f33a3ad21f0bdc6cf983b6f2
                      }
                  }
              }
-+            world.timings.chunkTicksCheckNextLight.stopTiming(); // Reaper
++            world.timings.chunkTicksCheckNextLight.stopTiming(); // Lamius
  
          }
      }
@@ -90,8 +90,8 @@ index cab88fa55e3790fe427d75cba05e8fa06aef4c8b..85a67cc32776a8ab569b148f290874be
 @@ -2357,6 +2357,7 @@ public abstract class World implements IBlockAccess {
      protected void t() {
          if (this.worldProvider.m()) {
-             if (true) { // Reaper - Remove isClientSide check
-+                timings.updateWeather.startTiming(); // Reaper
+             if (true) { // Lamius - Remove isClientSide check
++                timings.updateWeather.startTiming(); // Lamius
                  boolean flag = this.getGameRules().getBoolean("doWeatherCycle");
  
                  if (flag) {
@@ -99,7 +99,7 @@ index cab88fa55e3790fe427d75cba05e8fa06aef4c8b..85a67cc32776a8ab569b148f290874be
                      }
                  }
                  // CraftBukkit end
-+                timings.updateWeather.stopTiming(); // Reaper
++                timings.updateWeather.stopTiming(); // Lamius
              }
          }
      }
@@ -111,7 +111,7 @@ index 39221d8e5f04562b2ce86c5bd42bba812ab3570e..bae37c9f3ea9e12d208768f7d3311f89
  
                  // Paper - Disable thunder
                  if (!this.paperConfig.disableThunder && flag && flag1 && this.random.nextInt(100000) == 0) {
-+                    timings.chunkTicksThunder.startTiming(); // Reaper
++                    timings.chunkTicksThunder.startTiming(); // Lamius
                      this.l = this.l * 3 + 1013904223;
                      l = this.l >> 2;
                      blockposition = this.a(new BlockPosition(j + (l & 15), 0, k + (l >> 8 & 15)));
@@ -119,12 +119,12 @@ index 39221d8e5f04562b2ce86c5bd42bba812ab3570e..bae37c9f3ea9e12d208768f7d3311f89
                              this.strikeLightning(new EntityLightning(this, (double) blockposition.getX(), (double) blockposition.getY(), (double) blockposition.getZ(), false));
                          }
                      }
-+                    timings.chunkTicksThunder.stopTiming(); // Reaper
++                    timings.chunkTicksThunder.stopTiming(); // Lamius
                  }
  
-                 // this.methodProfiler.c("iceandsnow"); // Reaper - Remove MethodProfiler
+                 // this.methodProfiler.c("iceandsnow"); // Lamius - Remove MethodProfiler
                  if (!this.paperConfig.disableIceAndSnow && this.random.nextInt(16) == 0) { // Paper - Disable ice and snow
-+                    timings.chunkTicksIceAndSnow.startTiming(); // Reaper
++                    timings.chunkTicksIceAndSnow.startTiming(); // Lamius
                      this.l = this.l * 3 + 1013904223;
                      l = this.l >> 2;
                      blockposition = this.p(new BlockPosition(j + (l & 15), 0, k + (l >> 8 & 15)));
@@ -132,7 +132,7 @@ index 39221d8e5f04562b2ce86c5bd42bba812ab3570e..bae37c9f3ea9e12d208768f7d3311f89
                      if (flag && this.getBiome(blockposition1).d()) {
                          this.getType(blockposition1).getBlock().h(this, blockposition1);
                      }
-+                    timings.chunkTicksIceAndSnow.stopTiming(); // Reaper
++                    timings.chunkTicksIceAndSnow.stopTiming(); // Lamius
                  }
  
                  timings.chunkTicksBlocks.startTiming(); // Paper

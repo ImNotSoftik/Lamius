@@ -12,7 +12,7 @@ index 377b6d21fb6c2dce4645cd174a044b39203075aa..1808c91debc1c8d60d5dbd8d5a3c61a8
                              this.locY = this.hooked.getBoundingBox().b + d1 * 0.8D;
                              this.locZ = this.hooked.locZ;
                              this.setPosition(this.locX, this.locY, this.locZ);
-+                            if (this.ak) this.die(); // Reaper - Prevent going through portals
++                            if (this.ak) this.die(); // Lamius - Prevent going through portals
                          }
                      }
  

@@ -12,7 +12,7 @@ index 7bc594293b3f2e15fc937e30ebad48ef54d63ee1..ed7352cb23bcbfefb4b25627d8a8f014
              Entity entity = this.player.getVehicle();
  
              if (entity != this.player && entity.bE() == this.player && entity == this.r) {
-+                // Reaper start - Prevent vehicle move while awaiting teleport confirm
++                // Lamius start - Prevent vehicle move while awaiting teleport confirm
 +                if (this.teleportPos != null) {
 +                    if (this.e - this.A > 20) {
 +                        this.A = this.e;
@@ -21,7 +21,7 @@ index 7bc594293b3f2e15fc937e30ebad48ef54d63ee1..ed7352cb23bcbfefb4b25627d8a8f014
 +                    this.allowedPlayerTicks = 20; // CraftBukkit
 +                    return;
 +                }
-+                // Reaper end
++                // Lamius end
                  WorldServer worldserver = this.player.x();
                  double d0 = entity.locX;
                  double d1 = entity.locY;

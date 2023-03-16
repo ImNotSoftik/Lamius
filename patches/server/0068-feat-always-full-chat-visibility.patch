@@ -13,7 +13,7 @@ index e86017a635b4b7c095c883ec6bdfa0061bf1eb89..6ac026c2486eef738c374b6d4f96a0a7
          }
          // CraftBukkit end
 -        this.cl = packetplayinsettings.c();
-+        this.cl = EnumChatVisibility.FULL; // Reaper - Always full chat visibility
++        this.cl = EnumChatVisibility.FULL; // Lamius - Always full chat visibility
          this.cm = packetplayinsettings.d();
          this.getDataWatcher().set(EntityPlayer.br, Byte.valueOf((byte) packetplayinsettings.e()));
          this.getDataWatcher().set(EntityPlayer.bs, Byte.valueOf((byte) (packetplayinsettings.getMainHand() == EnumMainHand.LEFT ? 0 : 1)));
@@ -25,7 +25,7 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
      }
  
      public void sendPacket(final Packet<?> packet) {
-+        /* // Reaper start - Always full chat visibility
++        /* // Lamius start - Always full chat visibility
          if (packet instanceof PacketPlayOutChat) {
              PacketPlayOutChat packetplayoutchat = (PacketPlayOutChat) packet;
              EntityHuman.EnumChatVisibility entityhuman_enumchatvisibility = this.player.getChatFlags();
@@ -33,7 +33,7 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
                  return;
              }
          }
-+        */ // Reaper end
++        */ // Lamius end
  
          // CraftBukkit start
          if (packet == null || this.processedDisconnect) { // Spigot
@@ -42,7 +42,7 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
          }
          // CraftBukkit end
 -        if (this.player.dead || this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN) { // CraftBukkit - dead men tell no tales
-+        if (this.player.dead /*|| this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN*/) { // CraftBukkit - dead men tell no tales // Reaper - Always full chat visibility
++        if (this.player.dead /*|| this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN*/) { // CraftBukkit - dead men tell no tales // Lamius - Always full chat visibility
              ChatMessage chatmessage = new ChatMessage("chat.cannotSend", new Object[0]);
  
              chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
@@ -50,13 +50,13 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
                      }
                  } );
                  // Spigot end
-+                /* // Reaper start - Always full chat visibility
++                /* // Lamius start - Always full chat visibility
              } else if (this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM) { // Re-add "Command Only" flag check
                  ChatMessage chatmessage = new ChatMessage("chat.cannotSend", new Object[0]);
  
                  chatmessage.getChatModifier().setColor(EnumChatFormat.RED);
                  this.sendPacket(new PacketPlayOutChat(chatmessage));
-+                */ // Reaper end
++                */ // Lamius end
              } else if (true) {
                  this.chat(s, true);
                  // CraftBukkit end - the below is for reference. :)
@@ -65,7 +65,7 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
      // CraftBukkit start - add method
      public void chat(String s, boolean async) {
 -        if (s.isEmpty() || this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN) {
-+        if (s.isEmpty() /*|| this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN*/) { // Reaper - Always full chat visibility
++        if (s.isEmpty() /*|| this.player.getChatFlags() == EntityHuman.EnumChatVisibility.HIDDEN*/) { // Lamius - Always full chat visibility
              return;
          }
  
@@ -74,7 +74,7 @@ index 78331c8e9abe7a615fe7484d2cf371d9b96eddd1..06f8da246caf5e85cafd0dbb3b2ecb80
              // Paper End
              this.handleCommand(s);
 -        } else if (this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM) {
-+        } else if (/*this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM*/false) { // Reaper - Always full chat visibility
++        } else if (/*this.player.getChatFlags() == EntityHuman.EnumChatVisibility.SYSTEM*/false) { // Lamius - Always full chat visibility
              // Do nothing, this is coming from a plugin
          } else {
              Player player = this.getPlayer();

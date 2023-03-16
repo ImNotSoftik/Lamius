@@ -12,7 +12,7 @@ index aa7f0bcb606899c589d7501587dc0f07ee1ea85c..68643c2df7fc26537c80a413c27810c7
      private final Block b;
      private final int c;
      private final int d;
-+    private int hashCode = -1; // Reaper
++    private int hashCode = -1; // Lamius
  
      public BlockActionData(BlockPosition blockposition, Block block, int i, int j) {
          this.a = blockposition;
@@ -20,7 +20,7 @@ index aa7f0bcb606899c589d7501587dc0f07ee1ea85c..68643c2df7fc26537c80a413c27810c7
          }
      }
  
-+    // Reaper start
++    // Lamius start
 +    public int hashCode() {
 +        int hash = this.hashCode;
 +        if (hash == -1) {
@@ -33,7 +33,7 @@ index aa7f0bcb606899c589d7501587dc0f07ee1ea85c..68643c2df7fc26537c80a413c27810c7
 +        }
 +        return hash;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public String toString() {
          return "TE(" + this.a + ")," + this.c + "," + this.d + "," + this.b;
@@ -46,12 +46,12 @@ index 9180ddae84451e9d60c360639e89824d7662ab85..fd489c2a6aae254557e58b12fe17a267
      private final PortalTravelAgent portalTravelAgent;
      private final SpawnerCreature spawnerCreature = new SpawnerCreature();
      protected final VillageSiege siegeManager = new VillageSiege(this);
-+    /* // Reaper start - Optimize block event queue
++    /* // Lamius start - Optimize block event queue
      private final WorldServer.BlockActionDataList[] U = new WorldServer.BlockActionDataList[] { new WorldServer.BlockActionDataList(null), new WorldServer.BlockActionDataList(null)};
      private int V;
 +    */
-+    private final Set<BlockActionData> blockEventPending = new java.util.LinkedHashSet<>(); // Reaper
-+    // Reaper end
++    private final Set<BlockActionData> blockEventPending = new java.util.LinkedHashSet<>(); // Lamius
++    // Lamius end
      private final List<NextTickListEntry> W = Lists.newArrayList();
  
      // CraftBukkit start
@@ -73,7 +73,7 @@ index 9180ddae84451e9d60c360639e89824d7662ab85..fd489c2a6aae254557e58b12fe17a267
 -            blockactiondata1 = (BlockActionData) iterator.next();
 -        } while (!blockactiondata1.equals(blockactiondata));
 -
-+        this.blockEventPending.add(new BlockActionData(blockposition, block, i, j)); // Reaper - Optimize block event queue
++        this.blockEventPending.add(new BlockActionData(blockposition, block, i, j)); // Lamius - Optimize block event queue
      }
  
      private void aq() {
@@ -85,7 +85,7 @@ index 9180ddae84451e9d60c360639e89824d7662ab85..fd489c2a6aae254557e58b12fe17a267
 -
 -            while (iterator.hasNext()) {
 -                BlockActionData blockactiondata = (BlockActionData) iterator.next();
-+        // Reaper start - Optimize block event queue
++        // Lamius start - Optimize block event queue
 +        Set<BlockActionData> pending = this.blockEventPending;
 +        if (!pending.isEmpty()) {
 +            PlayerList playerList = this.server.getPlayerList();
@@ -116,7 +116,7 @@ index 9180ddae84451e9d60c360639e89824d7662ab85..fd489c2a6aae254557e58b12fe17a267
 -
 -            this.U[i].clear();
          }
-+        // Reaper end
++        // Lamius end
  
      }
  

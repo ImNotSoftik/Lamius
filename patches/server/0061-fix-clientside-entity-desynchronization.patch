@@ -15,10 +15,10 @@ index d7fbfad3e64cf043dd5c17474c095988a2833a17..2218b542908688972e23c7c0296617e2
          // Paper end
 -        double d0 = entityplayer.locX - (double) this.xLoc / 4096.0D;
 -        double d1 = entityplayer.locZ - (double) this.zLoc / 4096.0D;
-+        // Reaper start - Fix clientside entity desynchronization
++        // Lamius start - Fix clientside entity desynchronization
 +        double d0 = entityplayer.locX - this.tracker.locX;
 +        double d1 = entityplayer.locZ - this.tracker.locZ;
-+        // Reaper end
++        // Lamius end
          int i = Math.min(this.e, this.f);
  
          return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer);

@@ -22,8 +22,8 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
  
 -                if (world.getType(blockposition2).getMaterial() == Material.WATER) {
 -                    world.setTypeAndData(blockposition2, Blocks.AIR.getBlockData(), 2);
-+                if (!arraylist.contains(blockposition2) && world.getType(blockposition2).getMaterial() == Material.WATER) { // Reaper - Add only unique blocks
-+                    // world.setTypeAndData(blockposition2, Blocks.AIR.getBlockData(), 2); // Reaper - moved down
++                if (!arraylist.contains(blockposition2) && world.getType(blockposition2).getMaterial() == Material.WATER) { // Lamius - Add only unique blocks
++                    // world.setTypeAndData(blockposition2, Blocks.AIR.getBlockData(), 2); // Lamius - moved down
                      arraylist.add(blockposition2);
                      ++i;
                      if (j < 6) {
@@ -32,13 +32,13 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
          }
  
 -        Iterator iterator = arraylist.iterator();
-+        // Reaper start - SpongeAbsorbEvent
++        // Lamius start - SpongeAbsorbEvent
 +        if (i == 0) return false;
  
 -        while (iterator.hasNext()) {
 -            blockposition1 = (BlockPosition) iterator.next();
 -            world.applyPhysics(blockposition1, Blocks.AIR, false);
-+        if (com.github.ruviolence.reaper.event.block.SpongeAbsorbEvent.getHandlerList().getRegisteredListeners().length != 0) {
++        if (com.github.ruviolence.Lamius.event.block.SpongeAbsorbEvent.getHandlerList().getRegisteredListeners().length != 0) {
 +            org.bukkit.craftbukkit.CraftWorld bWorld = world.getWorld();
 +            ArrayList<org.bukkit.block.Block> bBlocks = new ArrayList<>(arraylist.size());
 +
@@ -47,7 +47,7 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
 +                bBlocks.add(bWorld.getBlockAt(pos.getX(), pos.getY(), pos.getZ()));
 +            }
 +
-+            com.github.ruviolence.reaper.event.block.SpongeAbsorbEvent event = new com.github.ruviolence.reaper.event.block.SpongeAbsorbEvent(bWorld.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), bBlocks);
++            com.github.ruviolence.Lamius.event.block.SpongeAbsorbEvent event = new com.github.ruviolence.Lamius.event.block.SpongeAbsorbEvent(bWorld.getBlockAt(blockposition.getX(), blockposition.getY(), blockposition.getZ()), bBlocks);
 +            world.getServer().getPluginManager().callEvent(event);
 +
 +            if (event.isCancelled()) return false;
@@ -70,7 +70,7 @@ index 273626a09929a98645f156d3c30fc924017a29ce..ea16dc8964f2b4a181c3c2673a3fba6b
 +        for (int k = 0; k < arraylist.size(); k++) {
 +            world.applyPhysics((BlockPosition) arraylist.get(k), Blocks.AIR, false);
          }
-+        // Reaper end
++        // Lamius end
  
          return i > 0;
      }

@@ -24,7 +24,7 @@ index daa7e997a387e65b15858573497fdf78cb069813..ca307cfb40d49525ce1d86685b9e2a42
              try (DataInputStream datainputstream = regionfile.getReadStream(i & 31, j & 31)) {
 -                NBTTagCompound oversizedData = regionfile.getOversizedData(i, j);
 -                NBTTagCompound chunk = NBTCompressedStreamTools.readNBT(datainputstream);
-+                // Reaper start - Handle bad chunks more gracefully - also handle similarly with oversized data
++                // Lamius start - Handle bad chunks more gracefully - also handle similarly with oversized data
 +                NBTTagCompound oversizedData;
 +
 +                try {
@@ -39,7 +39,7 @@ index daa7e997a387e65b15858573497fdf78cb069813..ca307cfb40d49525ce1d86685b9e2a42
 +                } catch (Exception ex) {
 +                    return null;
 +                }
-+                // Reaper end
++                // Lamius end
                  if (oversizedData == null) {
                      return chunk;
                  }
@@ -48,13 +48,13 @@ index daa7e997a387e65b15858573497fdf78cb069813..ca307cfb40d49525ce1d86685b9e2a42
          }
  
 -        return NBTCompressedStreamTools.a(datainputstream);
-+        // Reaper start - Handle bad chunks more gracefully
++        // Lamius start - Handle bad chunks more gracefully
 +        try {
 +            return NBTCompressedStreamTools.a(datainputstream);
 +        } catch (Exception ex) {
 +            return null;
 +        }
-+        // Reaper end
++        // Lamius end
      }
  
      public static void e(File file, int i, int j, NBTTagCompound nbttagcompound) throws IOException { // Paper - remove synchronization

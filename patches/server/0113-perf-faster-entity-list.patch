@@ -222,7 +222,7 @@ index 9a4cba104bf58cc9cd780c6ac3f63a5898eebbd0..879cc95e715f4ecf79f1d43c0618637a
  
          for (int k = 0; k < this.entitySlices.length; ++k) {
 -            this.entitySlices[k] = new org.bukkit.craftbukkit.util.UnsafeList(); // Spigot
-+            this.entitySlices[k] = new com.destroystokyo.paper.util.MapList.ObjectMapList<>(); // Spigot // Reaper - UnsafeList -> ObjectMapList
++            this.entitySlices[k] = new com.destroystokyo.paper.util.MapList.ObjectMapList<>(); // Spigot // Lamius - UnsafeList -> ObjectMapList
          }
  
          Arrays.fill(this.h, -999);

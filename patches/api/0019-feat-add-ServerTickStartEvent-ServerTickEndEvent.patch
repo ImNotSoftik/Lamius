@@ -4,13 +4,13 @@ Date: Thu, 15 Sep 2022 14:47:48 +0500
 Subject: [PATCH] feat: add ServerTickStartEvent, ServerTickEndEvent
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickEndEvent.java b/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickEndEvent.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickEndEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickEndEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..4a774542406df7f21e4b1c5c6c2598852b51cfd3
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickEndEvent.java
++++ b/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickEndEvent.java
 @@ -0,0 +1,43 @@
-+package com.github.ruviolence.reaper.event.server;
++package com.github.ruviolence.Lamius.event.server;
 +
 +import org.bukkit.event.HandlerList;
 +import org.bukkit.event.server.ServerEvent;
@@ -53,13 +53,13 @@ index 0000000000000000000000000000000000000000..4a774542406df7f21e4b1c5c6c259885
 +        return handlers;
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickStartEvent.java b/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickStartEvent.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickStartEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickStartEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..622a271b30433df549cbc3d0f8ed30b3f969fa05
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/event/server/ServerTickStartEvent.java
++++ b/src/main/java/com/github/ruviolence/Lamius/event/server/ServerTickStartEvent.java
 @@ -0,0 +1,31 @@
-+package com.github.ruviolence.reaper.event.server;
++package com.github.ruviolence.Lamius.event.server;
 +
 +import org.bukkit.event.HandlerList;
 +import org.bukkit.event.server.ServerEvent;

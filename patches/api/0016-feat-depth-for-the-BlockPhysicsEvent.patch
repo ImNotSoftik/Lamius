@@ -12,7 +12,7 @@ index 57568cd02b55d13572d1bc13dcc3434a74ae2885..c003550c429e2d6b4fc5a23d31dc5ba7
      private int sourceY;
      private int sourceZ;
      private Block sourceBlock;
-+    private int depth; // Reaper - Add depth API
++    private int depth; // Lamius - Add depth API
  
      /**
       *
@@ -20,7 +20,7 @@ index 57568cd02b55d13572d1bc13dcc3434a74ae2885..c003550c429e2d6b4fc5a23d31dc5ba7
          this.sourceBlock = null;
      }
  
-+    // Reaper start - Add depth API
++    // Lamius start - Add depth API
 +    /**
 +     *
 +     * @deprecated Magic value
@@ -40,7 +40,7 @@ index 57568cd02b55d13572d1bc13dcc3434a74ae2885..c003550c429e2d6b4fc5a23d31dc5ba7
 +        this.sourceBlock = null;
 +        this.depth = depth;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      /**
       * Gets the source block, causing this event
@@ -49,7 +49,7 @@ index 57568cd02b55d13572d1bc13dcc3434a74ae2885..c003550c429e2d6b4fc5a23d31dc5ba7
      }
      // Paper end
  
-+    // Reaper start - Add depth API
++    // Lamius start - Add depth API
 +    /**
 +     * Gets the depth of the block physics trigger
 +     *
@@ -58,7 +58,7 @@ index 57568cd02b55d13572d1bc13dcc3434a74ae2885..c003550c429e2d6b4fc5a23d31dc5ba7
 +    public int getDepth() {
 +        return depth;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      /**
       *

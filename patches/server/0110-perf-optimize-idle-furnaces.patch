@@ -13,7 +13,7 @@ index 9254fe05dff14e863160315326de7eb5f27710c2..4a37f298052c17af9942f974c303c19a
                      this.cookTime = MathHelper.clamp(this.cookTime - 2, 0, this.cookTimeTotal);
                  }
 -            } else {
-+            } else if (itemstack.getItem() != Items.BUCKET) { // Reaper - Optimize idle furnaces
++            } else if (itemstack.getItem() != Items.BUCKET) { // Lamius - Optimize idle furnaces
                  // CraftBukkit start - Handle multiple elapsed ticks
                  if (this.burnTime <= 0 && this.canBurn()) { // CraftBukkit - == to <=
                      CraftItemStack fuel = CraftItemStack.asCraftMirror(itemstack);

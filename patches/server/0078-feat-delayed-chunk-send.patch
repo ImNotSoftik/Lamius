@@ -4,10 +4,10 @@ Date: Fri, 27 May 2022 09:55:35 +0500
 Subject: [PATCH] feat: delayed chunk send
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java b/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
 index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf03ecb787 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
 @@ -6,6 +6,8 @@ import org.bukkit.ChatColor;
  import org.bukkit.Location;
  import org.bukkit.command.Command;
@@ -17,13 +17,13 @@ index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf
  
  import java.io.File;
  import java.util.Collections;
-@@ -17,14 +19,14 @@ public class ReaperCommand extends Command {
-     public ReaperCommand(String name) {
+@@ -17,14 +19,14 @@ public class LamiusCommand extends Command {
+     public LamiusCommand(String name) {
          super(name);
-         this.description = "Reaper related commands";
--        this.usageMessage = "/reaper [reload]";
-+        this.usageMessage = "/reaper [reload | chunksendlimit]";
-         this.setPermission("bukkit.command.reaper");
+         this.description = "Lamius related commands";
+-        this.usageMessage = "/Lamius [reload]";
++        this.usageMessage = "/Lamius [reload | chunksendlimit]";
+         this.setPermission("bukkit.command.Lamius");
      }
  
      @Override
@@ -34,7 +34,7 @@ index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf
          return Collections.emptyList();
      }
  
-@@ -41,6 +43,9 @@ public class ReaperCommand extends Command {
+@@ -41,6 +43,9 @@ public class LamiusCommand extends Command {
              case "reload":
                  doReload(sender);
                  break;
@@ -44,9 +44,9 @@ index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf
              default:
                  sender.sendMessage(ChatColor.RED + "Usage: " + usageMessage);
                  return false;
-@@ -58,4 +63,24 @@ public class ReaperCommand extends Command {
+@@ -58,4 +63,24 @@ public class LamiusCommand extends Command {
  
-         Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Reaper config reload complete.");
+         Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Lamius config reload complete.");
      }
 +
 +    private void chunkSendLimit(CommandSender sender, String[] args) {
@@ -69,12 +69,12 @@ index 66099259d578cc6addd0342eba19ab2dac275bf9..7b40040a4222ec6a2eeeb7c94040efaf
 +        }
 +    }
  }
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index 2451fd9be55fd143150e67682167ec4e2cdae4e0..92637c77c1cf9e2f4647b4fb4a0d53bc6ca87909 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 @@ -1,6 +1,9 @@
- package com.github.ruviolence.reaper;
+ package com.github.ruviolence.Lamius;
  
  import com.google.common.base.Throwables;
 +import net.minecraft.server.DispenserRegistry;
@@ -83,7 +83,7 @@ index 2451fd9be55fd143150e67682167ec4e2cdae4e0..92637c77c1cf9e2f4647b4fb4a0d53bc
  import net.minecraft.server.MinecraftServer;
  import org.bukkit.Bukkit;
  import org.bukkit.command.Command;
-@@ -135,4 +138,28 @@ public class ReaperConfig {
+@@ -135,4 +138,28 @@ public class LamiusConfig {
          portalTravelCacheLife = 20 * getInt("portal-travel.cache-life", 15);
          portalTravelInstantExpire = getBoolean("portal-travel.instant-expire", false);
      }
@@ -120,7 +120,7 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
      public boolean queueHealthUpdatePacket = false;
      public net.minecraft.server.PacketPlayOutUpdateHealth queuedHealthUpdatePacket;
      // Paper end
-+    // Reaper start - Delayed chunks
++    // Lamius start - Delayed chunks
 +    private List<ChunkCoordIntPair> delayedChunks; public List<ChunkCoordIntPair> getDelayedChunks() { return delayedChunks; }
 +    private int chunkSendLimit;
 +    public int chunkSendLimitLeft;
@@ -155,9 +155,9 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
 +    }
 +
 +    public void initDelayedChunksList() {
-+        if (com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled) {
++        if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
 +            delayedChunks = new ArrayList<>();
-+            chunkSendLimit = com.github.ruviolence.reaper.ReaperConfig.delayedChunksLimit;
++            chunkSendLimit = com.github.ruviolence.Lamius.LamiusConfig.delayedChunksLimit;
 +        } else {
 +            delayedChunks = null;
 +            chunkSendLimitLeft = 0;
@@ -170,10 +170,10 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
 +    }
 +
 +    public void setChunkSendLimit(int limit) {
-+        if (!com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled) return;
++        if (!com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) return;
 +        this.chunkSendLimit = limit > 0 ? limit : 1;
 +    }
-+    // Reaper end
++    // Lamius end
  
      // CraftBukkit start
      public String displayName;
@@ -181,7 +181,7 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
          this.canPickUpLoot = true;
          this.maxHealthCache = this.getMaxHealth();
          // CraftBukkit end
-+        initDelayedChunksList(); // Reaper - Delayed chunks
++        initDelayedChunksList(); // Lamius - Delayed chunks
      }
  
      public final BlockPosition getSpawnPoint(MinecraftServer minecraftserver, WorldServer worldserver) {
@@ -189,10 +189,10 @@ index 96814759247c24370a4ce890c784e6fa7cc05006..4be43502ba35fe8b45ac4a69f55691b5
                  this.oldLevel = this.expLevel;
              }
              // CraftBukkit end
-+            // Reaper start - Delayed chunks
++            // Lamius start - Delayed chunks
 +            sendDelayedChunks();
 +            this.chunkSendLimitLeft = this.chunkSendLimit;
-+            // Reaper end
++            // Lamius end
          } catch (Throwable throwable) {
              CrashReport crashreport = CrashReport.a(throwable, "Ticking player");
              CrashReportSystemDetails crashreportsystemdetails = crashreport.a("Player being ticked");
@@ -201,12 +201,12 @@ index 01c29a59d77c205bb31a5c90242eabc2f6b27303..8f3fd88f52494bd4e949f209735dae20
 --- a/src/main/java/net/minecraft/server/EntityTrackerEntry.java
 +++ b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
 @@ -511,7 +511,8 @@ public class EntityTrackerEntry {
-         // Reaper end
-         int i = Math.min(this.e, com.github.ruviolence.reaper.ReaperConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Reaper - Dynamic view distance
+         // Lamius end
+         int i = Math.min(this.e, com.github.ruviolence.Lamius.LamiusConfig.dynamicViewDistance ? entityplayer.getFurthestViewableBlock() : this.f); // Lamius - Dynamic view distance
  
 -        return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer);
 +        return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer)
-+                && (!com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled || !entityplayer.getDelayedChunks().contains(new ChunkCoordIntPair(this.tracker.ab, this.tracker.ad))); // Reaper - Delayed chunks
++                && (!com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled || !entityplayer.getDelayedChunks().contains(new ChunkCoordIntPair(this.tracker.ab, this.tracker.ad))); // Lamius - Delayed chunks
      }
  
      private boolean e(EntityPlayer entityplayer) {
@@ -218,7 +218,7 @@ index e8d7d710774e80d1316ac207e3b5ab388e16670b..54fd5f22e564ef3093e74a0b62fe1072
          }
      }
  
-+    // Reaper start
++    // Lamius start
 +    public boolean addPlayerIfNotAdded(EntityPlayer player) {
 +        if (this.c.contains(player)) return false;
 +
@@ -234,7 +234,7 @@ index e8d7d710774e80d1316ac207e3b5ab388e16670b..54fd5f22e564ef3093e74a0b62fe1072
 +
 +        return true;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public void b(EntityPlayer entityplayer) {
          if (this.c.contains(entityplayer)) {
@@ -248,7 +248,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
      }
  
 -    private PlayerChunk c(int i, int j) {
-+    protected PlayerChunk c(int i, int j) { // Reaper - private -> protected
++    protected PlayerChunk c(int i, int j) { // Lamius - private -> protected
          long k = d(i, j);
          PlayerChunk playerchunk = (PlayerChunk) this.e.get(k);
  
@@ -256,8 +256,8 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
              }
          }
  
-+        // Reaper start - Delayed chunks
-+        if (com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled) {
++        // Lamius start - Delayed chunks
++        if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
 +            for (int h = 0; h < chunkList.size(); h++) {
 +                ChunkCoordIntPair pair = chunkList.get(h);
 +                entityplayer.addDelayedChunk(pair.x, pair.z);
@@ -265,12 +265,12 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
 +            entityplayer.resortDelayedChunks();
 +            entityplayer.sendDelayedChunks();
 +        } else {
-         chunkList.sort(new ChunkCoordComparator(entityplayer)); // Reaper - Optimize
+         chunkList.sort(new ChunkCoordComparator(entityplayer)); // Lamius - Optimize
          for (ChunkCoordIntPair pair : chunkList) {
              this.c(pair.x, pair.z).a(entityplayer);
          }
 +        }
-+        // Reaper end
++        // Lamius end
          // CraftBukkit end
  
          this.managedPlayers.add(entityplayer);
@@ -278,7 +278,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
          for (int k = i - viewDistance; k <= i + viewDistance; ++k) {
              for (int l = j - viewDistance; l <= j + viewDistance; ++l) {
                  // Paper end
-+                if (com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(k, l)) continue; // Reaper - Delayed chunks
++                if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(k, l)) continue; // Lamius - Delayed chunks
                  PlayerChunk playerchunk = this.getChunk(k, l);
  
                  if (playerchunk != null) {
@@ -288,13 +288,13 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
  
 -                        if (!this.a(l1 - j1, i2 - k1, i, j, i1)) {
 -                            PlayerChunk playerchunk = this.getChunk(l1 - j1, i2 - k1);
-+                        // Reaper start - Delayed chunks
++                        // Lamius start - Delayed chunks
 +                        int x = l1 - j1;
 +                        int z = i2 - k1;
 +                        if (!this.a(x, z, i, j, i1)) {
-+                            if (com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(x, z)) continue;
++                            if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled && entityplayer.removeDelayedChunk(x, z)) continue;
 +                            PlayerChunk playerchunk = this.getChunk(x, z);
-+                            // Reaper end
++                            // Lamius end
  
                              if (playerchunk != null) {
                                  playerchunk.b(entityplayer);
@@ -302,8 +302,8 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
                  entityplayer.d = entityplayer.locX;
                  entityplayer.e = entityplayer.locZ;
                  this.e();
-+                // Reaper start - Delayed chunks
-+                if (com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled) {
++                // Lamius start - Delayed chunks
++                if (com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled) {
 +                    for (int h = 0; h < chunksToLoad.size(); h++) {
 +                        ChunkCoordIntPair pair = chunksToLoad.get(h);
 +                        entityplayer.addDelayedChunk(pair.x, pair.z);
@@ -312,25 +312,25 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
 +                    entityplayer.sendDelayedChunks();
 +                    return;
 +                }
-+                // Reaper end
++                // Lamius end
  
                  // CraftBukkit start - send nearest chunks first
-                 chunksToLoad.sort(new ChunkCoordComparator(entityplayer)); // Reaper - Optimize
+                 chunksToLoad.sort(new ChunkCoordComparator(entityplayer)); // Lamius - Optimize
 @@ -436,10 +464,17 @@ public class PlayerChunkMap {
-             // Reaper end
+             // Lamius end
              int i1;
              int j1;
-+            boolean delayedChunksEnabled = com.github.ruviolence.reaper.ReaperConfig.delayedChunksEnabled; // Reaper
++            boolean delayedChunksEnabled = com.github.ruviolence.Lamius.LamiusConfig.delayedChunksEnabled; // Lamius
  
              if (j > 0) {
                  for (i1 = k - i; i1 <= k + i; ++i1) {
                      for (j1 = l - i; j1 <= l + i; ++j1) {
-+                        // Reaper start - Delayed chunks
++                        // Lamius start - Delayed chunks
 +                        if (delayedChunksEnabled) {
 +                            entityplayer.addDelayedChunk(i1, j1);
 +                            continue;
 +                        }
-+                        // Reaper end
++                        // Lamius end
                          PlayerChunk playerchunk = this.c(i1, j1);
  
                          if (!playerchunk.d(entityplayer)) {
@@ -338,27 +338,27 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
                          }
                      }
                  }
-+                // Reaper start - Delayed chunks
++                // Lamius start - Delayed chunks
 +                if (delayedChunksEnabled) {
 +                    entityplayer.resortDelayedChunks();
 +                    entityplayer.sendDelayedChunks();
 +                }
-+                // Reaper end
++                // Lamius end
              } else {
                  for (i1 = k - oldViewDistance; i1 <= k + oldViewDistance; ++i1) {
                      for (j1 = l - oldViewDistance; j1 <= l + oldViewDistance; ++j1) {
                          if (!this.a(i1, j1, k, l, i)) {
-+                            if (delayedChunksEnabled && entityplayer.removeDelayedChunk(i1, j1)) continue; // Reaper - Delayed chunks
-                             PlayerChunk chunk = this.getChunk(i1, j1); if (chunk != null) chunk.b(entityplayer); // Reaper - Fix memory leak
++                            if (delayedChunksEnabled && entityplayer.removeDelayedChunk(i1, j1)) continue; // Lamius - Delayed chunks
+                             PlayerChunk chunk = this.getChunk(i1, j1); if (chunk != null) chunk.b(entityplayer); // Lamius - Fix memory leak
                          }
                      }
                  }
-+                // Reaper start - Delayed chunks
++                // Lamius start - Delayed chunks
 +                if (delayedChunksEnabled) {
 +                    entityplayer.resortDelayedChunks();
 +                    entityplayer.sendDelayedChunks();
 +                }
-+                // Reaper end
++                // Lamius end
                  if (markSort) {
                      this.e();
                  }
@@ -367,7 +367,7 @@ index 3157d9c15d5a4598f8a4cdcc03ad2dda4350b9ac..4c2ac3081d7f1770b46ea436f73a4c44
  
      // CraftBukkit start - Sorter to load nearby chunks first
 -    private static class ChunkCoordComparator implements java.util.Comparator<ChunkCoordIntPair> {
-+    protected static class ChunkCoordComparator implements java.util.Comparator<ChunkCoordIntPair> { // Reaper - private -> protected
++    protected static class ChunkCoordComparator implements java.util.Comparator<ChunkCoordIntPair> { // Lamius - private -> protected
          private int x;
          private int z;
  

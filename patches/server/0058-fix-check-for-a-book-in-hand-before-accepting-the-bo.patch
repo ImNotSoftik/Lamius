@@ -13,12 +13,12 @@ index 18fd2a01b912c11b322f2ce02e2afe938047306e..d9252b2223ff6942d0991555f6fc261d
              packetdataserializer = packetplayincustompayload.b();
  
              try {
-+                // Reaper start
++                // Lamius start
 +                itemstack1 = this.player.getItemInMainHand();
 +                if (itemstack1.isEmpty() || itemstack1.getItem() != Items.WRITABLE_BOOK) {
 +                    return;
 +                }
-+                // Reaper end
++                // Lamius end
                  itemstack = packetdataserializer.k();
                  if (itemstack.isEmpty()) {
                      return;
@@ -26,15 +26,15 @@ index 18fd2a01b912c11b322f2ce02e2afe938047306e..d9252b2223ff6942d0991555f6fc261d
                      throw new IOException("Invalid book tag!");
                  }
  
-+                /* // Reaper start
++                /* // Lamius start
                  itemstack1 = this.player.getItemInMainHand();
                  if (itemstack1.isEmpty()) {
                      return;
                  }
-+                */ // Reaper end
++                */ // Lamius end
  
 -                if (itemstack.getItem() == Items.WRITABLE_BOOK && itemstack.getItem() == itemstack1.getItem()) {
-+                if (itemstack.getItem() == Items.WRITABLE_BOOK /*&& itemstack.getItem() == itemstack1.getItem()*/) { // Reaper
++                if (itemstack.getItem() == Items.WRITABLE_BOOK /*&& itemstack.getItem() == itemstack1.getItem()*/) { // Lamius
                      if (!validateBook(itemstack)) return; // Paper
                      itemstack1.a("pages", (NBTBase) itemstack.getTag().getList("pages", 8));
                      CraftEventFactory.handleEditBookEvent(player, itemstack1); // CraftBukkit
@@ -42,12 +42,12 @@ index 18fd2a01b912c11b322f2ce02e2afe938047306e..d9252b2223ff6942d0991555f6fc261d
                  packetdataserializer = packetplayincustompayload.b();
  
                  try {
-+                    // Reaper start
++                    // Lamius start
 +                    itemstack1 = this.player.getItemInMainHand();
 +                    if (itemstack1.isEmpty() || itemstack1.getItem() != Items.WRITABLE_BOOK) {
 +                        return;
 +                    }
-+                    // Reaper end
++                    // Lamius end
                      itemstack = packetdataserializer.k();
                      if (itemstack.isEmpty()) {
                          return;
@@ -55,15 +55,15 @@ index 18fd2a01b912c11b322f2ce02e2afe938047306e..d9252b2223ff6942d0991555f6fc261d
                          throw new IOException("Invalid book tag!");
                      }
  
-+                    /* // Reaper start
++                    /* // Lamius start
                      itemstack1 = this.player.getItemInMainHand();
                      if (itemstack1.isEmpty()) {
                          return;
                      }
-+                    */ // Reaper end
++                    */ // Lamius end
  
 -                    if (itemstack.getItem() == Items.WRITABLE_BOOK && itemstack1.getItem() == Items.WRITABLE_BOOK) {
-+                    if (itemstack.getItem() == Items.WRITABLE_BOOK /*&& itemstack1.getItem() == Items.WRITABLE_BOOK*/) { // Reaper
++                    if (itemstack.getItem() == Items.WRITABLE_BOOK /*&& itemstack1.getItem() == Items.WRITABLE_BOOK*/) { // Lamius
                          if (!validateBook(itemstack)) return; // Paper
                          ItemStack itemstack2 = new ItemStack(Items.WRITTEN_BOOK);
  

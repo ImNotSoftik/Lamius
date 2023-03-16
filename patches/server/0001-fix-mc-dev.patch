@@ -66,7 +66,7 @@ index d8b88db47e190c4f7a52db98e7a70cc3b8dcb890..1bd98a7b58ff0c29d3274e09d00c0512
      }
  
 -    public boolean do() {
-+    public boolean isMoving() { // Reaper - MC Dev fix
++    public boolean isMoving() { // Lamius - MC Dev fix
          return ((Boolean) this.datawatcher.get(EntityGuardian.bA)).booleanValue();
      }
  

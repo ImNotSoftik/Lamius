@@ -13,13 +13,13 @@ index d9252b2223ff6942d0991555f6fc261da850df91..78331c8e9abe7a615fe7484d2cf371d9
  
      public void a(PacketPlayInSettings packetplayinsettings) {
          PlayerConnectionUtils.ensureMainThread(packetplayinsettings, this, this.player.x());
-+        // Reaper start - do not accept invalid information
++        // Lamius start - do not accept invalid information
 +        if (packetplayinsettings.getViewDistance() < 0) {
 +            LOGGER.warn("Disconnecting " + this.player.getName() + " for invalid view distance: " + packetplayinsettings.getViewDistance());
 +            this.disconnect("Invalid client settings");
 +            return;
 +        }
-+        // Reaper end
++        // Lamius end
          this.player.a(packetplayinsettings);
      }
  

@@ -13,10 +13,10 @@ index 26f08a7be0a49313ce0596a26f65410e0de3ca0d..65f88cd5209f8581842cefd076daffbb
              int k = MathHelper.floor(this.enderman.locZ - 2.0D + random.nextDouble() * 4.0D);
              BlockPosition blockposition = new BlockPosition(i, j, k);
 -            IBlockData iblockdata = world.getType(blockposition);
-+            // Reaper start - Don't load chunks for endermans
++            // Lamius start - Don't load chunks for endermans
 +            IBlockData iblockdata = world.getTypeIfLoaded(blockposition);
 +            if (iblockdata == null) return;
-+            // Reaper end
++            // Lamius end
              Block block = iblockdata.getBlock();
              MovingObjectPosition movingobjectposition = world.rayTrace(new Vec3D((double) ((float) MathHelper.floor(this.enderman.locX) + 0.5F), (double) ((float) j + 0.5F), (double) ((float) MathHelper.floor(this.enderman.locZ) + 0.5F)), new Vec3D((double) ((float) i + 0.5F), (double) ((float) j + 0.5F), (double) ((float) k + 0.5F)), false, true, false);
              boolean flag = movingobjectposition != null && movingobjectposition.a().equals(blockposition);
@@ -25,10 +25,10 @@ index 26f08a7be0a49313ce0596a26f65410e0de3ca0d..65f88cd5209f8581842cefd076daffbb
              int k = MathHelper.floor(this.a.locZ - 1.0D + random.nextDouble() * 2.0D);
              BlockPosition blockposition = new BlockPosition(i, j, k);
 -            IBlockData iblockdata = world.getType(blockposition);
-+            // Reaper start - Don't load chunks for endermans
++            // Lamius start - Don't load chunks for endermans
 +            IBlockData iblockdata = world.getTypeIfLoaded(blockposition);
 +            if (iblockdata == null) return;
-+            // Reaper end
++            // Lamius end
              IBlockData iblockdata1 = world.getType(blockposition.down());
              IBlockData iblockdata2 = this.a.getCarried();
  

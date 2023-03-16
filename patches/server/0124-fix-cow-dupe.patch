@@ -12,7 +12,7 @@ index 1454dfa31445f381cf7bc0794e82c774288cb78b..ae9239c488c4d7510748b9567459f4b7
  
              return true;
          } else if (itemstack.getItem() == Items.SHEARS && this.getAge() >= 0) {
-+            if (this.dead) return false; // Reaper - Fix cow dupe
++            if (this.dead) return false; // Lamius - Fix cow dupe
              // CraftBukkit start
              PlayerShearEntityEvent event = new PlayerShearEntityEvent((org.bukkit.entity.Player) entityhuman.getBukkitEntity(), this.getBukkitEntity());
              this.world.getServer().getPluginManager().callEvent(event);

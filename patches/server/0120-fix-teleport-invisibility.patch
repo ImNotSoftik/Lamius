@@ -13,7 +13,7 @@ index efdee67c973fbe12abaace1902eaa710d5a5c15a..a75732bd1ce691e968ab5398a18b2638
                          // CraftBukkit start - Refresh list of who can see a player before sending teleport packet
                          if (this.tracker instanceof EntityPlayer) {
 -                            this.scanPlayers(new java.util.ArrayList(this.trackedPlayers));
-+                            this.scanPlayers(new java.util.ArrayList(this.tracker.world.players)); // Reaper - Fix teleport invisibility
++                            this.scanPlayers(new java.util.ArrayList(this.tracker.world.players)); // Lamius - Fix teleport invisibility
                          }
                          // CraftBukkit end
                          this.c();

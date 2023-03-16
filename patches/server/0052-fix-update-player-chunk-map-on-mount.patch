@@ -15,7 +15,7 @@ index 79d0f7e64be4f8232996c31234a81ff8ebefadec..e86017a635b4b7c095c883ec6bdfa006
  
              if (entity2 != entity1 && this.playerConnection != null) {
                  this.playerConnection.a(this.locX, this.locY, this.locZ, this.yaw, this.pitch);
-+                x().getPlayerChunkMap().movePlayer(this); // Reaper - Fix PyroClient AutoDupe
++                x().getPlayerChunkMap().movePlayer(this); // Lamius - Fix PyroClient AutoDupe
              }
  
              return true;

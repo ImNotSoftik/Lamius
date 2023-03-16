@@ -11,8 +11,8 @@ index 6ca68349f241546c6e799fc04590b2ba6ec49230..4cdbcb0993194b327bc7117c05e8da32
 @@ -301,6 +301,7 @@ public abstract class EntityArrow extends Entity implements IProjectile {
                      EntityLiving entityliving = (EntityLiving) entity;
  
-                     if (true) { // Reaper - Remove isClientSide check
-+                        if (new com.github.ruviolence.reaper.event.entity.EntityArrowStuckEvent(entityliving.getBukkitEntity()).callEvent()) // Reaper - Add EntityArrowStuckEvent
+                     if (true) { // Lamius - Remove isClientSide check
++                        if (new com.github.ruviolence.Lamius.event.entity.EntityArrowStuckEvent(entityliving.getBukkitEntity()).callEvent()) // Lamius - Add EntityArrowStuckEvent
                          entityliving.setArrowCount(entityliving.getArrowCount() + 1);
                      }
  

@@ -13,7 +13,7 @@ index 2eca9cfb278ebcf04a47d47075bdfdb8ea30b5f8..6f075bc2d811d6770e66f9826babb520
                  int i1 = MathHelper.floor(vec3d.y);
                  int j1 = MathHelper.floor(vec3d.z);
 -                BlockPosition blockposition = new BlockPosition(l, i1, j1);
-+                BlockPosition.MutableBlockPosition blockposition = new BlockPosition.MutableBlockPosition(l, i1, j1); // Reaper - Optimize BlockPosition
++                BlockPosition.MutableBlockPosition blockposition = new BlockPosition.MutableBlockPosition(l, i1, j1); // Lamius - Optimize BlockPosition
                  IBlockData iblockdata = this.getTypeIfLoaded(blockposition); // Paper
                  if (iblockdata == null) return null; // Paper
                  Block block = iblockdata.getBlock();
@@ -22,7 +22,7 @@ index 2eca9cfb278ebcf04a47d47075bdfdb8ea30b5f8..6f075bc2d811d6770e66f9826babb520
                      i1 = MathHelper.floor(vec3d.y) - (enumdirection == EnumDirection.UP ? 1 : 0);
                      j1 = MathHelper.floor(vec3d.z) - (enumdirection == EnumDirection.SOUTH ? 1 : 0);
 -                    blockposition = new BlockPosition(l, i1, j1);
-+                    blockposition.c(l, i1, j1); // Reaper - Optimize BlockPosition
++                    blockposition.c(l, i1, j1); // Lamius - Optimize BlockPosition
                      IBlockData iblockdata1 = this.getTypeIfLoaded(blockposition); // Paper
                      if (iblockdata1 == null) return null; // Paper
                      Block block1 = iblockdata1.getBlock();

@@ -12,7 +12,7 @@ index b48e8aeb9f0dddb3d722e92ecaee04d5785a9d0b..785a6c1dfbfbdb52c8eb272f3fb6e31d
  
      public void o() {
          if (!this.a) {
-+            if (this.world == null || !this.world.areChunksLoaded(this.position, 1)) return; // Reaper
++            if (this.world == null || !this.world.areChunksLoaded(this.position, 1)) return; // Lamius
              this.a = true;
              this.h = this.a(EnumDirection.WEST);
              this.g = this.a(EnumDirection.EAST);

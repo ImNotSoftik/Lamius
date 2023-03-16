@@ -15,7 +15,7 @@ index fdf19d1f41eb581d652e897207b83454ecada873..12ef11ef0eb7d39baf8c66d19466232c
          this.a = i;
          if (flag) {
              this.b = datawatcher.c();
-+            if (false) // Reaper - Don't clear because of one player
++            if (false) // Lamius - Don't clear because of one player
              datawatcher.e();
          } else {
              this.b = datawatcher.b();

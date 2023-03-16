@@ -13,7 +13,7 @@ index e23db48f4dd372e9a554fc98a0b3e51d00278d08..e10f67508c1d2dbbe41a1db8cf900a83
              <groupId>io.netty</groupId>
              <artifactId>netty-all</artifactId>
 -            <version>4.1.24.Final</version>
-+            <version>4.1.77.Final</version> <!-- Reaper - Update Netty dependency -->
++            <version>4.1.77.Final</version> <!-- Lamius - Update Netty dependency -->
              <scope>compile</scope>
          </dependency>
          <dependency>

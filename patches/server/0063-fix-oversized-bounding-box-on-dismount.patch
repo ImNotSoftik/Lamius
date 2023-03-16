@@ -12,11 +12,11 @@ index 7a82b1d4695ffcb67372015a8f603f530725ac73..599995662a2e0e6785d74374552355d2
  
              if (this.isPassenger() && !this.bJ().dead) {
                  axisalignedbb = this.getBoundingBox().b(this.bJ().getBoundingBox()).grow(1.0D, 0.0D, 1.0D);
-+                // Reaper start - Fix crash
++                // Lamius start - Fix crash
 +                if (axisalignedbb.d - axisalignedbb.a > 64 || axisalignedbb.e - axisalignedbb.b > 64 || axisalignedbb.f - axisalignedbb.c > 64) {
 +                    MinecraftServer.LOGGER.warn("Bounding box of the player " + getName() + " is oversized: " + axisalignedbb);
 +                    axisalignedbb = this.getBoundingBox().grow(1.0D, 0.5D, 1.0D);
-+                } // Reaper end
++                } // Lamius end
              } else {
                  axisalignedbb = this.getBoundingBox().grow(1.0D, 0.5D, 1.0D);
              }

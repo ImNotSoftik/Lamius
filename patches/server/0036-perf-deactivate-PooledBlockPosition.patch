@@ -12,10 +12,10 @@ index e0c122487f631b7945486c538e8e7154b4a080dc..3c8f2520c74afcb4e9bc68932401527c
  
      public static final class PooledBlockPosition extends BlockPosition.MutableBlockPosition {
  
-+        /* // Reaper start - Deactivate PooledBlockPosition
++        /* // Lamius start - Deactivate PooledBlockPosition
          private boolean f;
          private static final List<BlockPosition.PooledBlockPosition> g = Lists.newArrayList();
-+        */ // Reaper end
++        */ // Lamius end
  
          private PooledBlockPosition(int i, int j, int k) {
              super(i, j, k);
@@ -23,39 +23,39 @@ index e0c122487f631b7945486c538e8e7154b4a080dc..3c8f2520c74afcb4e9bc68932401527c
          }
  
          public static BlockPosition.PooledBlockPosition e(int i, int j, int k) {
-+            /* // Reaper start - Deactivate PooledBlockPosition
-             // List list = BlockPosition.PooledBlockPosition.g; // Reaper - Unused
++            /* // Lamius start - Deactivate PooledBlockPosition
+             // List list = BlockPosition.PooledBlockPosition.g; // Lamius - Unused
  
              synchronized (BlockPosition.PooledBlockPosition.g) {
 @@ -313,12 +316,14 @@ public class BlockPosition extends BaseBlockPosition {
                      }
                  }
              }
-+            */ // Reaper end
++            */ // Lamius end
  
              return new BlockPosition.PooledBlockPosition(i, j, k);
          }
  
          public void free() { t(); } // Paper - OBFHELPER
          public void t() {
-+            /* // Reaper start - Deactivate PooledBlockPosition
-             // List list = BlockPosition.PooledBlockPosition.g; // Reaper - Unused
++            /* // Lamius start - Deactivate PooledBlockPosition
+             // List list = BlockPosition.PooledBlockPosition.g; // Lamius - Unused
  
              synchronized (BlockPosition.PooledBlockPosition.g) {
 @@ -328,13 +333,16 @@ public class BlockPosition extends BaseBlockPosition {
  
                  this.f = true;
              }
-+            */ // Reaper end
++            */ // Lamius end
          }
  
          public BlockPosition.PooledBlockPosition f(int i, int j, int k) {
-+            /* // Reaper start - Deactivate PooledBlockPosition
++            /* // Lamius start - Deactivate PooledBlockPosition
              if (this.f) {
                  BlockPosition.b.error("PooledMutableBlockPosition modified after it was released.", new Throwable());
                  this.f = false;
              }
-+            */ // Reaper end
++            */ // Lamius end
  
              return (BlockPosition.PooledBlockPosition) super.c(i, j, k);
          }

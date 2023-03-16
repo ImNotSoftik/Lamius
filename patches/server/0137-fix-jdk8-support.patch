@@ -14,7 +14,7 @@ index 273dc269d5617ce1dd9206014cf77cde11bf7ae1..05bd5fe48889bc47eb347e941e7ec61f
                  if (this.c.getChannel().read(header) == -1) throw new EOFException();
              }
 -            header.clear();
-+            ((java.nio.Buffer) header).clear(); // Reaper - Fix JDK8 support
++            ((java.nio.Buffer) header).clear(); // Lamius - Fix JDK8 support
              IntBuffer headerAsInts = header.asIntBuffer();
              initOversizedState();
              // Paper End

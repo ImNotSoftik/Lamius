@@ -35,9 +35,9 @@ index 1d088d166adfb41acf611288b49d16e1d924b475..04ce30a82ee7f655b23f9620fd19e912
 +++ b/src/main/java/net/minecraft/server/MinecraftServer.java
 @@ -959,7 +959,26 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
  
-                 // this.methodProfiler.b(); // Reaper - Remove MethodProfiler
-                 // this.methodProfiler.a("tracker"); // Reaper - Remove MethodProfiler
-+                // Reaper start - Flush consolidation
+                 // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
+                 // this.methodProfiler.a("tracker"); // Lamius - Remove MethodProfiler
++                // Lamius start - Flush consolidation
 +                List<net.minecraft.server.PlayerConnection> disabledFlushes = new java.util.ArrayList<>(worldserver.players.size());
 +                for (EntityHuman entityHuman : worldserver.players) {
 +                    if (entityHuman instanceof EntityPlayer) {
@@ -48,15 +48,15 @@ index 1d088d166adfb41acf611288b49d16e1d924b475..04ce30a82ee7f655b23f9620fd19e912
 +                        }
 +                    }
 +                }
-+                try { // Reaper end - Flush consolidation
++                try { // Lamius end - Flush consolidation
                  worldserver.getTracker().updatePlayers();
-+                // Reaper start - Flush consolidation
++                // Lamius start - Flush consolidation
 +                } finally {
 +                    for (net.minecraft.server.PlayerConnection playerConnection : disabledFlushes) {
 +                        playerConnection.networkManager.enableAutomaticFlush();
 +                    }
 +                }
-+                // Reaper end - Flush consolidation
-                 // this.methodProfiler.b(); // Reaper - Remove MethodProfiler
-                 // this.methodProfiler.b(); // Reaper - Remove MethodProfiler
++                // Lamius end - Flush consolidation
+                 // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
+                 // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
                  worldserver.explosionDensityCache.clear(); // Paper - Optimize explosions

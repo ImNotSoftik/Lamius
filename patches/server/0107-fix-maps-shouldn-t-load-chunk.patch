@@ -13,10 +13,10 @@ index 9269178738a789764db89980806f93d5c8fc8915..9cf5def08da1319e769d17f62900a64f
                              int l2 = (k / i + l1 - 64) * i;
                              HashMultiset hashmultiset = HashMultiset.create();
 -                            Chunk chunk = world.getChunkAtWorldCoords(new BlockPosition(k2, 0, l2));
-+                            Chunk chunk = world.getChunkIfLoaded(new BlockPosition(k2, 0, l2)); // Reaper - Maps shouldn't load chunks
++                            Chunk chunk = world.getChunkIfLoaded(new BlockPosition(k2, 0, l2)); // Lamius - Maps shouldn't load chunks
  
 -                            if (!chunk.isEmpty()) {
-+                            if (chunk != null && !chunk.isEmpty()) { // Reaper - Maps shouldn't load chunks
++                            if (chunk != null && !chunk.isEmpty()) { // Lamius - Maps shouldn't load chunks
                                  int i3 = k2 & 15;
                                  int j3 = l2 & 15;
                                  int k3 = 0;

@@ -13,7 +13,7 @@ index 4c2ac3081d7f1770b46ea436f73a4c44506a7bbf..d03f782c0333ad3bcbcae8f82f0fac7a
      };
      private final WorldServer world;
 -    private final List<EntityPlayer> managedPlayers = Lists.newArrayList();
-+    private final List<EntityPlayer> managedPlayers = new it.unimi.dsi.fastutil.objects.ObjectArrayList<>(); // Reaper - ArrayList -> ObjectArrayList
++    private final List<EntityPlayer> managedPlayers = new it.unimi.dsi.fastutil.objects.ObjectArrayList<>(); // Lamius - ArrayList -> ObjectArrayList
      private final Long2ObjectMap<PlayerChunk> e = new Long2ObjectOpenHashMap(4096);
      private final Set<PlayerChunk> f = Sets.newHashSet();
      private final List<PlayerChunk> g = Lists.newLinkedList();

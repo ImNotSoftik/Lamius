@@ -12,10 +12,10 @@ index 0f2f9afc4cbca4d8200a7c98687546957be15551..070488d870ea9dbb85c4093693e2b813
                  } // Paper end - End iteration skip check - All tweaking ends here
              }
          } // Spigot end
-+        // Reaper start
-+        else if (com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent.getHandlerList().getRegisteredListeners().length != 0) {
++        // Lamius start
++        else if (com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent.getHandlerList().getRegisteredListeners().length != 0) {
 +            event = CraftEventFactory.callAnyEntitySpawnEvent(entity, spawnReason);
-+        } // Reaper end
++        } // Lamius end
  
          if (event != null && (event.isCancelled() || entity.dead)) {
              entity.dead = true;
@@ -25,10 +25,10 @@ index 9727853a41754a14416611b5184bcd7a3cb02d28..f9e25970d40db707576c7d8a76a27b39
 +++ b/src/main/java/org/bukkit/craftbukkit/event/CraftEventFactory.java
 @@ -75,6 +75,7 @@ public class CraftEventFactory {
      public static Entity entityDamage; // For use in EntityDamageByEntityEvent
-     // Reaper start
-     private static final com.github.ruviolence.reaper.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.reaper.event.entity.EntityMoveEvent(null);
-+    private static final com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent(null);
-     // Reaper end
+     // Lamius start
+     private static final com.github.ruviolence.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.Lamius.event.entity.EntityMoveEvent(null);
++    private static final com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent anyEntitySpawnEvent = new com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent(null);
+     // Lamius end
  
      // helper methods
 @@ -1192,5 +1193,17 @@ public class CraftEventFactory {
@@ -36,8 +36,8 @@ index 9727853a41754a14416611b5184bcd7a3cb02d28..f9e25970d40db707576c7d8a76a27b39
          return !event.isCancelled();
      }
 +
-+    public static com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent callAnyEntitySpawnEvent(Entity entity, SpawnReason spawnReason) {
-+        com.github.ruviolence.reaper.event.entity.AnyEntitySpawnEvent event = CraftEventFactory.anyEntitySpawnEvent;
++    public static com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent callAnyEntitySpawnEvent(Entity entity, SpawnReason spawnReason) {
++        com.github.ruviolence.Lamius.event.entity.AnyEntitySpawnEvent event = CraftEventFactory.anyEntitySpawnEvent;
 +
 +        event.setData(
 +                entity.getBukkitEntity(),
@@ -47,5 +47,5 @@ index 9727853a41754a14416611b5184bcd7a3cb02d28..f9e25970d40db707576c7d8a76a27b39
 +
 +        return event;
 +    }
-     // Reaper end
+     // Lamius end
  }

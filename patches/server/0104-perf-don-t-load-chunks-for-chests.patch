@@ -13,12 +13,12 @@ index 7b279458219ce6ba59ee3c5c3ea08c67b0c71db0..ed5d554e5728dfe2ca060010ad48aa0d
              EnumDirection enumdirection = (EnumDirection) iterator.next();
              BlockPosition blockposition1 = blockposition.shift(enumdirection);
 -            IBlockData iblockdata1 = world.getType(blockposition1);
-+            // Reaper start - Dont load chunks for chests
++            // Lamius start - Dont load chunks for chests
 +            final IBlockData iblockdata1 = world.isLoaded(blockposition1) ? world.getType(blockposition1) : null;
 +            if (iblockdata1 == null) {
 +                continue;
 +            }
-+            // Reaper end
++            // Lamius end
  
              if (iblockdata1.getBlock() == this) {
                  this.e(world, blockposition1, iblockdata1);

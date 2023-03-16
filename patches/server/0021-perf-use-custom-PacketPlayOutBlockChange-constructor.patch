@@ -12,12 +12,12 @@ index 1ca03882983bfd2f04fa0e5300e3db56f99771b9..33447e1b5370edd4533f7d52499e00d0
          this.block = world.getType(blockposition);
      }
  
-+    // Reaper start
++    // Lamius start
 +    public PacketPlayOutBlockChange(BlockPosition blockposition, IBlockData iblockdata) {
 +        this.a = blockposition;
 +        this.block = iblockdata;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public void a(PacketDataSerializer packetdataserializer) throws IOException {
          this.a = packetdataserializer.e();
@@ -32,11 +32,11 @@ index 49e4c15330b9e7618722268b194cacdab79d9393..8dedbe4c4e6198cd9659023022eab4d5
  
 -                    if (worldserver.getType(blockposition).getMaterial() != Material.AIR) {
 -                        this.player.playerConnection.sendPacket(new PacketPlayOutBlockChange(worldserver, blockposition));
-+                    // Reaper start - Use custom constructor
++                    // Lamius start - Use custom constructor
 +                    IBlockData blockData = worldserver.getType(blockposition);
 +                    if (blockData.getMaterial() != Material.AIR) {
 +                        this.player.playerConnection.sendPacket(new PacketPlayOutBlockChange(blockposition, blockData));
-+                        // Reaper end
++                        // Lamius end
                      }
                  }
  
@@ -49,7 +49,7 @@ index f6b15a4d78e8b7ae7213b2a2bbbf6dc6e74b1086..5458e442916d4912c4c6eec6223c07d2
                      // For some reason *BOTH* the bottom/top part have to be marked updated.
                      boolean bottom = data.get(BlockDoor.HALF) == BlockDoor.EnumDoorHalf.LOWER;
 -                    ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
-+                    ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(blockposition, data)); // Reaper - Use custom constructor
++                    ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(blockposition, data)); // Lamius - Use custom constructor
                      ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, bottom ? blockposition.up() : blockposition.down()));
                  } else if (block == Blocks.TRAPDOOR) {
 -                    ((EntityPlayer) this.player).playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
@@ -63,7 +63,7 @@ index f6b15a4d78e8b7ae7213b2a2bbbf6dc6e74b1086..5458e442916d4912c4c6eec6223c07d2
                      // Send a block change to air and then send back the correct block, just to make the client happy
 -                    PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(this.world, blockposition);
 -                    packet.block = Blocks.AIR.getBlockData();
-+                    PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(blockposition, Blocks.AIR.getBlockData()); // Reaper - Use custom constructor
++                    PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(blockposition, Blocks.AIR.getBlockData()); // Lamius - Use custom constructor
                      this.player.playerConnection.sendPacket(packet);
  
                      this.player.playerConnection.sendPacket(new PacketPlayOutBlockChange(this.world, blockposition));
@@ -76,7 +76,7 @@ index b0934ae20b8a05b96048cfd25b4fcadf2c47d4b4..82392c3439c1692ec2179c87415204ee
          if (getHandle().playerConnection == null) return;
  
 -        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(((CraftWorld) loc.getWorld()).getHandle(), new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()));
-+        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), CraftMagicNumbers.getBlock(material).fromLegacyData(data)); // Reaper - Use custom constructor
++        PacketPlayOutBlockChange packet = new PacketPlayOutBlockChange(new BlockPosition(loc.getBlockX(), loc.getBlockY(), loc.getBlockZ()), CraftMagicNumbers.getBlock(material).fromLegacyData(data)); // Lamius - Use custom constructor
  
 -        packet.block = CraftMagicNumbers.getBlock(material).fromLegacyData(data);
          getHandle().playerConnection.sendPacket(packet);

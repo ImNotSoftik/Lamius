@@ -22,10 +22,10 @@ jobs:
           git config --global user.email "no-reply@github.com"
           git config --global user.name "Github Actions"
 
-      - name: Patch Reaper
+      - name: Patch Lamius
         run: |
           git submodule update --init --recursive
-          ./reaper jar
+          ./Lamius jar
 
       - name: Extract release notes
         id: extract_release_notes
@@ -55,6 +55,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: reaper-paperclip.jar
-          asset_name: reaper-paperclip.jar
+          asset_path: Lamius-paperclip.jar
+          asset_name: Lamius-paperclip.jar
           asset_content_type: application/zip

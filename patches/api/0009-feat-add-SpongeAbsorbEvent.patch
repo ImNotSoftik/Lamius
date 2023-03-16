@@ -4,13 +4,13 @@ Date: Thu, 26 May 2022 09:22:23 +0500
 Subject: [PATCH] feat: add SpongeAbsorbEvent
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/event/block/SpongeAbsorbEvent.java b/src/main/java/com/github/ruviolence/reaper/event/block/SpongeAbsorbEvent.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/event/block/SpongeAbsorbEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/block/SpongeAbsorbEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..591af04b30cae0bebc587af5374b354b207edd95
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/event/block/SpongeAbsorbEvent.java
++++ b/src/main/java/com/github/ruviolence/Lamius/event/block/SpongeAbsorbEvent.java
 @@ -0,0 +1,50 @@
-+package com.github.ruviolence.reaper.event.block;
++package com.github.ruviolence.Lamius.event.block;
 +
 +import org.bukkit.block.Block;
 +import org.bukkit.event.Cancellable;

@@ -14,10 +14,10 @@ index 2f9f7ee109a6fd50ad6ef221e09bfe9980ea1699..960db455d58a90b9ec9895b4d81c1b36
          private final int size;
          private long time;
 -        private double total;
-+        private java.math.BigDecimal total; // Reaper
++        private java.math.BigDecimal total; // Lamius
          private int index = 0;
 -        private final double[] samples;
-+        private final java.math.BigDecimal[] samples; // Reaper
++        private final java.math.BigDecimal[] samples; // Lamius
          private final long[] times;
  
          RollingAverage(int size) {
@@ -25,33 +25,33 @@ index 2f9f7ee109a6fd50ad6ef221e09bfe9980ea1699..960db455d58a90b9ec9895b4d81c1b36
              this.time = size * SEC_IN_NANO;
 -            this.total = TPS * SEC_IN_NANO * size;
 -            this.samples = new double[size];
-+            // Reaper start
++            // Lamius start
 +            this.total = dec(TPS).multiply(dec(SEC_IN_NANO)).multiply(dec(size));
 +            this.samples = new java.math.BigDecimal[size];
-+            // Reaper end
++            // Lamius end
              this.times = new long[size];
              for (int i = 0; i < size; i++) {
 -                this.samples[i] = TPS;
-+                this.samples[i] = dec(TPS); // Reaper
++                this.samples[i] = dec(TPS); // Lamius
                  this.times[i] = SEC_IN_NANO;
              }
          }
  
 -        public void add(double x, long t) {
-+        // Reaper start
++        // Lamius start
 +        private static java.math.BigDecimal dec(long t) {
 +            return new java.math.BigDecimal(t);
 +        }
-+        // Reaper end
-+        public void add(java.math.BigDecimal x, long t) { // Reaper
++        // Lamius end
++        public void add(java.math.BigDecimal x, long t) { // Lamius
              time -= times[index];
 -            total -= samples[index] * times[index];
-+            total = total.subtract(samples[index].multiply(dec(times[index]))); // Reaper
++            total = total.subtract(samples[index].multiply(dec(times[index]))); // Lamius
              samples[index] = x;
              times[index] = t;
              time += t;
 -            total += x * t;
-+            total = total.add(x.multiply(dec(t))); // Reaper
++            total = total.add(x.multiply(dec(t))); // Lamius
              if (++index == size) {
                  index = 0;
              }
@@ -59,10 +59,10 @@ index 2f9f7ee109a6fd50ad6ef221e09bfe9980ea1699..960db455d58a90b9ec9895b4d81c1b36
  
          public double getAverage() {
 -            return total / time;
-+            return total.divide(dec(time), 30, java.math.RoundingMode.HALF_UP).doubleValue(); // Reaper
++            return total.divide(dec(time), 30, java.math.RoundingMode.HALF_UP).doubleValue(); // Lamius
          }
      }
-+    private static final java.math.BigDecimal TPS_BASE = new java.math.BigDecimal(1E9).multiply(new java.math.BigDecimal(SAMPLE_INTERVAL)); // Reaper
++    private static final java.math.BigDecimal TPS_BASE = new java.math.BigDecimal(1E9).multiply(new java.math.BigDecimal(SAMPLE_INTERVAL)); // Lamius
      // Paper End
  
      public void run() {
@@ -71,7 +71,7 @@ index 2f9f7ee109a6fd50ad6ef221e09bfe9980ea1699..960db455d58a90b9ec9895b4d81c1b36
                      {
                          final long diff = curTime - tickSection;
 -                        double currentTps = 1E9 / diff * SAMPLE_INTERVAL;
-+                        java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP); // Reaper
++                        java.math.BigDecimal currentTps = TPS_BASE.divide(new java.math.BigDecimal(diff), 30, java.math.RoundingMode.HALF_UP); // Lamius
                          tps1.add(currentTps, diff);
                          tps5.add(currentTps, diff);
                          tps15.add(currentTps, diff);
@@ -84,6 +84,6 @@ index 6d21c326922ad424734c803c8f0ab586bfa999b7..53e330a6a1edf62b006b567081849acd
      {
          return ( ( tps > 18.0 ) ? ChatColor.GREEN : ( tps > 16.0 ) ? ChatColor.YELLOW : ChatColor.RED ).toString()
 -                + ( ( tps > 20.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 );
-+                + ( ( tps > 21.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 ); // Reaper - Only print * at 21, we commonly peak to 20.02 as the tick sleep is not accurate enough, stop the noise
++                + ( ( tps > 21.0 ) ? "*" : "" ) + Math.min( Math.round( tps * 100.0 ) / 100.0, 20.0 ); // Lamius - Only print * at 21, we commonly peak to 20.02 as the tick sleep is not accurate enough, stop the noise
      }
  }

@@ -11,16 +11,16 @@ index 8061a7c12aa32e6dc9bdd697983925cfd93eee96..23f91ae7a9fd19247057c489967c9204
 @@ -200,6 +200,7 @@ public abstract class Entity implements ICommandListener, KeyedObject { // Paper
      private boolean isInLava;
      private int lastLavaCheck = -1;
-     // Reaper end
-+    public EnumMoveType moveType; // Reaper - EntityMoveEvent
+     // Lamius end
++    public EnumMoveType moveType; // Lamius - EntityMoveEvent
  
-     // Reaper start - Cache current block pos
+     // Lamius start - Cache current block pos
      void resetBlockPos() {
 @@ -608,6 +609,7 @@ public abstract class Entity implements ICommandListener, KeyedObject { // Paper
      }
  
      public void move(EnumMoveType enummovetype, double d0, double d1, double d2) {
-+        this.moveType = enummovetype; // Reaper - EntityMoveEvent
++        this.moveType = enummovetype; // Lamius - EntityMoveEvent
          if (this.noclip) {
              this.a(this.getBoundingBox().d(d0, d1, d2));
              this.recalcPosition();
@@ -32,7 +32,7 @@ index cb3985d7604417f8ec6f9f6b2a0947cb8a269b97..8a5e909f63c0b0298351070675daa465
      }
  
      public void move(EnumMoveType enummovetype, double d0, double d1, double d2) {
-+        this.moveType = enummovetype; // Reaper - EntityMoveEvent
++        this.moveType = enummovetype; // Lamius - EntityMoveEvent
          if (enummovetype == EnumMoveType.SHULKER_BOX) {
              this.p();
          } else {
@@ -44,9 +44,9 @@ index 041b2f66982187c34f4de6cca7fde5851c800a75..e6ebdcda82b96cb5f80829de1f309540
      // Spigot start
      public final SlackActivityAccountant slackActivityAccountant = new SlackActivityAccountant();
      // Spigot end
-+    // Reaper start
++    // Lamius start
 +    boolean hasEntityMoveEvent;
-+    // Reaper end
++    // Lamius end
  
      public MinecraftServer(OptionSet options, Proxy proxy, DataConverterManager dataconvertermanager, YggdrasilAuthenticationService yggdrasilauthenticationservice, MinecraftSessionService minecraftsessionservice, GameProfileRepository gameprofilerepository, UserCache usercache) {
          SERVER = this; // Paper - better singleton
@@ -54,9 +54,9 @@ index 041b2f66982187c34f4de6cca7fde5851c800a75..e6ebdcda82b96cb5f80829de1f309540
          }
          MinecraftTimings.timeUpdateTimer.stopTiming(); // Spigot
  
-+        // Reaper start
-+        hasEntityMoveEvent = com.github.ruviolence.reaper.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
-+        // Reaper end
++        // Lamius start
++        hasEntityMoveEvent = com.github.ruviolence.Lamius.event.entity.EntityMoveEvent.getHandlerList().getRegisteredListeners().length != 0;
++        // Lamius end
 +
          int i;
  
@@ -70,7 +70,7 @@ index 0e9b94a760122c27f8c35e58307e98014fc4e9c7..9a013f723873de8c3d04e90608bef0e6
                              d1 = Math.min(d1, d0) + 0.01D;
                              TileEntityPiston.i.set(enumdirection);
 -                            entity.move(EnumMoveType.PISTON, d1 * (double) enumdirection.getAdjacentX(), d1 * (double) enumdirection.getAdjacentY(), d1 * (double) enumdirection.getAdjacentZ());
-+                            // Reaper start - EntityMoveEvent
++                            // Lamius start - EntityMoveEvent
 +                            if (MinecraftServer.getServer().hasEntityMoveEvent && !(entity instanceof EntityPlayer)) {
 +                                double oldX = entity.locX;
 +                                double oldY = entity.locY;
@@ -90,7 +90,7 @@ index 0e9b94a760122c27f8c35e58307e98014fc4e9c7..9a013f723873de8c3d04e90608bef0e6
 +                            } else {
 +                                entity.move(EnumMoveType.PISTON, d1 * (double) enumdirection.getAdjacentX(), d1 * (double) enumdirection.getAdjacentY(), d1 * (double) enumdirection.getAdjacentZ());
 +                            }
-+                            // Reaper end
++                            // Lamius end
                              TileEntityPiston.i.set(null);
                              if (!this.g && this.h) {
                                  this.a(entity, enumdirection, d0);
@@ -99,7 +99,7 @@ index 0e9b94a760122c27f8c35e58307e98014fc4e9c7..9a013f723873de8c3d04e90608bef0e6
                  d1 = Math.min(d1, d0) + 0.01D;
                  TileEntityPiston.i.set(enumdirection);
 -                entity.move(EnumMoveType.PISTON, d1 * (double) enumdirection1.getAdjacentX(), d1 * (double) enumdirection1.getAdjacentY(), d1 * (double) enumdirection1.getAdjacentZ());
-+                // Reaper start - EntityMoveEvent
++                // Lamius start - EntityMoveEvent
 +                if (MinecraftServer.getServer().hasEntityMoveEvent && !(entity instanceof EntityPlayer)) {
 +                    double oldX = entity.locX;
 +                    double oldY = entity.locY;
@@ -119,7 +119,7 @@ index 0e9b94a760122c27f8c35e58307e98014fc4e9c7..9a013f723873de8c3d04e90608bef0e6
 +                } else {
 +                    entity.move(EnumMoveType.PISTON, d1 * (double) enumdirection1.getAdjacentX(), d1 * (double) enumdirection1.getAdjacentY(), d1 * (double) enumdirection1.getAdjacentZ());
 +                }
-+                // Reaper end
++                // Lamius end
                  TileEntityPiston.i.set(null);
              }
          }
@@ -131,18 +131,18 @@ index a27f6efd3005171acae4474983654321d518e58b..0f2f9afc4cbca4d8200a7c9868754695
          int entitiesThisCycle = 0;
          // Paper start - Disable tick limiters
          //if (tickPosition < 0) tickPosition = 0;
-+        // Reaper start
++        // Lamius start
 +        boolean hasEntityMoveEvent = getMinecraftServer().hasEntityMoveEvent;
-+        // Reaper end
++        // Lamius end
          for (tickPosition = 0; tickPosition < entityList.size(); tickPosition++) {
              // Paper end
-             tickPosition = (/*tickPosition < entityList.size()*/true) ? tickPosition : 0; // Reaper - Optimize
+             tickPosition = (/*tickPosition < entityList.size()*/true) ? tickPosition : 0; // Lamius - Optimize
 @@ -1622,7 +1625,27 @@ public abstract class World implements IBlockAccess {
              if (!entity.dead && !(entity instanceof EntityPlayer)) {
                  try {
                      entity.tickTimer.startTiming(); // Paper
 -                    this.h(entity);
-+                    // Reaper start - EntityMoveEvent
++                    // Lamius start - EntityMoveEvent
 +                    if (hasEntityMoveEvent) {
 +                        double oldX = entity.locX;
 +                        double oldY = entity.locY;
@@ -162,7 +162,7 @@ index a27f6efd3005171acae4474983654321d518e58b..0f2f9afc4cbca4d8200a7c9868754695
 +                    } else {
 +                        this.h(entity);
 +                    }
-+                    // Reaper end
++                    // Lamius end
                      entity.tickTimer.stopTiming(); // Paper
                  } catch (Throwable throwable1) {
                      entity.tickTimer.stopTiming();
@@ -174,9 +174,9 @@ index 41ea8d9f5bb862cb8f6b3a830468277492b8cd7d..9727853a41754a14416611b5184bcd7a
      public static final DamageSource POISON = CraftDamageSource.copyOf(DamageSource.MAGIC);
      public static org.bukkit.block.Block blockDamage; // For use in EntityDamageByBlockEvent
      public static Entity entityDamage; // For use in EntityDamageByEntityEvent
-+    // Reaper start
-+    private static final com.github.ruviolence.reaper.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.reaper.event.entity.EntityMoveEvent(null);
-+    // Reaper end
++    // Lamius start
++    private static final com.github.ruviolence.Lamius.event.entity.EntityMoveEvent entityMoveEvent = new com.github.ruviolence.Lamius.event.entity.EntityMoveEvent(null);
++    // Lamius end
  
      // helper methods
      private static boolean canBuild(CraftWorld world, Player player, int x, int z) {
@@ -185,14 +185,14 @@ index 41ea8d9f5bb862cb8f6b3a830468277492b8cd7d..9727853a41754a14416611b5184bcd7a
          return !event.isCancelled();
      }
 +
-+    // Reaper start
++    // Lamius start
 +    public static boolean callEntityMoveEvent(Entity entity, EnumMoveType moveType, World world, 
 +                                              double oldX, double oldY, double oldZ,
 +                                              double newX, double newY, double newZ, float newYaw, float newPitch) {
 +        // Ignore the same position
 +        if (oldX == newX && oldY == newY && oldZ == newZ) return true;
 +
-+        com.github.ruviolence.reaper.event.entity.EntityMoveEvent event = CraftEventFactory.entityMoveEvent;
++        com.github.ruviolence.Lamius.event.entity.EntityMoveEvent event = CraftEventFactory.entityMoveEvent;
 +
 +        event.setData(
 +                entity.getBukkitEntity(),
@@ -205,5 +205,5 @@ index 41ea8d9f5bb862cb8f6b3a830468277492b8cd7d..9727853a41754a14416611b5184bcd7a
 +
 +        return !event.isCancelled();
 +    }
-+    // Reaper end
++    // Lamius end
  }

@@ -14,7 +14,7 @@ index bc231c7f2945d998151f1cb9688b16cc1ab65db0..e82317790b4ae390d5933e4f61b1cf00
              Entity entity1 = (Entity) list.get(i);
  
 -            if (!entity1.dead && entity1.i && entity1 != entity && (entity == null || entity1.x(entity))) {
-+            if (!entity1.dead && entity1.i && entity1 != entity && (entity == null || !entity1.x(entity))) { // Reaper - Fix MC-103516
++            if (!entity1.dead && entity1.i && entity1 != entity && (entity == null || !entity1.x(entity))) { // Lamius - Fix MC-103516
                  return false;
              }
          }

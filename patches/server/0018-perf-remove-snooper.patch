@@ -14,7 +14,7 @@ index fb5822f7c2c1d96e2711fb081b632ee5d8eb3985..d743391e7061059c55774937fc6976bb
                  this.getEnableCommandBlock();
                  this.q();
 -                this.getSnooperEnabled();
-+                // this.getSnooperEnabled(); // Reaper - Remove snooper
++                // this.getSnooperEnabled(); // Lamius - Remove snooper
                  this.aG();
                  this.c(this.propertyManager.getInt("max-build-height", 256));
                  this.c((this.getMaxBuildHeight() + 8) / 16 * 16);
@@ -22,16 +22,16 @@ index fb5822f7c2c1d96e2711fb081b632ee5d8eb3985..d743391e7061059c55774937fc6976bb
      }
  
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-+        /* // Reaper start - Remove snooper
++        /* // Lamius start - Remove snooper
          mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(this.aQ().getHasWhitelist()));
          mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(this.aQ().getWhitelisted().length));
          super.a(mojangstatisticsgenerator);
-+        */ // Reaper end
++        */ // Lamius end
      }
  
      public boolean getSnooperEnabled() {
 -        return this.propertyManager.getBoolean("snooper-enabled", true);
-+        return false; // Reaper - Remove snooper
++        return false; // Lamius - Remove snooper
      }
  
      public void issueCommand(String s, ICommandListener icommandlistener) {
@@ -44,7 +44,7 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
      public static final File a = new File("usercache.json");
      public Convertable convertable;
 -    private final MojangStatisticsGenerator m = new MojangStatisticsGenerator("server", this, aw());
-+    // private final MojangStatisticsGenerator m = new MojangStatisticsGenerator("server", this, aw()); // Reaper - Remove snooper
++    // private final MojangStatisticsGenerator m = new MojangStatisticsGenerator("server", this, aw()); // Lamius - Remove snooper
      public File universe;
      private final List<ITickable> o = Lists.newArrayList();
      public final ICommandHandler b;
@@ -52,11 +52,11 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
              // CraftBukkit end */
          }
  
-+        /* // Reaper start - Remove snooper
++        /* // Lamius start - Remove snooper
          if (this.m.d()) {
              this.m.e();
          }
-+        */ // Reaper end
++        */ // Lamius end
  
          // Spigot start
          if (org.spigotmc.SpigotConfig.saveUserCacheOnStopOnly) {
@@ -64,7 +64,7 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
          // Spigot end
          this.methodProfiler.b();
          this.methodProfiler.a("snooper");
-+        /* // Reaper start - Remove snooper
++        /* // Lamius start - Remove snooper
          if (getSnooperEnabled() && !this.m.d() && this.ticks > 100) {  // Spigot
              this.m.a();
          }
@@ -72,7 +72,7 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
          if (getSnooperEnabled() && this.ticks % 6000 == 0) { // Spigot
              this.m.b();
          }
-+        */ // Reaper end
++        */ // Lamius end
  
          this.methodProfiler.b();
          this.methodProfiler.b();
@@ -80,7 +80,7 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
      }
  
      public void a(MojangStatisticsGenerator mojangstatisticsgenerator) {
-+        /* // Reaper start - Remove snooper
++        /* // Lamius start - Remove snooper
          mojangstatisticsgenerator.a("whitelist_enabled", Boolean.valueOf(false));
          mojangstatisticsgenerator.a("whitelist_count", Integer.valueOf(0));
          if (this.v != null) {
@@ -88,16 +88,16 @@ index eb01435894143000a26cfee4c9d9287f2fb125ea..1e8b3ac0bc7293ed0b6bfa258ead8c44
          }
  
          mojangstatisticsgenerator.a("worlds", Integer.valueOf(i));
-+        */ // Reaper end
++        */ // Lamius end
      }
  
      public void b(MojangStatisticsGenerator mojangstatisticsgenerator) {
-+        /* // Reaper start - Remove snooper
++        /* // Lamius start - Remove snooper
          mojangstatisticsgenerator.b("singleplayer", Boolean.valueOf(this.R()));
          mojangstatisticsgenerator.b("server_brand", this.getServerModName());
          mojangstatisticsgenerator.b("gui_supported", GraphicsEnvironment.isHeadless() ? "headless" : "supported");
          mojangstatisticsgenerator.b("dedicated", Boolean.valueOf(this.aa()));
-+        */ // Reaper end
++        */ // Lamius end
      }
  
      public boolean getSnooperEnabled() {

@@ -12,14 +12,14 @@ index f5657f6f862387d593f74276ca512584b029b085..acf6464cc986fd43954b7bae38f3448a
              <version>2.6</version>
              <scope>compile</scope>
          </dependency>
-+        <!-- Reaper start - Update commons-lang3 dependency -->
++        <!-- Lamius start - Update commons-lang3 dependency -->
 +        <dependency>
 +            <groupId>org.apache.commons</groupId>
 +            <artifactId>commons-lang3</artifactId>
 +            <version>3.12.0</version>
 +            <scope>compile</scope>
 +        </dependency>
-+        <!-- Reaper end -->
++        <!-- Lamius end -->
          <dependency>
              <groupId>com.googlecode.json-simple</groupId>
              <artifactId>json-simple</artifactId>

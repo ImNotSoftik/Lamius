@@ -5,13 +5,13 @@ Subject: [PATCH] perf: reduce inventory updates
 
 Reduces the network load and prevents potential lag exploits.
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/InventoryUpdateHelper.java b/src/main/java/com/github/ruviolence/reaper/InventoryUpdateHelper.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/InventoryUpdateHelper.java b/src/main/java/com/github/ruviolence/Lamius/InventoryUpdateHelper.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..f75fd894e8a94fcc0351bc93af6c339a9f3e1c6a
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/InventoryUpdateHelper.java
++++ b/src/main/java/com/github/ruviolence/Lamius/InventoryUpdateHelper.java
 @@ -0,0 +1,127 @@
-+package com.github.ruviolence.reaper;
++package com.github.ruviolence.Lamius;
 +
 +import net.minecraft.server.EntityPlayer;
 +import net.minecraft.server.EnumHand;
@@ -146,10 +146,10 @@ index 366e886910e34db757394eef117e793fe0d67bba..645b2b2b1409097f953a95819e9bde77
                                  entityhuman.a(enumhand, itemstack1);
                              } else if (!entityhuman.inventory.pickup(itemstack1)) {
                                  entityhuman.drop(itemstack1, false);
-+                                /* // Reaper start
++                                /* // Lamius start
                              } else if (entityhuman instanceof EntityPlayer) {
                                  ((EntityPlayer) entityhuman).updateInventory(entityhuman.defaultContainer);
-+                                */ // Reaper end
++                                */ // Lamius end
                              }
                          }
  
@@ -157,11 +157,11 @@ index 366e886910e34db757394eef117e793fe0d67bba..645b2b2b1409097f953a95819e9bde77
                              itemstack1 = new ItemStack(Items.GLASS_BOTTLE);
                              entityhuman.b(StatisticList.J);
                              entityhuman.a(enumhand, itemstack1);
-+                            /* // Reaper start - Reduce inventory updates
++                            /* // Lamius start - Reduce inventory updates
                              if (entityhuman instanceof EntityPlayer) {
                                  ((EntityPlayer) entityhuman).updateInventory(entityhuman.defaultContainer);
                              }
-+                            */ // Reaper end
++                            */ // Lamius end
                          }
  
                          world.a((EntityHuman) null, blockposition, SoundEffects.M, SoundCategory.BLOCKS, 1.0F, 1.0F);
@@ -169,10 +169,10 @@ index 366e886910e34db757394eef117e793fe0d67bba..645b2b2b1409097f953a95819e9bde77
                                  entityhuman.a(enumhand, itemstack1);
                              } else if (!entityhuman.inventory.pickup(itemstack1)) {
                                  entityhuman.drop(itemstack1, false);
-+                                /* // Reaper start - Reduce inventory updates
++                                /* // Lamius start - Reduce inventory updates
                              } else if (entityhuman instanceof EntityPlayer) {
                                  ((EntityPlayer) entityhuman).updateInventory(entityhuman.defaultContainer);
-+                                */ // Reaper end
++                                */ // Lamius end
                              }
                          }
  
@@ -185,7 +185,7 @@ index 16a9e06438cd6f499beba7bee37fcc870913783a..7a82b1d4695ffcb67372015a8f603f53
                          // CraftBukkit start - resync on cancelled event
                          if (this instanceof EntityPlayer) {
 -                            ((EntityPlayer) this).getBukkitEntity().updateInventory();
-+                            com.github.ruviolence.reaper.InventoryUpdateHelper.onLeftClick((EntityPlayer) this, EnumHand.MAIN_HAND, this.b(EnumHand.MAIN_HAND)); // Reaper - Reduce inventory updates
++                            com.github.ruviolence.Lamius.InventoryUpdateHelper.onLeftClick((EntityPlayer) this, EnumHand.MAIN_HAND, this.b(EnumHand.MAIN_HAND)); // Lamius - Reduce inventory updates
                          }
                          // CraftBukkit end
                      }
@@ -198,7 +198,7 @@ index b9886c68045c783c7ced0874411f0363a32232eb..3daf3d05fdd319bf7c798ec8e826c3ee
                  if (event.isCancelled()) {
                      // Update client
 -                    ((EntityPlayer) this).getBukkitEntity().updateInventory();
-+                    com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) this, this.cH()); // Reaper - Reduce inventory updates
++                    com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) this, this.cH()); // Lamius - Reduce inventory updates
                      ((EntityPlayer) this).getBukkitEntity().updateScaledHealth();
                      return;
                  }
@@ -207,7 +207,7 @@ index b9886c68045c783c7ced0874411f0363a32232eb..3daf3d05fdd319bf7c798ec8e826c3ee
              // Paper start - if the replacement is anything but the default, update the client inventory
              if (this instanceof EntityPlayer && !com.google.common.base.Objects.equal(defaultReplacement, itemstack)) {
 -                ((EntityPlayer) this).getBukkitEntity().updateInventory();
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) this, this.cH()); // Reaper - Reduce inventory updates
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) this, this.cH()); // Lamius - Reduce inventory updates
              }
          }
  
@@ -220,7 +220,7 @@ index 9cac4e6dd16d515ff81e6609134326d29d4ab574..51fa763fddc8b2d63b93f23b99768099
                              if (!world.addEntity(entityarrow)) {
                                  if (entityhuman instanceof EntityPlayer) {
 -                                    ((EntityPlayer) entityhuman).getBukkitEntity().updateInventory();
-+                                    com.github.ruviolence.reaper.InventoryUpdateHelper.onBowShoot((EntityPlayer) entityhuman); // Reaper - Reduce inventory updates
++                                    com.github.ruviolence.Lamius.InventoryUpdateHelper.onBowShoot((EntityPlayer) entityhuman); // Lamius - Reduce inventory updates
                                  }
                                  return;
                              }
@@ -233,7 +233,7 @@ index 65e53127b97a7476eaf3c778b488a0fcd226c83e..6b1ed8c65b7af325d74c20f725adf866
              if (!world.addEntity(entityenderpearl)) {
                  if (entityhuman instanceof EntityPlayer) {
 -                    ((EntityPlayer) entityhuman).getBukkitEntity().updateInventory();
-+                    com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Reaper - Reduce inventory updates
++                    com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Lamius - Reduce inventory updates
                  }
                  return new InteractionResultWrapper(EnumInteractionResult.FAIL, itemstack);
              }
@@ -246,7 +246,7 @@ index 6bb1106d9dc6ce8fac045f38a0f19041b6652d6b..7a5cfe43a90ff81309f5407dcc5a6c5e
                  world.a((EntityHuman) null, entityhuman.locX, entityhuman.locY, entityhuman.locZ, SoundEffects.hp, SoundCategory.NEUTRAL, 0.5F, 0.4F / (ItemSnowball.j.nextFloat() * 0.4F + 0.8F));
              } else if (entityhuman instanceof EntityPlayer) {
 -                ((EntityPlayer) entityhuman).getBukkitEntity().updateInventory();
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Reaper - Reduce inventory updates
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Lamius - Reduce inventory updates
              }
          }
          // CraftBukkit end
@@ -259,7 +259,7 @@ index 012c9dd54db32b573109f5567851cd96b91699a0..a4df957aabc688a3cc414284f53b5eba
                  enuminteractionresult = EnumInteractionResult.FAIL; // cancel placement
                  // PAIL: Remove this when MC-99075 fixed
 -                placeEvent.getPlayer().updateInventory();
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Reaper - Reduce inventory updates
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Lamius - Reduce inventory updates
  
                  // Paper start
                  for (Map.Entry<BlockPosition, TileEntity> e : world.capturedTileEntities.entrySet()) {
@@ -268,7 +268,7 @@ index 012c9dd54db32b573109f5567851cd96b91699a0..a4df957aabc688a3cc414284f53b5eba
                      org.bukkit.Bukkit.getServer().getPluginManager().callEvent(event);
                      if (i != event.getDamage() || event.isCancelled()) {
 -                        event.getPlayer().updateInventory();
-+                        com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld(entityplayer); // Reaper - Reduce inventory updates
++                        com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld(entityplayer); // Lamius - Reduce inventory updates
                      }
                      if (event.isCancelled()) return false;
                      i = event.getDamage();
@@ -281,7 +281,7 @@ index 8dedbe4c4e6198cd9659023022eab4d5335ef560..6f5f5ab508eb6026553c2719e4ce1bdd
  
              if (cancelled) {
 -                this.player.getBukkitEntity().updateInventory(); // SPIGOT-2524
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemstack); // SPIGOT-2524 // Reaper - Reduce inventory updates
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemstack); // SPIGOT-2524 // Lamius - Reduce inventory updates
              } else {
                  this.player.playerInteractManager.a(this.player, worldserver, itemstack, enumhand);
              }
@@ -290,7 +290,7 @@ index 8dedbe4c4e6198cd9659023022eab4d5335ef560..6f5f5ab508eb6026553c2719e4ce1bdd
  
                      if (event.isCancelled()) {
 -                        this.player.updateInventory(this.player.activeContainer); // Paper - Refresh player inventory
-+                        com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick(this.player, packetplayinuseentity.b(), itemInHand); // Reaper - Reduce inventory updates // Paper - Refresh player inventory
++                        com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick(this.player, packetplayinuseentity.b(), itemInHand); // Lamius - Reduce inventory updates // Paper - Refresh player inventory
                          return;
                      }
                      // CraftBukkit end
@@ -299,7 +299,7 @@ index 8dedbe4c4e6198cd9659023022eab4d5335ef560..6f5f5ab508eb6026553c2719e4ce1bdd
                      // CraftBukkit start
                      if (!itemInHand.isEmpty() && itemInHand.getCount() <= -1) {
 -                        this.player.updateInventory(this.player.activeContainer);
-+                        com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemInHand); // Reaper - Reduce inventory updates
++                        com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemInHand); // Lamius - Reduce inventory updates
                      }
                      // CraftBukkit end
                      break;
@@ -308,7 +308,7 @@ index 8dedbe4c4e6198cd9659023022eab4d5335ef560..6f5f5ab508eb6026553c2719e4ce1bdd
                      // CraftBukkit start
                      if (!itemInHand.isEmpty() && itemInHand.getCount() <= -1) {
 -                        this.player.updateInventory(this.player.activeContainer);
-+                        com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemInHand); // Reaper - Reduce inventory updates
++                        com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick(this.player, enumhand, itemInHand); // Lamius - Reduce inventory updates
                      }
                      // CraftBukkit end
                      break;
@@ -317,7 +317,7 @@ index 8dedbe4c4e6198cd9659023022eab4d5335ef560..6f5f5ab508eb6026553c2719e4ce1bdd
                      // CraftBukkit start
                      if (!itemInHand.isEmpty() && itemInHand.getCount() <= -1) {
 -                        this.player.updateInventory(this.player.activeContainer);
-+                        com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick(this.player, packetplayinuseentity.b(), itemInHand); // Reaper - Reduce inventory updates
++                        com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick(this.player, packetplayinuseentity.b(), itemInHand); // Lamius - Reduce inventory updates
                      }
                      // CraftBukkit end
                      break;
@@ -329,7 +329,7 @@ index 5458e442916d4912c4c6eec6223c07d2f2eb95f2..0bc3aa6fc30de57fa87d51f17ae20360
                  if (tileentity != null) {
                      this.player.playerConnection.sendPacket(tileentity.getUpdatePacket());
                  }
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.onBlockBreak(this.player, itemInMainHand); // Reaper - Fix clientside sword damage
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.onBlockBreak(this.player, itemInMainHand); // Lamius - Fix clientside sword damage
                  return false;
              }
          }
@@ -338,7 +338,7 @@ index 5458e442916d4912c4c6eec6223c07d2f2eb95f2..0bc3aa6fc30de57fa87d51f17ae20360
  
                  if (!entityhuman.isHandRaised()) {
 -                    ((EntityPlayer) entityhuman).updateInventory(entityhuman.defaultContainer);
-+                    com.github.ruviolence.reaper.InventoryUpdateHelper.onRightClick((EntityPlayer) entityhuman, enumhand, itemstack1); // Reaper - Reduce inventory updates
++                    com.github.ruviolence.Lamius.InventoryUpdateHelper.onRightClick((EntityPlayer) entityhuman, enumhand, itemstack1); // Lamius - Reduce inventory updates
                  }
  
                  return interactionresultwrapper.a();
@@ -347,7 +347,7 @@ index 5458e442916d4912c4c6eec6223c07d2f2eb95f2..0bc3aa6fc30de57fa87d51f17ae20360
                  // Paper end - extend Player Interact cancellation
                  }
 -                ((EntityPlayer) entityhuman).getBukkitEntity().updateInventory(); // SPIGOT-2867
-+                com.github.ruviolence.reaper.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Reaper - Reduce inventory updates // SPIGOT-2867
++                com.github.ruviolence.Lamius.InventoryUpdateHelper.updateHeld((EntityPlayer) entityhuman, enumhand); // Lamius - Reduce inventory updates // SPIGOT-2867
                  enuminteractionresult = (event.useItemInHand() != Event.Result.ALLOW) ? EnumInteractionResult.SUCCESS : EnumInteractionResult.PASS;
              } else if (this.gamemode == EnumGamemode.SPECTATOR) {
                  TileEntity tileentity = world.getTileEntity(blockposition);

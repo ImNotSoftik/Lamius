@@ -12,7 +12,7 @@ index 49dfc7ea0fe28ad8a8a23050023adb97ea56eb94..6f1a8bc5db6ce8f3ba28060748a3e804
          // Paper start
          java.util.List<? extends EntityHuman> list = entity != null ? entity.world.players : this.a.getPlayerList().v();
          Iterator<? extends EntityHuman> iterator = list.iterator();
-+        PacketPlayOutBlockBreakAnimation packet = null; // Reaper - Cache block break animation packet
++        PacketPlayOutBlockBreakAnimation packet = null; // Lamius - Cache block break animation packet
          while (iterator.hasNext()) {
              EntityHuman human = iterator.next();
              if (!(human instanceof EntityPlayer)) continue;
@@ -21,10 +21,10 @@ index 49dfc7ea0fe28ad8a8a23050023adb97ea56eb94..6f1a8bc5db6ce8f3ba28060748a3e804
  
                  if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D) {
 -                    entityplayer.playerConnection.sendPacket(new PacketPlayOutBlockBreakAnimation(i, blockposition, j));
-+                    // Reaper start - Cache block break animation packet
++                    // Lamius start - Cache block break animation packet
 +                    if (packet == null) packet = new PacketPlayOutBlockBreakAnimation(i, blockposition, j);
 +                    entityplayer.playerConnection.sendPacket(packet);
-+                    // Reaper end
++                    // Lamius end
                  }
              }
          }

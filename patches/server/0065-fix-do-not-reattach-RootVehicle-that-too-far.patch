@@ -12,7 +12,7 @@ index bf6c511f3ce8305b22f2e460e2dd1cf4106edf7a..9cb528a391068ee2fe16c216fa66a1cf
                  Iterator iterator1;
                  Entity entity1;
  
-+                if (entityplayer.h(entity) < 256.0D) // Reaper
++                if (entityplayer.h(entity) < 256.0D) // Lamius
                  if (entity.getUniqueID().equals(uuid)) {
                      entityplayer.a(entity, true);
                  } else {

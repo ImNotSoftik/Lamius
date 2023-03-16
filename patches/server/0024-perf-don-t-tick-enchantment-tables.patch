@@ -14,9 +14,9 @@ index 2c5ebde7ed7ad2a3fec0605f584432051413714b..0c6ebc8ff0fb7fc68c7902168449c473
  import java.util.Random;
  
 -public class TileEntityEnchantTable extends TileEntity implements ITickable, ITileEntityContainer {
-+public class TileEntityEnchantTable extends TileEntity implements /*ITickable,*/ ITileEntityContainer { // Reaper - Don't tick enchantment tables
++public class TileEntityEnchantTable extends TileEntity implements /*ITickable,*/ ITileEntityContainer { // Lamius - Don't tick enchantment tables
  
-+    /* // Reaper start - Unused clientside animation fields
++    /* // Lamius start - Unused clientside animation fields
      public int a;
      public float f;
      public float g;
@@ -24,7 +24,7 @@ index 2c5ebde7ed7ad2a3fec0605f584432051413714b..0c6ebc8ff0fb7fc68c7902168449c473
      public float m;
      public float n;
      private static final Random o = new Random();
-+    */ // Reaper end
++    */ // Lamius end
      private String p;
  
      public TileEntityEnchantTable() {}
@@ -32,7 +32,7 @@ index 2c5ebde7ed7ad2a3fec0605f584432051413714b..0c6ebc8ff0fb7fc68c7902168449c473
  
      }
  
-+    /* // Reaper start - Don't tick enchantment tables
++    /* // Lamius start - Don't tick enchantment tables
      public void e() {
          this.k = this.j;
          this.m = this.l;
@@ -40,7 +40,7 @@ index 2c5ebde7ed7ad2a3fec0605f584432051413714b..0c6ebc8ff0fb7fc68c7902168449c473
          this.i += (f2 - this.i) * 0.9F;
          this.f += this.i;
      }
-+    */ // Reaper end
++    */ // Lamius end
  
      public String getName() {
          return this.hasCustomName() ? this.p : "container.enchant";

@@ -7,11 +7,11 @@ Fixes the book lag exploit caused by Bukkit when you can take a book filled with
 Reduced lags in other parts of the server by using a more optimized alternative method for component parsing.
 Added a new config option that enables alternative component parsing at all cases (currently does not support URL links parsing).
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 index c061c98b809c6f99f00a2db0cb10a2d9aeee8548..a2ee722f5c23bcc9907edbf38659be1607f71d88 100644
---- a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
-@@ -239,4 +239,9 @@ public class ReaperConfig {
+--- a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
+@@ -239,4 +239,9 @@ public class LamiusConfig {
      private static void disableVillages() {
          disableVillages = getBoolean("disable-villages", false);
      }
@@ -30,7 +30,7 @@ index 8913e2744eef5d27c954dabe13956673ff3c3e93..6353107bc122731a597131bbfaead2c5
                  advancement.d().a(this.player);
                  if (advancement.c() != null && advancement.c().i() && this.player.world.getGameRules().getBoolean("announceAdvancements")) {
 -                    this.d.getPlayerList().sendMessage(new ChatMessage("chat.type.advancement." + advancement.c().e().a(), new Object[] { this.player.getScoreboardDisplayName(), advancement.j()}));
-+                    this.d.getPlayerList().sendMessageFast(new ChatMessage("chat.type.advancement." + advancement.c().e().a(), new Object[] { this.player.getScoreboardDisplayName(), advancement.j()}), true); // Reaper
++                    this.d.getPlayerList().sendMessageFast(new ChatMessage("chat.type.advancement." + advancement.c().e().a(), new Object[] { this.player.getScoreboardDisplayName(), advancement.j()}), true); // Lamius
                  }
              }
          }
@@ -42,7 +42,7 @@ index 7ebe188e5972f90ccf2b2ac86c854822a27e52fe..507edfb72cacae4803870ca62509af67
          return chatmodifier;
      }
  
-+    // Reaper start
++    // Lamius start
 +    public void reset() {
 +        this.a = null;
 +        this.b = null;
@@ -55,7 +55,7 @@ index 7ebe188e5972f90ccf2b2ac86c854822a27e52fe..507edfb72cacae4803870ca62509af67
 +        this.i = null;
 +        this.j = null;
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public static class ChatModifierSerializer implements JsonDeserializer<ChatModifier>, JsonSerializer<ChatModifier> {
  
@@ -69,15 +69,15 @@ index 4be43502ba35fe8b45ac4a69f55691b510917de3..9fd71607d1031493ba90c23253955a52
                          this.server.getPlayerList().a((EntityHuman) this, chatmessage);
                      } else if (scoreboardteambase.getDeathMessageVisibility() == ScoreboardTeamBase.EnumNameTagVisibility.HIDE_FOR_OWN_TEAM) {
 -                        this.server.getPlayerList().b((EntityHuman) this, chatmessage);
-+                        this.server.getPlayerList().sendMessageToTeamOrAllPlayersFast((EntityHuman) this, chatmessage); // Reaper
++                        this.server.getPlayerList().sendMessageToTeamOrAllPlayersFast((EntityHuman) this, chatmessage); // Lamius
                      }
                  } else {
 -                    this.server.getPlayerList().sendMessage(chatmessage);
-+                    this.server.getPlayerList().sendMessageFast(chatmessage, true); // Reaper
++                    this.server.getPlayerList().sendMessageFast(chatmessage, true); // Lamius
                  }
              } else {
 -                this.server.getPlayerList().sendMessage(org.bukkit.craftbukkit.util.CraftChatMessage.fromString(deathMessage));
-+                this.server.getPlayerList().sendMessage(org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(deathMessage)); // Reaper
++                this.server.getPlayerList().sendMessage(org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(deathMessage)); // Lamius
              }
          }
  
@@ -90,7 +90,7 @@ index 7473ba226904b6965e5bd4cf6ba3395d342584a0..de67be18f4d267941d884bb118cca248
  
          if (joinMessage != null && joinMessage.length() > 0) {
 -            for (IChatBaseComponent line : org.bukkit.craftbukkit.util.CraftChatMessage.fromString(joinMessage)) {
-+            for (IChatBaseComponent line : org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(joinMessage)) { // Reaper
++            for (IChatBaseComponent line : org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(joinMessage)) { // Lamius
                  server.getPlayerList().sendAll(new PacketPlayOutChat(line));
              }
          }
@@ -98,7 +98,7 @@ index 7473ba226904b6965e5bd4cf6ba3395d342584a0..de67be18f4d267941d884bb118cca248
          this.sendMessage(ichatbasecomponent, true);
      }
  
-+    // Reaper start - Sends a message bypassing CraftBukkit's component fixer
++    // Lamius start - Sends a message bypassing CraftBukkit's component fixer
 +    public void sendMessageToTeamOrAllPlayersFast(EntityHuman entityhuman, IChatBaseComponent ichatbasecomponent) {
 +        ScoreboardTeamBase scoreboardteambase = entityhuman.aY();
 +
@@ -122,7 +122,7 @@ index 7473ba226904b6965e5bd4cf6ba3395d342584a0..de67be18f4d267941d884bb118cca248
 +
 +        this.sendAll(new PacketPlayOutChat(ichatbasecomponent, chatmessagetype));
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public ServerStatisticManager getStatisticManager(EntityPlayer entityhuman) {
          UUID uuid = entityhuman.getUniqueID();
@@ -136,7 +136,7 @@ index 3177ed30ded2b0cff28750cd93ffaa1f9dff889c..cfc96513dff82dfa3444429dac44eacd
  
                  if (oldSign && !isLoadingStructure) { // Paper - saved structures will be in the new format, but will not have isConverted
 -                    lines[i] = org.bukkit.craftbukkit.util.CraftChatMessage.fromString(s)[0];
-+                    lines[i] = org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(s)[0]; // Reaper
++                    lines[i] = org.bukkit.craftbukkit.util.CraftChatMessage.fromStringFast(s)[0]; // Lamius
                      continue;
                  }
                  // CraftBukkit end
@@ -149,7 +149,7 @@ index 97b4e6910d0c5021dbc5fcbaad34b31ffd9274b2..3da230650c425737254d9f3103571ca9
          for (int i = 0; i < 4; i++) {
              if (i < lines.length && lines[i] != null) {
 -                components[i] = CraftChatMessage.fromString(lines[i])[0];
-+                components[i] = CraftChatMessage.fromStringFast(lines[i])[0]; // Reaper
++                components[i] = CraftChatMessage.fromStringFast(lines[i])[0]; // Lamius
              } else {
                  components[i] = new ChatComponentText("");
              }
@@ -162,7 +162,7 @@ index 76ed95523ad3ac1b2562ba5ff7275ca9a2d269e0..6557570e1c297d85b816b165fdd29a1e
  
          handle = new BossBattleServer(
 -                CraftChatMessage.fromString(title, true)[0],
-+                CraftChatMessage.fromStringFast(title, true)[0], // Reaper
++                CraftChatMessage.fromStringFast(title, true)[0], // Lamius
                  convertColor(color),
                  convertStyle(style)
          );
@@ -171,7 +171,7 @@ index 76ed95523ad3ac1b2562ba5ff7275ca9a2d269e0..6557570e1c297d85b816b165fdd29a1e
      @Override
      public void setTitle(String title) {
 -        handle.title = CraftChatMessage.fromString(title, true)[0];
-+        handle.title = CraftChatMessage.fromStringFast(title, true)[0]; // Reaper
++        handle.title = CraftChatMessage.fromStringFast(title, true)[0]; // Lamius
          handle.sendUpdate(PacketPlayOutBoss.Action.UPDATE_NAME);
      }
  
@@ -184,7 +184,7 @@ index b989a65e684b2cc456e7c5f5388d40b654eb3ed9..ad40a68fc7255d7a2e15411775080993
              name = getName();
          }
 -        getHandle().listName = name.equals(getName()) ? null : CraftChatMessage.fromString(name)[0];
-+        getHandle().listName = name.equals(getName()) ? null : CraftChatMessage.fromStringFast(name)[0]; // Reaper
++        getHandle().listName = name.equals(getName()) ? null : CraftChatMessage.fromStringFast(name)[0]; // Lamius
          for (EntityPlayer player : (List<EntityPlayer>)server.getHandle().players) {
              if (player.getBukkitEntity().canSee(this)) {
                  player.playerConnection.sendPacket(new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_DISPLAY_NAME, getHandle()));
@@ -193,13 +193,13 @@ index b989a65e684b2cc456e7c5f5388d40b654eb3ed9..ad40a68fc7255d7a2e15411775080993
  
          if (title != null) {
 -            PacketPlayOutTitle packetTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, CraftChatMessage.fromString(title)[0]);
-+            PacketPlayOutTitle packetTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, CraftChatMessage.fromStringFast(title)[0]); // Reaper
++            PacketPlayOutTitle packetTitle = new PacketPlayOutTitle(EnumTitleAction.TITLE, CraftChatMessage.fromStringFast(title)[0]); // Lamius
              getHandle().playerConnection.sendPacket(packetTitle);
          }
  
          if (subtitle != null) {
 -            PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, CraftChatMessage.fromString(subtitle)[0]);
-+            PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, CraftChatMessage.fromStringFast(subtitle)[0]); // Reaper
++            PacketPlayOutTitle packetSubtitle = new PacketPlayOutTitle(EnumTitleAction.SUBTITLE, CraftChatMessage.fromStringFast(subtitle)[0]); // Lamius
              getHandle().playerConnection.sendPacket(packetSubtitle);
          }
      }
@@ -212,7 +212,7 @@ index ed2c281206041ca283c76a8ca98bc6779d827f3e..a32b77b85fbb51f5094617bca252a801
  
          String newText = text == null ? "" : text.length() > MAX_PAGE_LENGTH && !OVERRIDE_CHECKS ? text.substring(0, MAX_PAGE_LENGTH) : text;
 -        pages.set(page - 1, CraftChatMessage.fromString(newText, true)[0]);
-+        pages.set(page - 1, CraftChatMessage.fromStringFast(newText, true)[0]); // Reaper
++        pages.set(page - 1, CraftChatMessage.fromStringFast(newText, true)[0]); // Lamius
      }
  
      public void setPages(final String... pages) {
@@ -221,7 +221,7 @@ index ed2c281206041ca283c76a8ca98bc6779d827f3e..a32b77b85fbb51f5094617bca252a801
              }
  
 -            this.pages.add(CraftChatMessage.fromString(page, true)[0]);
-+            this.pages.add(CraftChatMessage.fromStringFast(page, true)[0]); // Reaper
++            this.pages.add(CraftChatMessage.fromStringFast(page, true)[0]); // Lamius
          }
      }
  
@@ -234,7 +234,7 @@ index 6cbcc9d30b410da36677a562d9c319b879909596..f834a41692a22628b5b9a34364ca5b81
      @Override
      public IChatBaseComponent getScoreboardDisplayName() {
 -        return CraftChatMessage.fromString(getName())[0];
-+        return CraftChatMessage.fromStringFast(getName())[0]; // Reaper
++        return CraftChatMessage.fromStringFast(getName())[0]; // Lamius
      }
  
      @Override
@@ -247,7 +247,7 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
                      EnumChatFormat format = formatMap.get(match.toLowerCase(java.util.Locale.ENGLISH).charAt(1));
                      if (format == EnumChatFormat.RESET) {
 -                        modifier = new ChatModifier();
-+                        modifier.reset(); // Reaper
++                        modifier.reset(); // Lamius
                      } else if (format.isFormat()) {
                          switch (format) {
                          case BOLD:
@@ -256,10 +256,10 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
                          }
                      } else { // Color resets formatting
 -                        modifier = new ChatModifier().setColor(format);
-+                        // Reaper start
++                        // Lamius start
 +                        modifier.reset();
 +                        modifier.setColor(format);
-+                        // Reaper end
++                        // Lamius end
                      }
                      break;
                  case 2:
@@ -268,10 +268,10 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
                  return;
              }
 -            IChatBaseComponent addition = new ChatComponentText(message.substring(currentIndex, index)).setChatModifier(modifier);
-+            IChatBaseComponent addition = new ChatComponentText(message.substring(currentIndex, index)).setChatModifier(modifier.clone()); // Reaper
++            IChatBaseComponent addition = new ChatComponentText(message.substring(currentIndex, index)).setChatModifier(modifier.clone()); // Lamius
              currentIndex = index;
 -            modifier = modifier.clone();
-+            // modifier = modifier.clone(); // Reaper
++            // modifier = modifier.clone(); // Lamius
              if (currentChatComponent == null) {
                  currentChatComponent = new ChatComponentText("");
                  list.add(currentChatComponent);
@@ -279,16 +279,16 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
      }
  
      public static IChatBaseComponent[] fromString(String message) {
-+        if (com.github.ruviolence.reaper.ReaperConfig.alternativeChatComponentParser) return fromStringFast(message, false); // Reaper
++        if (com.github.ruviolence.Lamius.LamiusConfig.alternativeChatComponentParser) return fromStringFast(message, false); // Lamius
          return fromString(message, false);
      }
      
      public static IChatBaseComponent[] fromString(String message, boolean keepNewlines) {
-+        if (com.github.ruviolence.reaper.ReaperConfig.alternativeChatComponentParser) return fromStringFast(message, keepNewlines); // Reaper
++        if (com.github.ruviolence.Lamius.LamiusConfig.alternativeChatComponentParser) return fromStringFast(message, keepNewlines); // Lamius
          return new StringMessage(message, keepNewlines).getOutput();
      }
      
-+    // Reaper start
++    // Lamius start
 +    public static IChatBaseComponent[] fromStringFast(String message) {
 +        return fromStringFast(message, false);
 +    }
@@ -449,7 +449,7 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
 +            default: return null;
 +        }
 +    }
-+    // Reaper end
++    // Lamius end
 +
      public static String fromComponent(IChatBaseComponent component) {
          return fromComponent(component, EnumChatFormat.BLACK);
@@ -459,11 +459,11 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
          for (IChatBaseComponent c : (Iterable<IChatBaseComponent>) component) {
              ChatModifier modi = c.getChatModifier();
 -            out.append(modi.getColor() == null ? defaultColor : modi.getColor());
-+            // Reaper start
++            // Lamius start
 +            if (modi.getColor() != null && (out.length() > 0 || modi.getColor() != defaultColor)) {
 +                out.append(modi.getColor());
 +            }
-+            // Reaper end
++            // Lamius end
              if (modi.isBold()) {
                  out.append(EnumChatFormat.BOLD);
              }
@@ -472,7 +472,7 @@ index b1bf0a35d7d114ddd1605b00386b11864ae37cbe..2c475eb1429b291ebf0bbeb43b489a39
              out.append(c.getText());
          }
 -        return out.toString().replaceFirst("^(" + defaultColor + ")*", "");
-+        return out.toString(); // Reaper
++        return out.toString(); // Lamius
      }
  
      public static IChatBaseComponent fixComponent(IChatBaseComponent component) {

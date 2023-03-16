@@ -12,7 +12,7 @@ index 2dbc784cbe151068e9276516b3b2b851da10395c..6e7611e20a3385ec79368231ef496da9
      @Deprecated
      boolean setTypeIdAndData(int type, byte data, boolean applyPhysics);
  
-+    // Reaper start
++    // Lamius start
 +    /**
 +     * Sets the type-id of this block
 +     *
@@ -28,7 +28,7 @@ index 2dbc784cbe151068e9276516b3b2b851da10395c..6e7611e20a3385ec79368231ef496da9
 +     */
 +    @Deprecated
 +    boolean setTypeIdAndData(int type, byte data, boolean applyPhysics, boolean notify, boolean updateLight);
-+    // Reaper end
++    // Lamius end
 +
      /**
       * Gets the face relation of this block compared to the given block.

@@ -13,7 +13,7 @@ index baf72404ec5a26e74667d20070b0a6a58865424a..01c646769e526716c16773d4f141610b
              this.dirtyCount = 0;
              this.h = 0;
              this.done = true;
-+            if (this.c.isEmpty()) return true; // Reaper - Fix MC-120780
++            if (this.c.isEmpty()) return true; // Lamius - Fix MC-120780
              PacketPlayOutMapChunk packetplayoutmapchunk = new PacketPlayOutMapChunk(this.chunk, '\uffff');
              Iterator iterator = this.c.iterator();
  

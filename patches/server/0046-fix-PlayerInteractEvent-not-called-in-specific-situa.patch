@@ -14,10 +14,10 @@ index 6f5f5ab508eb6026553c2719e4ce1bdd042da755..13d72b81587b8d1269a8ef56349927bc
              } else {
 -                if (player.playerInteractManager.firedInteract) {
 -                    player.playerInteractManager.firedInteract = false;
-+                // Reaper start
++                // Lamius start
 +                if (player.playerInteractManager.firedInteractTick == MinecraftServer.currentTick && itemstack == player.playerInteractManager.firedInteractItem) {
 +                    player.playerInteractManager.firedInteractTick = 0;
-+                    // Reaper end
++                    // Lamius end
                      cancelled = player.playerInteractManager.interactResult;
                  } else {
                      org.bukkit.event.player.PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(player, Action.RIGHT_CLICK_BLOCK, movingobjectposition.a(), movingobjectposition.direction, itemstack, true, enumhand);
@@ -30,10 +30,10 @@ index 0bc3aa6fc30de57fa87d51f17ae20360ba13b037..61c4a1e06bc3e8deee52ec1994d078c1
      // CraftBukkit start - whole method
      public boolean interactResult = false;
 -    public boolean firedInteract = false;
-+    // Reaper start
++    // Lamius start
 +    public int firedInteractTick = 0;
 +    public ItemStack firedInteractItem = null;
-+    // Reaper end
++    // Lamius end
      public EnumInteractionResult a(EntityHuman entityhuman, World world, ItemStack itemstack, EnumHand enumhand, BlockPosition blockposition, EnumDirection enumdirection, float f, float f1, float f2) {
          IBlockData blockdata = world.getType(blockposition);
          EnumInteractionResult enuminteractionresult = EnumInteractionResult.FAIL;
@@ -42,10 +42,10 @@ index 0bc3aa6fc30de57fa87d51f17ae20360ba13b037..61c4a1e06bc3e8deee52ec1994d078c1
  
              PlayerInteractEvent event = CraftEventFactory.callPlayerInteractEvent(entityhuman, Action.RIGHT_CLICK_BLOCK, blockposition, enumdirection, itemstack, cancelledBlock, enumhand);
 -            firedInteract = true;
-+            // Reaper start
++            // Lamius start
 +            firedInteractTick = MinecraftServer.currentTick;
 +            firedInteractItem = itemstack;
-+            // Reaper end
++            // Lamius end
              interactResult = event.useItemInHand() == Event.Result.DENY;
  
              if (event.useInteractedBlock() == Event.Result.DENY) {

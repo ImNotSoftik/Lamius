@@ -12,7 +12,7 @@ index 710f357910fce1dc2d8ec3b7a1d01337310173c7..60944b5044ff714b05869d8747c2a71d
  
          this.setHealth(this.getMaxHealth());
          this.fireTicks = 0;
-+        this.setAirTicks(300); // Reaper - Reset airTicks on respawn
++        this.setAirTicks(300); // Lamius - Reset airTicks on respawn
          this.fallDistance = 0;
          this.foodData = new FoodMetaData(this);
          this.expLevel = this.newLevel;

@@ -4,13 +4,13 @@ Date: Thu, 15 Sep 2022 18:12:14 +0500
 Subject: [PATCH] feat: add WorldTickStartEvent, WorldTickEndEvent
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickEndEvent.java b/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickEndEvent.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickEndEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickEndEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..b029776223d6fa17f478bd87cd4deaee773e3997
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickEndEvent.java
++++ b/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickEndEvent.java
 @@ -0,0 +1,44 @@
-+package com.github.ruviolence.reaper.event.server;
++package com.github.ruviolence.Lamius.event.server;
 +
 +import org.bukkit.World;
 +import org.bukkit.event.HandlerList;
@@ -54,13 +54,13 @@ index 0000000000000000000000000000000000000000..b029776223d6fa17f478bd87cd4deaee
 +        return handlers;
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickStartEvent.java b/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickStartEvent.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickStartEvent.java b/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickStartEvent.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..e1057697fd40e8ca33755adb333348fd584ab448
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/event/server/WorldTickStartEvent.java
++++ b/src/main/java/com/github/ruviolence/Lamius/event/server/WorldTickStartEvent.java
 @@ -0,0 +1,38 @@
-+package com.github.ruviolence.reaper.event.server;
++package com.github.ruviolence.Lamius.event.server;
 +
 +import org.bukkit.World;
 +import org.bukkit.event.HandlerList;

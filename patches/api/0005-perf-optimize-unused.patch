@@ -13,7 +13,7 @@ index 5a960f3c7bab6845f1a901c28e2648eb972cdd41..ffa8c6b60ee5d97e39a2d6d06d116949
      private final boolean isFormat;
      private final String toString;
 -    private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap();
-+    // private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap(); // Reaper - Optimize unused
++    // private final static Map<Integer, ChatColor> BY_ID = Maps.newHashMap(); // Lamius - Optimize unused
      private final static Map<Character, ChatColor> BY_CHAR = Maps.newHashMap();
  
      private ChatColor(char code, int intCode) {
@@ -22,7 +22,7 @@ index 5a960f3c7bab6845f1a901c28e2648eb972cdd41..ffa8c6b60ee5d97e39a2d6d06d116949
      static {
          for (ChatColor color : values()) {
 -            BY_ID.put(color.intCode, color);
-+            // BY_ID.put(color.intCode, color); // Reaper - Optimize unused
++            // BY_ID.put(color.intCode, color); // Lamius - Optimize unused
              BY_CHAR.put(color.code, color);
          }
      }
@@ -35,7 +35,7 @@ index 391713f443bffc87bb49947a88c7d0cb20f506f0..9393459f0a1666ddf0b988042655eb47
      private final Map<String, Map<Permissible, Boolean>> permSubs = new HashMap<String, Map<Permissible, Boolean>>();
      private final Map<Boolean, Map<Permissible, Boolean>> defSubs = new HashMap<Boolean, Map<Permissible, Boolean>>();
 -    private boolean useTimings = false;
-+    // private boolean useTimings = false; // Reaper - Optimize unused
++    // private boolean useTimings = false; // Lamius - Optimize unused
  
      public SimplePluginManager(Server instance, SimpleCommandMap commandMap) {
          server = instance;

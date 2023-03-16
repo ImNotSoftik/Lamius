@@ -11,12 +11,12 @@ index 3a5b9abae482ae4e236a95c4c3f68068b3527fbf..b5a4f020de60e9826c146f1e590aaeb7
 @@ -677,7 +677,10 @@ public abstract class World implements IBlockAccess {
  
      public void b(BlockPosition blockposition, final Block block, BlockPosition blockposition1) {
-         if (true) { // Reaper - Remove isClientSide check
+         if (true) { // Lamius - Remove isClientSide check
 -            IBlockData iblockdata = this.getType(blockposition);
-+            // Reaper start - Don't load chunks for physics
++            // Lamius start - Don't load chunks for physics
 +            IBlockData iblockdata = this.getTypeIfLoaded(blockposition);
 +            if (iblockdata == null) return;
-+            // Reaper end
++            // Lamius end
  
              if (iblockdata.getBlock() == Blocks.dk) {
                  try {

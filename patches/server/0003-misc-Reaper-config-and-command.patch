@@ -1,16 +1,16 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: ruViolence <78062896+ruViolence@users.noreply.github.com>
 Date: Thu, 26 May 2022 08:09:06 +0500
-Subject: [PATCH] misc: Reaper config and command
+Subject: [PATCH] misc: Lamius config and command
 
 
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java b/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..66099259d578cc6addd0342eba19ab2dac275bf9
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperCommand.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusCommand.java
 @@ -0,0 +1,61 @@
-+package com.github.ruviolence.reaper;
++package com.github.ruviolence.Lamius;
 +
 +import net.minecraft.server.CommandAbstract;
 +import net.minecraft.server.MinecraftServer;
@@ -24,13 +24,13 @@ index 0000000000000000000000000000000000000000..66099259d578cc6addd0342eba19ab2d
 +import java.util.List;
 +import java.util.Locale;
 +
-+public class ReaperCommand extends Command {
++public class LamiusCommand extends Command {
 +
-+    public ReaperCommand(String name) {
++    public LamiusCommand(String name) {
 +        super(name);
-+        this.description = "Reaper related commands";
-+        this.usageMessage = "/reaper [reload]";
-+        this.setPermission("bukkit.command.reaper");
++        this.description = "Lamius related commands";
++        this.usageMessage = "/Lamius [reload]";
++        this.setPermission("bukkit.command.Lamius");
 +    }
 +
 +    @Override
@@ -66,18 +66,18 @@ index 0000000000000000000000000000000000000000..66099259d578cc6addd0342eba19ab2d
 +        Command.broadcastCommandMessage(sender, ChatColor.RED + "If you encounter any issues please use the /stop command to restart your server.");
 +
 +        MinecraftServer console = MinecraftServer.getServer();
-+        ReaperConfig.init((File) console.options.valueOf("reaper-settings"));
++        LamiusConfig.init((File) console.options.valueOf("Lamius-settings"));
 +
-+        Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Reaper config reload complete.");
++        Command.broadcastCommandMessage(sender, ChatColor.GREEN + "Lamius config reload complete.");
 +    }
 +}
-diff --git a/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
+diff --git a/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 new file mode 100644
 index 0000000000000000000000000000000000000000..aac88cdc33ce89b418a554c66568e0aec3fdc05d
 --- /dev/null
-+++ b/src/main/java/com/github/ruviolence/reaper/ReaperConfig.java
++++ b/src/main/java/com/github/ruviolence/Lamius/LamiusConfig.java
 @@ -0,0 +1,115 @@
-+package com.github.ruviolence.reaper;
++package com.github.ruviolence.Lamius;
 +
 +import com.google.common.base.Throwables;
 +import net.minecraft.server.MinecraftServer;
@@ -96,10 +96,10 @@ index 0000000000000000000000000000000000000000..aac88cdc33ce89b418a554c66568e0ae
 +import java.util.Map;
 +import java.util.logging.Level;
 +
-+public class ReaperConfig {
++public class LamiusConfig {
 +
 +    private static File CONFIG_FILE;
-+    private static final String HEADER = "This is the main configuration file for Reaper.\n"
++    private static final String HEADER = "This is the main configuration file for Lamius.\n"
 +            + "As you can see, there's tons to configure. Some options may impact gameplay, so use\n"
 +            + "with caution, and make sure you know what each option does before configuring.\n";
 +    /*========================================================================*/
@@ -115,23 +115,23 @@ index 0000000000000000000000000000000000000000..aac88cdc33ce89b418a554c66568e0ae
 +            config.load(CONFIG_FILE);
 +        } catch (IOException ex) {
 +        } catch (InvalidConfigurationException ex) {
-+            Bukkit.getLogger().log(Level.SEVERE, "Could not load reaper.yml, please correct your syntax errors", ex);
++            Bukkit.getLogger().log(Level.SEVERE, "Could not load Lamius.yml, please correct your syntax errors", ex);
 +            throw Throwables.propagate(ex);
 +        }
 +        config.options().header(HEADER);
 +        config.options().copyDefaults(true);
 +
 +        commands = new HashMap<>();
-+        commands.put("reaper", new ReaperCommand("reaper"));
++        commands.put("Lamius", new LamiusCommand("Lamius"));
 +
 +        version = getInt("config-version", 1);
 +        set("config-version", 1);
-+        readConfig(ReaperConfig.class, null);
++        readConfig(LamiusConfig.class, null);
 +    }
 +
 +    public static void registerCommands() {
 +        for (Map.Entry<String, Command> entry : commands.entrySet()) {
-+            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Reaper", entry.getValue());
++            MinecraftServer.getServer().server.getCommandMap().register(entry.getKey(), "Lamius", entry.getValue());
 +        }
 +    }
 +
@@ -200,7 +200,7 @@ index 6a8292ce4537392bc511419df565e238ac04acb1..9308ccc85f6243193e49c9a4dd8762ab
              com.destroystokyo.paper.PaperConfig.registerCommands();
              com.destroystokyo.paper.VersionHistoryManager.INSTANCE.getClass(); // load version history now
              // Paper end
-+            com.github.ruviolence.reaper.ReaperConfig.registerCommands(); // Reaper
++            com.github.ruviolence.Lamius.LamiusConfig.registerCommands(); // Lamius
  
              DedicatedServer.LOGGER.info("Generating keypair");
              this.a(MinecraftEncryption.b());
@@ -212,7 +212,7 @@ index d295fa4ceb6864a282634f33778b0e203d9b3569..eb01435894143000a26cfee4c9d9287f
      }
  
      public static void main(final OptionSet options) { // CraftBukkit - replaces main(String[] astring)
-+        com.github.ruviolence.reaper.ReaperConfig.init((File) options.valueOf("reaper-settings")); // Reaper
++        com.github.ruviolence.Lamius.LamiusConfig.init((File) options.valueOf("Lamius-settings")); // Lamius
          DispenserRegistry.c();
  
          try {
@@ -224,7 +224,7 @@ index 3c57166598bad6907eb4b2f6a8a9e7f0b284d5d1..5deaf370fe7ba18cda3a002b864b0c51
  
          org.spigotmc.SpigotConfig.init((File) console.options.valueOf("spigot-settings")); // Spigot
          com.destroystokyo.paper.PaperConfig.init((File) console.options.valueOf("paper-settings")); // Paper
-+        com.github.ruviolence.reaper.ReaperConfig.init((File) console.options.valueOf("reaper-settings")); // Reaper
++        com.github.ruviolence.Lamius.LamiusConfig.init((File) console.options.valueOf("Lamius-settings")); // Lamius
          for (WorldServer world : console.worlds) {
              world.worldData.setDifficulty(difficulty);
              world.setSpawnFlags(monsters, animals);
@@ -233,8 +233,8 @@ index 3c57166598bad6907eb4b2f6a8a9e7f0b284d5d1..5deaf370fe7ba18cda3a002b864b0c51
          }
  
 +        @Override
-+        public YamlConfiguration getReaperConfig() {
-+            return com.github.ruviolence.reaper.ReaperConfig.config;
++        public YamlConfiguration getLamiusConfig() {
++            return com.github.ruviolence.Lamius.LamiusConfig.config;
 +        }
 +
          @Override
@@ -249,13 +249,13 @@ index ae2c51f5d30e143180092e2ade56f5df26e35616..9a920cc9962e03626e1dd713cf07b4b3
                          .describedAs("Name");
                  // Paper end
 +
-+                // Reaper start
-+                acceptsAll(asList("reaper-settings"), "File for reaper settings")
++                // Lamius start
++                acceptsAll(asList("Lamius-settings"), "File for Lamius settings")
 +                        .withRequiredArg()
 +                        .ofType(File.class)
-+                        .defaultsTo(new File("reaper.yml"))
++                        .defaultsTo(new File("Lamius.yml"))
 +                        .describedAs("Yml file");
-+                // Reaper end
++                // Lamius end
              }
          };
  

@@ -11,8 +11,8 @@ index 82392c3439c1692ec2179c87415204ee02f3dd2a..b989a65e684b2cc456e7c5f5388d40b6
 @@ -1557,6 +1557,19 @@ public class CraftPlayer extends CraftHumanEntity implements Player {
              // throw new IllegalStateException("Cannot set scoreboard for invalid CraftPlayer"); // Spigot - remove this as Mojang's semi asynchronous Netty implementation can lead to races
          }
-         */ // Reaper end
-+        // Reaper start - Fix Paper's collision disable for custom scoreboards
+         */ // Lamius end
++        // Lamius start - Fix Paper's collision disable for custom scoreboards
 +        if (!com.destroystokyo.paper.PaperConfig.enablePlayerCollisions) {
 +            String playerName = getName();
 +            // If the player does not have their team
@@ -24,7 +24,7 @@ index 82392c3439c1692ec2179c87415204ee02f3dd2a..b989a65e684b2cc456e7c5f5388d40b6
 +                collideTeam.addEntry(playerName); // Add player to the collide team
 +            }
 +        }
-+        // Reaper end
++        // Lamius end
  
          this.server.getScoreboardManager().setPlayerBoard(this, scoreboard);
      }
