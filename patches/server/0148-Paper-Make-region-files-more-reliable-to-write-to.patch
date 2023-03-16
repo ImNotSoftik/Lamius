@@ -3,39 +3,6 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Thu, 16 Mar 2023 22:44:13 +0500
 Subject: [PATCH] Paper-Make-region-files-more-reliable-to-write-to
 
-Previously we would write to header before writing our chunk data,
-which opens a window for corruption (or we would overwrite entirely).
-Now the saving process has been changed to follow this chain of events:
-
-1. We always allocate a new space to write so we do not potentially
-overwrite and corrupt the current data
-2. Write the chunk data first (the order of the fields in
-the chunk data isn't relevant though)
-3. Flush to disk (if the launch flag is used)
-4. Write to the region header last
-5. Flush to disk (if the launch flag is used)
-6. Then we free the previous space allocated
-
-With this chain of events it is impossible for a chunk write to corrupt
-a region file, unless the operating system has lied and we have NOT flushed
-to disk.
-
-However server administrators are still recommended to continue performing
-regular backups.
-
-Note that when Mojang finally decides to change their region format
-to deal with oversized chunks this patch must be changed to deal with
-whatever system they decide to impose.
-
-If the paper.flush-on-save startup flag is set to true, then the
-steps 3 and 5 will make a call to sync() on the region file's fd,
-effectively flushing to disk.
-
-We also make use of two flushes to disk per chunk save (to ensure
-ordering and ensure data has gone to disk), so this will negatively
-affect save performance if the startup flag is used (especially on
-HDDs).
-
 
 diff --git a/src/main/java/net/minecraft/server/RegionFile.java b/src/main/java/net/minecraft/server/RegionFile.java
 index 80c0901fc060b2aa04737c447dc53c7fafa47fc8..3c8034bd42635e6c8d1cdaca71484e0468b65d30 100644
