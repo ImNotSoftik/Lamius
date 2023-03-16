@@ -67,8 +67,8 @@ index 0000000000000000000000000000000000000000..04ee268ec9eb44990cb440bcf24941ed
 +    public JsonObject getPluginData() {
 +        JsonObject data = new JsonObject();
 +
-+        data.addProperty("pluginName", "Reaper"); // Append the name of the server software
-+        data.addProperty("id", 15360); // Append the id of the server software
++        data.addProperty("pluginName", "Lamius"); // Append the name of the server software
++        data.addProperty("id", 17970); // Append the id of the server software
 +        data.addProperty("pluginVersion", Metrics.class.getPackage().getImplementationVersion() != null ? Metrics.class.getPackage().getImplementationVersion() : "unknown"); // Append the version of the server software
 +        JsonArray customCharts = new JsonArray();
 +        for (CustomChart customChart : charts) {
