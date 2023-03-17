@@ -3,6 +3,8 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Fri, 17 Mar 2023 15:54:17 +0500
 Subject: [PATCH] Paper-Port-Load-Chunks-for-Login-Asynchronously
 
+Credits to Paper: https://github.com/PaperMC/Paper/blob/ver/1.15.2/Spigot-Server-Patches/0484-Load-Chunks-for-Login-Asynchronously.patch
+
 
 diff --git a/src/main/java/net/minecraft/server/Entity.java b/src/main/java/net/minecraft/server/Entity.java
 index 4a8205135958cc91026e78afe0b3c668b9937e68..3b39e770d11f9b514dd96a2d58a37c2c35df940e 100644
