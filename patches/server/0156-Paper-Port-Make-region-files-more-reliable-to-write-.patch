@@ -3,6 +3,8 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Fri, 17 Mar 2023 16:14:31 +0500
 Subject: [PATCH] Paper-Port-Make-region-files-more-reliable-to-write-to
 
+Credits to Paper: https://github.com/PaperMC/Paper/blob/ver/1.13.2/Spigot-Server-Patches/0432-Make-region-files-more-reliable-to-write-to.patch
+
 
 diff --git a/src/main/java/net/minecraft/server/RegionFile.java b/src/main/java/net/minecraft/server/RegionFile.java
 index 80c0901fc060b2aa04737c447dc53c7fafa47fc8..b12ca81d37e653c53327cd2897b7daa2f873823b 100644
