@@ -3,6 +3,23 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Fri, 17 Mar 2023 15:41:52 +0500
 Subject: [PATCH] Paper-Port-Optimize-redstone-algorithm
 
+Credits to Paper: https://github.com/PaperMC/Paper/blob/ver/1.13.2/Spigot-Server-Patches/0394-Optimize-redstone-algorithm.patch
+
+Author: theosib <millerti@172.16.221.1>
+Co-authored-by: egg82 <phantom_zero@ymail.com>
+
+Original license: MIT
+
+This patch implements theosib's redstone algorithms to completely overhaul the way redstone works.
+The new algorithms should be many times faster than current vanilla ones.
+From the original author's comments, it looks like it shouldn't interfere with any redstone save for very extreme edge-cases.
+
+Surprisingly, not a lot was touched aside from a few obfuscation helpers and BlockRedstoneWire.
+A lot of this code is self-contained in a helper class.
+
+Aside from making the obvious class/function renames and obfhelpers I didn't need to modify much.
+Just added Bukkit's event system and took a few liberties with dead code and comment misspellings.
+
 
 diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
 index f36dc3be47cba552be3776521b9717afbd14d20a..ab95b263553d794b211c6e4809000566b1b18faf 100644
