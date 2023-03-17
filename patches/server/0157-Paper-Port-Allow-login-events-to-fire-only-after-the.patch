@@ -3,6 +3,9 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Fri, 17 Mar 2023 16:18:44 +0500
 Subject: [PATCH] 
  Paper-Port-Allow-login-events-to-fire-only-after-the-server-plugins-are-enabled
+ 
+Credits to Paper: https://github.com/PaperMC/Paper/blob/ver/1.13.2/Spigot-Server-Patches/0431-Allow-login-events-to-fire-only-after-the-server-plu.patch
+Event threads will simply block until they're ready to accept.
 
 
 diff --git a/src/main/java/net/minecraft/server/LoginListener.java b/src/main/java/net/minecraft/server/LoginListener.java
