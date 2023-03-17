@@ -3,6 +3,10 @@ From: SoftikLord <dimap9986@gmail.com>
 Date: Fri, 17 Mar 2023 16:48:01 +0500
 Subject: [PATCH] Paper-Port-Optimize-Light-Recalculations
 
+Credits to Paper: https://github.com/PaperMC/Paper/blob/ver/1.13.2/Spigot-Server-Patches/0363-Optimize-Light-Recalculations.patch\
+Optimizes to not repeatedly look up the same chunk for
+light lookups.
+
 
 diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
 index 1972f6269e44359686854a60372ba2049fe43b28..1271ec2e69079a7362a1dd44cfee90876449d03a 100644
