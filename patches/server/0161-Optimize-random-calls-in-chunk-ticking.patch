@@ -1,0 +1,106 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Wed, 29 Mar 2023 22:04:20 +0500
+Subject: [PATCH] Optimize-random-calls-in-chunk-ticking
+
+Especially at over 30,000 chunks these random calls are fairly heavy. We
+use a different method here for checking lightning, and for checking
+ice.
+
+Lighting: Each chunk now keeps an int of how many ticks until the
+lightning should strike. This int is a random number from 0 to 100000 * 2,
+the multiplication is required to keep the probability the same.
+
+Ice and snow: We just generate a single random number 0-16 and increment
+it, while checking if it's 0 for the current chunk.
+
+Depending on configuration for things that tick in a chunk, this is a
+5-10% improvement.
+
+Airplane
+Copyright (C) 2020 Technove LLC
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 3 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License
+along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+
+diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
+index 1271ec2e69079a7362a1dd44cfee90876449d03a..a33e49d447ec01533cef3d715188b554240fac0e 100644
+--- a/src/main/java/net/minecraft/server/Chunk.java
++++ b/src/main/java/net/minecraft/server/Chunk.java
+@@ -121,7 +121,17 @@ public class Chunk {
+         this.neighbors &= ~(0x1 << (x * 5 + 12 + z));
+     }
+     // CraftBukkit end
+-
++    // Airplane start - instead of using a random every time the chunk is ticked, define when lightning strikes preemptively
++    private int lightningTick;
++    // shouldDoLightning compiles down to 29 bytes, which with the default of 35 byte inlining should guarantee an inline
++    public final boolean shouldDoLightning(Random random) {
++        if (this.lightningTick-- <= 0) {
++            this.lightningTick = random.nextInt(100000) << 1;
++            return true;
++        }
++        return false;
++    }
++    // Airplane end
+     public Chunk(World world, int i, int j) {
+         this.sections = new ChunkSection[16];
+         this.g = new byte[256];
+@@ -145,6 +155,7 @@ public class Chunk {
+         // CraftBukkit start
+         this.bukkitChunk = new org.bukkit.craftbukkit.CraftChunk(this);
+         this.chunkKey = ChunkCoordIntPair.a(this.locX, this.locZ);
++        this.lightningTick = this.world.random.nextInt(100000) << 1; // Airplane - initialize lightning tick
+     }
+ 
+     public org.bukkit.Chunk bukkitChunk;
+diff --git a/src/main/java/net/minecraft/server/WorldServer.java b/src/main/java/net/minecraft/server/WorldServer.java
+index a74310655fcf1d8cc5ac1d8564a863f231b6fa74..62a1840dcba24a7e73616fecbf9b6ce432650427 100644
+--- a/src/main/java/net/minecraft/server/WorldServer.java
++++ b/src/main/java/net/minecraft/server/WorldServer.java
+@@ -476,7 +476,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
+ 
+         // this.methodProfiler.b(); // Lamius - Remove MethodProfiler
+     }
+-
++    private int currentIceAndSnowTick = 0; protected void resetIceAndSnowTick() { this.currentIceAndSnowTick = this.random.nextInt(16); } // Airplane
+     protected void j() {
+         this.i();
+         if (false) { // Lamius start - Remove DEBUG_ALL_BLOCK_STATES world type
+@@ -492,6 +492,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
+             boolean flag1 = this.X();
+ 
+             // this.methodProfiler.a("pollingChunks"); // Lamius - Remove MethodProfiler
++            this.resetIceAndSnowTick();
+ 
+             for (Iterator iterator1 = this.manager.b(); iterator1.hasNext(); /*this.methodProfiler.b()*/) { // Lamius - Remove MethodProfiler
+                 // this.methodProfiler.a("getChunk"); // Lamius - Remove MethodProfiler
+@@ -509,7 +510,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
+                 BlockPosition blockposition;
+ 
+                 // Paper - Disable thunder
+-                if (!this.paperConfig.disableThunder && flag && flag1 && this.random.nextInt(100000) == 0) {
++                if (!this.paperConfig.disableThunder && flag && flag1 && chunk.shouldDoLightning(this.random)) {
+                     timings.chunkTicksThunder.startTiming(); // Lamius
+                     this.l = this.l * 3 + 1013904223;
+                     l = this.l >> 2;
+@@ -533,7 +534,7 @@ public class WorldServer extends World implements IAsyncTaskHandler {
+                 }
+ 
+                 // this.methodProfiler.c("iceandsnow"); // Lamius - Remove MethodProfiler
+-                if (!this.paperConfig.disableIceAndSnow && this.random.nextInt(16) == 0) { // Paper - Disable ice and snow
++                if (!this.paperConfig.disableIceAndSnow && (currentIceAndSnowTick++ & 15) == 0) { // Paper - Disable ice and snow // Airplane - optimize further random ticking
+                     timings.chunkTicksIceAndSnow.startTiming(); // Lamius
+                     this.l = this.l * 3 + 1013904223;
+                     l = this.l >> 2;
