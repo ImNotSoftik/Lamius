@@ -1,0 +1,71 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:36:14 +0500
+Subject: [PATCH] Paper-lag-compensate-eating
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
+index 0a9deb9558378d8580feaac9c886403c050d1948..3d59d10ba4e3b70f1581fe2d6fad7fe7f7419121 100644
+--- a/src/main/java/net/minecraft/server/EntityLiving.java
++++ b/src/main/java/net/minecraft/server/EntityLiving.java
+@@ -104,7 +104,11 @@ public abstract class EntityLiving extends Entity {
+     private int bD;
+     private float bE;
+     protected ItemStack activeItem;
+-    protected int bp;
++    protected int bp; protected final int getEatTimeTicks() { return this.bp; }  protected final void setEatTimeTicks(int value) { this.bp = value; } // Reaper - OBFHELPER
++    // Paper start - Lag compensate eating
++    protected long eatStartTime;
++    protected int totalEatTimeTicks;
++    // Paper end
+     protected int bq;
+     private BlockPosition bF;
+     private DamageSource bG;
+@@ -2391,7 +2395,12 @@ public abstract class EntityLiving extends Entity {
+                     this.b(this.activeItem, 5);
+                 }
+ 
+-                if (--this.bp == 0 && !this.world.isClientSide) {
++                // Paper start - Lag compensate eating
++                // we add 2 to the expected time to avoid lag compensating when we don't need to
++                boolean shouldLagCompensate = this.activeItem.getItem() instanceof ItemFood && this.eatStartTime != -1 && (System.nanoTime() - this.eatStartTime) > ((2 + this.totalEatTimeTicks) * 50 * (1000 * 1000));
++                if (--this.bp == 0 || shouldLagCompensate) {
++                    this.bp = 0;
++                    // Paper end
+                     this.v();
+                 }
+             } else {
+@@ -2406,7 +2415,10 @@ public abstract class EntityLiving extends Entity {
+ 
+         if (!itemstack.isEmpty() && !this.isHandRaised()) {
+             this.activeItem = itemstack;
+-            this.bp = itemstack.m();
++            // Paper start - Lag compensate eating
++            this.bp = this.totalEatTimeTicks = itemstack.m();
++            this.eatStartTime = System.nanoTime();
++            // Paper end
+             if (!this.world.isClientSide) {
+                 int i = 1;
+ 
+@@ -2431,6 +2443,10 @@ public abstract class EntityLiving extends Entity {
+             } else if (!this.isHandRaised() && !this.activeItem.isEmpty()) {
+                 this.activeItem = ItemStack.a;
+                 this.bp = 0;
++                // Paper start - Lag compensate eating
++                this.totalEatTimeTicks = 0;
++                this.eatStartTime = -1L;
++                // Paper end
+             }
+         }
+ 
+@@ -2539,6 +2555,10 @@ public abstract class EntityLiving extends Entity {
+ 
+         this.activeItem = ItemStack.a;
+         this.bp = 0;
++        // Paper start - Lag compensate eating
++        this.totalEatTimeTicks = 0;
++        this.eatStartTime = -1L;
++        // Paper end
+     }
+ 
+     public boolean isBlocking() {

@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:31:03 +0500
+Subject: [PATCH] Paper-handle-bad-chunks-more-gracefully
+
+
+diff --git a/src/main/java/net/minecraft/server/RegionFileCache.java b/src/main/java/net/minecraft/server/RegionFileCache.java
+index daa7e997a387e65b15858573497fdf78cb069813..12ee135a1074b8bb5029da972ec880221a96da93 100644
+--- a/src/main/java/net/minecraft/server/RegionFileCache.java
++++ b/src/main/java/net/minecraft/server/RegionFileCache.java
+@@ -165,8 +165,22 @@ public class RegionFileCache {
+     private static NBTTagCompound readOversizedChunk(RegionFile regionfile, int i, int j) throws IOException {
+         synchronized (regionfile) {
+             try (DataInputStream datainputstream = regionfile.getReadStream(i & 31, j & 31)) {
+-                NBTTagCompound oversizedData = regionfile.getOversizedData(i, j);
+-                NBTTagCompound chunk = NBTCompressedStreamTools.readNBT(datainputstream);
++                // Paper start - Handle bad chunks more gracefully - also handle similarly with oversized data
++                NBTTagCompound oversizedData;
++
++                try {
++                    oversizedData = regionfile.getOversizedData(i, j);
++                } catch (Exception ex) {
++                    oversizedData = null;
++                }
++
++                NBTTagCompound chunk;
++                try {
++                    chunk = NBTCompressedStreamTools.readNBT(datainputstream);
++                } catch (Exception ex) {
++                    return null;
++                }
++                // Paper end
+                 if (oversizedData == null) {
+                     return chunk;
+                 }
+@@ -244,7 +258,13 @@ public class RegionFileCache {
+             return null;
+         }
+ 
+-        return NBTCompressedStreamTools.a(datainputstream);
++        // Paper start - Handle bad chunks more gracefully
++        try {
++            return NBTCompressedStreamTools.a(datainputstream);
++        } catch (Exception ex) {
++            return null;
++        }
++        // Paper end
+     }
+ 
+     public static void e(File file, int i, int j, NBTTagCompound nbttagcompound) throws IOException { // Paper - remove synchronization
