@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 14:55:35 +0500
+Subject: [PATCH] Reaper-fix-some-dupes
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityLiving.java b/src/main/java/net/minecraft/server/EntityLiving.java
+index 82c3a84edd7a9408f99873ef8ea1693674786791..35be20567b97bff939b32e5dc5e2dd49d0883a27 100644
+--- a/src/main/java/net/minecraft/server/EntityLiving.java
++++ b/src/main/java/net/minecraft/server/EntityLiving.java
+@@ -1115,6 +1115,7 @@ public abstract class EntityLiving extends Entity {
+     }
+ 
+     public void die(DamageSource damagesource) {
++        if (this.dead) return; // Reaper
+         if (!this.aU) {
+             Entity entity = damagesource.getEntity();
+             EntityLiving entityliving = this.ci();

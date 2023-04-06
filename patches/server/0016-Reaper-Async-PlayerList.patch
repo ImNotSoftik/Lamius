@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:07:42 +0500
+Subject: [PATCH] Reaper-Async-PlayerList
+
+
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+index 950a2dc7962d36c11989c8b502f9c5969ab0b6d4..4a1e86ba6ec69117a625b2e8d084c7f4dbb4afde 100644
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+@@ -123,4 +123,9 @@ public class LamiusConfig {
+         config.addDefault(path, def);
+         return config.getString(path, config.getString(path));
+     }
++
++    public static boolean asyncPlayerList;
++    private static void asyncPlayerList() {
++        asyncPlayerList = getBoolean("async-player-list", true);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
+index 80e9c9200c2afc3005c6a8bc5f5140eab71f4a40..0acd564af4201bc18b152dec894febf5e69af90c 100644
+--- a/src/main/java/net/minecraft/server/PlayerList.java
++++ b/src/main/java/net/minecraft/server/PlayerList.java
+@@ -17,6 +17,8 @@ import java.util.List;
+ import java.util.Map;
+ import java.util.UUID;
+ import javax.annotation.Nullable;
++
++import me.core.lamius.Lamius.LamiusConfig;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+@@ -1032,6 +1034,28 @@ public abstract class PlayerList {
+ 
+     public void tick() {
+         if (++this.v > 600) {
++// Reaper start - Async PlayerList
++            if (LamiusConfig.asyncPlayerList) {
++                List<Tuple<EntityPlayer, Packet<?>>> packetEntries = new ArrayList<>(this.players.size());
++
++                for (int i = 0; i < this.players.size(); ++i) {
++                    EntityPlayer target = this.players.get(i);
++
++                    packetEntries.add(new Tuple<>(target, new PacketPlayOutPlayerInfo(PacketPlayOutPlayerInfo.EnumPlayerInfoAction.UPDATE_LATENCY, Iterables.filter(this.players, new Predicate<EntityPlayer>() {
++                        @Override
++                        public boolean apply(EntityPlayer input) {
++                            return target.getBukkitEntity().canSee(input.getBukkitEntity());
++                        }
++                    }))));
++                }
++
++                MCUtil.scheduleAsyncTask(() -> {
++                    for (Tuple<EntityPlayer, Packet<?>> tuple : packetEntries) {
++                        tuple.a().playerConnection.sendPacket(tuple.b());
++                    }
++                });
++            } else {
++            // Reaper end
+             // CraftBukkit start
+             for (int i = 0; i < this.players.size(); ++i) {
+                 final EntityPlayer target = (EntityPlayer) this.players.get(i);
+@@ -1043,6 +1067,7 @@ public abstract class PlayerList {
+                     }
+                 })));
+             }
++            } // Reaper - Async PlayerList
+             // CraftBukkit end
+             this.v = 0;
+         }

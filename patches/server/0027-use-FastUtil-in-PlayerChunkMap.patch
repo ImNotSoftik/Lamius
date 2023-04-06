@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:25:57 +0500
+Subject: [PATCH] use-FastUtil-in-PlayerChunkMap
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerChunkMap.java b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+index 99652ae3ed9fffe9a2a8310465b948d504b0595f..94b812992d8b8e2667648ebfaba58c85c618d97a 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunkMap.java
++++ b/src/main/java/net/minecraft/server/PlayerChunkMap.java
+@@ -41,7 +41,7 @@ public class PlayerChunkMap {
+         }
+     };
+     private final WorldServer world;
+-    private final List<EntityPlayer> managedPlayers = Lists.newArrayList();
++    private final List<EntityPlayer> managedPlayers = new it.unimi.dsi.fastutil.objects.ObjectArrayList<>(); // Reaper - ArrayList -> ObjectArrayList
+     private final Long2ObjectMap<PlayerChunk> e = new Long2ObjectOpenHashMap(4096);
+     private final Set<PlayerChunk> f = Sets.newHashSet();
+     private final List<PlayerChunk> g = Lists.newLinkedList();

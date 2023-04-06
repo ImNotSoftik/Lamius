@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:14:35 +0500
+Subject: [PATCH] Reaper-prevent-vehicle-move-while-awaiting-teleport-confirm
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 08bebdcdb18c3a811598d6798b5df13a72c3dd27..bf29f241633e08b93b4b91522398193072e5a8bc 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -302,6 +302,16 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+             Entity entity = this.player.getVehicle();
+ 
+             if (entity != this.player && entity.bE() == this.player && entity == this.r) {
++                // Reaper start - Prevent vehicle move while awaiting teleport confirm
++                if (this.teleportPos != null) {
++                    if (this.e - this.A > 20) {
++                        this.A = this.e;
++                        this.a(this.teleportPos.x, this.teleportPos.y, this.teleportPos.z, this.player.yaw, this.player.pitch);
++                    }
++                    this.allowedPlayerTicks = 20; // CraftBukkit
++                    return;
++                }
++                // Reaper end
+                 WorldServer worldserver = this.player.x();
+                 double d0 = entity.locX;
+                 double d1 = entity.locY;

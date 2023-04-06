@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:00:45 +0500
+Subject: [PATCH] Reaper-fix-dismount-dupe
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index 59d5263295ec57981fb8a9cbab34a00bce904f70..08bebdcdb18c3a811598d6798b5df13a72c3dd27 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -345,6 +345,7 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+ 
+                 // Paper start - Prevent moving into unloaded chunks
+                 if (player.world.paperConfig.preventMovingIntoUnloadedChunks && !worldserver.isChunkLoaded((int) Math.floor(packetplayinvehiclemove.getX()) >> 4, (int) Math.floor(packetplayinvehiclemove.getZ()) >> 4, false)) {
++                    player.stopRiding(); // Reaper - Force dismount
+                     this.networkManager.sendPacket(new PacketPlayOutVehicleMove(entity));
+                     return;
+                 }
+@@ -353,6 +354,7 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+                 if (d10 - d9 > Math.max(100.0D, Math.pow((double) (org.spigotmc.SpigotConfig.movedTooQuicklyMultiplier * (float) i * speed), 2)) && (!this.minecraftServer.R() || !this.minecraftServer.Q().equals(entity.getName()))) { // Spigot
+                 // CraftBukkit end
+                     PlayerConnection.LOGGER.warn("{} (vehicle of {}) moved too quickly! {},{},{}", entity.getName(), this.player.getName(), Double.valueOf(d6), Double.valueOf(d7), Double.valueOf(d8));
++                    player.stopRiding(); // Reaper - Force dismount
+                     this.networkManager.sendPacket(new PacketPlayOutVehicleMove(entity));
+                     return;
+                 }

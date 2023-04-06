@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:23:07 +0500
+Subject: [PATCH] Reaper-cache-block-break-animation-packet
+
+
+diff --git a/src/main/java/net/minecraft/server/WorldManager.java b/src/main/java/net/minecraft/server/WorldManager.java
+index bfe003f60b12930a08412eaa761b1aa4461ba1eb..f57ff4a6b56cf46c69789f69038a924301e56af9 100644
+--- a/src/main/java/net/minecraft/server/WorldManager.java
++++ b/src/main/java/net/minecraft/server/WorldManager.java
+@@ -70,6 +70,7 @@ public class WorldManager implements IWorldAccess {
+         // Paper start
+         java.util.List<? extends EntityHuman> list = entity != null ? entity.world.players : this.a.getPlayerList().v();
+         Iterator<? extends EntityHuman> iterator = list.iterator();
++        PacketPlayOutBlockBreakAnimation packet = null; // Reaper - Cache block break animation packet
+         while (iterator.hasNext()) {
+             EntityHuman human = iterator.next();
+             if (!(human instanceof EntityPlayer)) continue;
+@@ -88,7 +89,10 @@ public class WorldManager implements IWorldAccess {
+                 // CraftBukkit end
+ 
+                 if (d0 * d0 + d1 * d1 + d2 * d2 < 1024.0D) {
+-                    entityplayer.playerConnection.sendPacket(new PacketPlayOutBlockBreakAnimation(i, blockposition, j));
++                    // Reaper start - Cache block break animation packet
++                    if (packet == null) packet = new PacketPlayOutBlockBreakAnimation(i, blockposition, j);
++                    entityplayer.playerConnection.sendPacket(packet);
++                    // Reaper end
+                 }
+             }
+         }

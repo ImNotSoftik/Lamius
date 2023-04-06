@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:24:57 +0500
+Subject: [PATCH] Reaper-fix-MC-10657
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 66cb68a4e9a2c3a9f4e8bd03f10a435490441f8c..34444755c4aaceb070ae086bab6c0152a8dc230a 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -680,6 +680,7 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+             this.playerConnection.sendPacket(new PacketPlayOutWorldEvent(1032, BlockPosition.ZERO, 0, false));
+             this.lastSentExp = -1;
+             this.lastHealthSent = -1.0F;
++            this.setSneaking(false); // Reaper - Fix MC-10657
+             this.ch = -1;
+             return this;
+         }
+diff --git a/src/main/java/net/minecraft/server/PlayerList.java b/src/main/java/net/minecraft/server/PlayerList.java
+index 0acd564af4201bc18b152dec894febf5e69af90c..d13c23dcfa4090c4b8aff7569c59cf76a64924ad 100644
+--- a/src/main/java/net/minecraft/server/PlayerList.java
++++ b/src/main/java/net/minecraft/server/PlayerList.java
+@@ -743,6 +743,8 @@ public abstract class PlayerList {
+             entityplayer.playerConnection.sendPacket(new PacketPlayOutEntityEffect(entityplayer.getId(), mobEffect));
+         }
+ 
++        entityplayer.setSneaking(false); // Reaper - Fix MC-10657
++
+         // Fire advancement trigger
+         CriterionTriggers.u.a(entityplayer, ((CraftWorld) fromWorld).getHandle().worldProvider.getDimensionManager(), worldserver.worldProvider.getDimensionManager());
+         if (((CraftWorld) fromWorld).getHandle().worldProvider.getDimensionManager() == DimensionManager.NETHER && worldserver.worldProvider.getDimensionManager() == DimensionManager.OVERWORLD && entityplayer.Q() != null) {

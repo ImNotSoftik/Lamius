@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:09:51 +0500
+Subject: [PATCH] Reaper-map-decorations-limit
+
+
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+index 4a1e86ba6ec69117a625b2e8d084c7f4dbb4afde..68c4a29e388bf74f45be005c7172db146f5c4a36 100644
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+@@ -128,4 +128,9 @@ public class LamiusConfig {
+     private static void asyncPlayerList() {
+         asyncPlayerList = getBoolean("async-player-list", true);
+     }
++
++    public static int mapDecorationsLimit;
++    private static void mapDecorationsLimit() {
++        mapDecorationsLimit = getInt("map-decorations-limit", 10);
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/WorldMap.java b/src/main/java/net/minecraft/server/WorldMap.java
+index 59173605ee8406b021576329657a8f1477fe10ad..f79c683aa2df9af7ef28cfebeaa6a681bffdcfe8 100644
+--- a/src/main/java/net/minecraft/server/WorldMap.java
++++ b/src/main/java/net/minecraft/server/WorldMap.java
+@@ -281,9 +281,29 @@ public class WorldMap extends PersistentBase {
+                 b1 = 127;
+             }
+         }
+-
++        if (countMapIcon() >= me.core.lamius.Lamius.LamiusConfig.mapDecorationsLimit) return; // Reaper - Limit decorations
+         this.decorations.put(s, new MapIcon(mapicon_type, b0, b1, b2));
+     }
++    // Reaper start - Limit decorations
++    private int countMapIcon() {
++        int count = 0;
++
++        for (MapIcon icon : decorations.values()) {
++            switch (icon.b()) {
++                case PLAYER:
++                case PLAYER_OFF_MAP:
++                case PLAYER_OFF_LIMITS:
++                case MANSION:
++                case MONUMENT:
++                    continue;
++                default:
++                    count += 1;
++            }
++        }
++
++        return count;
++    }
++    // Reaper end
+ 
+     @Nullable
+     public Packet<?> a(ItemStack itemstack, World world, EntityHuman entityhuman) {

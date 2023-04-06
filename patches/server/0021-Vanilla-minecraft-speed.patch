@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 15:15:20 +0500
+Subject: [PATCH] Vanilla-minecraft-speed
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityMinecartAbstract.java b/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
+index 1f4025486e09067a232dad6c89272889e97a5ffc..b47ceaaedaf7fb837c919174fe01941d50a576c6 100644
+--- a/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
++++ b/src/main/java/net/minecraft/server/EntityMinecartAbstract.java
+@@ -37,9 +37,9 @@ public abstract class EntityMinecartAbstract extends Entity implements INamableT
+     private double derailedX = 0.5;
+     private double derailedY = 0.5;
+     private double derailedZ = 0.5;
+-    private double flyingX = 0.95;
+-    private double flyingY = 0.95;
+-    private double flyingZ = 0.95;
++    private double flyingX = 0.94999998807907104D; // Lamius - Restore vanilla precision
++    private double flyingY = 0.94999998807907104D; // Lamius - Restore vanilla precision
++    private double flyingZ = 0.94999998807907104D; // Reaper - Restore vanilla precision
+     public double maxSpeed = 0.4D;
+     // CraftBukkit end
+ 
