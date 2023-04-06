@@ -1,0 +1,20 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 6 Apr 2023 16:04:14 +0500
+Subject: [PATCH] test-patch
+
+
+diff --git a/src/main/java/net/minecraft/server/TileEntityChest.java b/src/main/java/net/minecraft/server/TileEntityChest.java
+index 631304122cf488fc7f83c016c508329ad00a6b59..85cdd87a73137103643f09f5493de3506807e497 100644
+--- a/src/main/java/net/minecraft/server/TileEntityChest.java
++++ b/src/main/java/net/minecraft/server/TileEntityChest.java
+@@ -84,7 +84,8 @@ public class TileEntityChest extends TileEntityLootable { // Paper - Remove ITic
+         dataconvertermanager.a(DataConverterTypes.BLOCK_ENTITY, (DataInspector) (new DataInspectorItemList(TileEntityChest.class, new String[] { "Items"})));
+     }
+ 
+-    public void load(NBTTagCompound nbttagcompound) {
++    public void load(NBTTagCompound nbttagcompound, EntityHuman entityhuman) {
++        if (entityhuman == null) return; // Lamius - Shulker Optimize
+         super.load(nbttagcompound);
+         this.items = NonNullList.a(this.getSize(), ItemStack.a);
+         if (!this.c(nbttagcompound)) {
