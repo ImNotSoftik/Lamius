@@ -1,0 +1,45 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Raymano <raymanowy@gmail.com>
+Date: Sat, 21 Jan 2023 23:58:36 +0100
+Subject: [PATCH] Fix-spawn-EnderCrystal-Primed-TNT-DragonEgg-on-large-cords
+
+
+diff --git a/src/main/java/net/minecraft/server/BlockDragonEgg.java b/src/main/java/net/minecraft/server/BlockDragonEgg.java
+index 5a91a9ec112dcde83f60c25911c5b66ffadd4a32..d13b261a89c4fabeb31667720f7abbae6e01533e 100644
+--- a/src/main/java/net/minecraft/server/BlockDragonEgg.java
++++ b/src/main/java/net/minecraft/server/BlockDragonEgg.java
+@@ -33,7 +33,7 @@ public class BlockDragonEgg extends Block {
+             boolean flag = true;
+ 
+             if (!BlockFalling.instaFall && world.areChunksLoadedBetween(blockposition.a(-32, -32, -32), blockposition.a(32, 32, 32))) {
+-                world.addEntity(new EntityFallingBlock(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), this.getBlockData()));
++                world.addEntity(new EntityFallingBlock(world, blockposition.getX() + 0.5D, blockposition.getY(), blockposition.getZ() + 0.5D, this.getBlockData())); // Lamius
+             } else {
+                 world.setAir(blockposition);
+ 
+diff --git a/src/main/java/net/minecraft/server/BlockTNT.java b/src/main/java/net/minecraft/server/BlockTNT.java
+index d8ac3bc7d7a43360ec055fcdedf9e5ae8d567912..da600de589ffec5a9523520dbacff6c3febc69e0 100644
+--- a/src/main/java/net/minecraft/server/BlockTNT.java
++++ b/src/main/java/net/minecraft/server/BlockTNT.java
+@@ -43,7 +43,7 @@ public class BlockTNT extends Block {
+     public void a(World world, BlockPosition blockposition, IBlockData iblockdata, EntityLiving entityliving) {
+         if (true) { // Lamius - Remove isClientSide check
+             if (((Boolean) iblockdata.get(BlockTNT.EXPLODE)).booleanValue()) {
+-                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, (double) ((float) blockposition.getX() + 0.5F), (double) blockposition.getY(), (double) ((float) blockposition.getZ() + 0.5F), entityliving);
++                EntityTNTPrimed entitytntprimed = new EntityTNTPrimed(world, blockposition.getX() + 0.5D, blockposition.getY(), blockposition.getZ() + 0.5F, entityliving); // Lamius
+ 
+                 world.addEntity(entitytntprimed);
+                 world.a((EntityHuman) null, entitytntprimed.locX, entitytntprimed.locY, entitytntprimed.locZ, SoundEffects.hW, SoundCategory.BLOCKS, 1.0F, 1.0F);
+diff --git a/src/main/java/net/minecraft/server/ItemEndCrystal.java b/src/main/java/net/minecraft/server/ItemEndCrystal.java
+index aa93d93baeb11e03820e548fbf58157800c431a9..91ccf210d341bedee2c21f4cad8676d3f9a6f5ad 100644
+--- a/src/main/java/net/minecraft/server/ItemEndCrystal.java
++++ b/src/main/java/net/minecraft/server/ItemEndCrystal.java
+@@ -37,7 +37,7 @@ public class ItemEndCrystal extends Item {
+                         return EnumInteractionResult.FAIL;
+                     } else {
+                         if (!world.isClientSide) {
+-                            EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(world, (double) ((float) blockposition.getX() + 0.5F), (double) (blockposition.getY() + 1), (double) ((float) blockposition.getZ() + 0.5F));
++                            EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(world, blockposition.getX() + 0.5D, blockposition.getY() + 1, blockposition.getZ() + 0.5D); // Lamius
+ 
+                             entityendercrystal.setShowingBottom(false);
+                             world.addEntity(entityendercrystal);
