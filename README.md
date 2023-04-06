@@ -32,7 +32,7 @@ You can also [build it yourself](https://github.com/ImNotSoftik/Lamiuss#building
 - You need `git` installed, with a configured user name and email.
   On windows you need to run from git bash.
 - You need `maven` installed
-- You need `jdk 1.8` to decompile and `jdk` 17+ installed to compile (and `jre` 17+ to run)
+- You need `jdk 1.8` to decompile
 - Anything else that `paper` requires to build
 
 **If all you want is a paperclip server jar run `./Lamius jar`**
