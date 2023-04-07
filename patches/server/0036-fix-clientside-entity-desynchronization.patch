@@ -1,0 +1,23 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sat, 8 Apr 2023 00:30:18 +0500
+Subject: [PATCH] -fix-clientside-entity-desynchronization
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityTrackerEntry.java b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
+index 17ca94be029113bdd484ae1b17c8af5629d94b2e..ee4d53a2de1a3fddf559a81748936c254c077d87 100644
+--- a/src/main/java/net/minecraft/server/EntityTrackerEntry.java
++++ b/src/main/java/net/minecraft/server/EntityTrackerEntry.java
+@@ -500,8 +500,10 @@ public class EntityTrackerEntry {
+     }
+     private boolean isInRangeOfPlayer(EntityPlayer entityplayer) {
+         // Paper end
+-        double d0 = entityplayer.locX - (double) this.xLoc / 4096.0D;
+-        double d1 = entityplayer.locZ - (double) this.zLoc / 4096.0D;
++        // Reaper start - Fix clientside entity desynchronization
++        double d0 = entityplayer.locX - this.tracker.locX;
++        double d1 = entityplayer.locZ - this.tracker.locZ;
++        // Reaper end
+         int i = Math.min(this.e, this.f);
+ 
+         return d0 >= (double) (-i) && d0 <= (double) i && d1 >= (double) (-i) && d1 <= (double) i && this.tracker.a(entityplayer);

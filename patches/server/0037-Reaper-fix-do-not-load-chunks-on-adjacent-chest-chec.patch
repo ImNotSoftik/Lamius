@@ -1,0 +1,18 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sat, 8 Apr 2023 00:30:55 +0500
+Subject: [PATCH] Reaper-fix-do-not-load-chunks-on-adjacent-chest-check
+
+
+diff --git a/src/main/java/net/minecraft/server/TileEntityChest.java b/src/main/java/net/minecraft/server/TileEntityChest.java
+index 31a0242d877b5758aba025f5885f369fc4cf3b5e..4404fe67d881fd513369853388009f4b6f3edaa5 100644
+--- a/src/main/java/net/minecraft/server/TileEntityChest.java
++++ b/src/main/java/net/minecraft/server/TileEntityChest.java
+@@ -139,6 +139,7 @@ public class TileEntityChest extends TileEntityLootable { // Paper - Remove ITic
+ 
+     public void o() {
+         if (!this.a) {
++            if (this.world == null || !this.world.areChunksLoaded(this.position, 1)) return; // Reaper
+             this.a = true;
+             this.h = this.a(EnumDirection.WEST);
+             this.g = this.a(EnumDirection.EAST);
