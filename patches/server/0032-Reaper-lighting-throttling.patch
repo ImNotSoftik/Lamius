@@ -1,0 +1,505 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sat, 8 Apr 2023 00:22:22 +0500
+Subject: [PATCH] Reaper-lighting-throttling
+
+
+diff --git a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+index 897bb49b461a8f0d92965ab64b869a23886a0116..9730f20d8b07568050e5e68cb62d32cf2b1283b7 100644
+--- a/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
++++ b/src/main/java/com/destroystokyo/paper/PaperWorldConfig.java
+@@ -140,12 +140,13 @@ public class PaperWorldConfig {
+         netherVoidTopDamage = getBoolean( "nether-ceiling-void-damage", false );
+         log("Top of the nether void damage: " + netherVoidTopDamage);
+     }
+-
++    /* // Reaper start - Remove Paper lighting queue
+     public boolean queueLightUpdates;
+     private void queueLightUpdates() {
+         queueLightUpdates = getBoolean("queue-light-updates", false);
+         log("Lighting Queue enabled: " + queueLightUpdates);
+     }
++    */ // Reaper end
+ 
+     public boolean disableEndCredits;
+     private void disableEndCredits() {
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+index 68c4a29e388bf74f45be005c7172db146f5c4a36..7ca73e292d66119341284bd87a8e48cd6013d63e 100644
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+@@ -1,7 +1,9 @@
+ package me.core.lamius.Lamius;
+ 
+ import com.google.common.base.Throwables;
++import net.minecraft.server.MathHelper;
+ import net.minecraft.server.MinecraftServer;
++import net.minecraft.server.ReaperLightingQueue;
+ import org.bukkit.Bukkit;
+ import org.bukkit.command.Command;
+ import org.bukkit.configuration.InvalidConfigurationException;
+@@ -133,4 +135,19 @@ public class LamiusConfig {
+     private static void mapDecorationsLimit() {
+         mapDecorationsLimit = getInt("map-decorations-limit", 10);
+     }
++
++    public static boolean queueLightUpdates;
++    public static int lightThrottlingDelay;
++    public static boolean lightThrottlingRedelaying;
++    public static boolean lightThrottlingAllowBlockRelight;
++    private static void lightLagSkip() {
++        boolean oldQLU = queueLightUpdates;
++        lightThrottlingDelay = MathHelper.clamp(getInt("light-throttling.delay", 5 * 20), 0, 60 * 20);
++        queueLightUpdates = lightThrottlingDelay > 0;
++        lightThrottlingRedelaying = getBoolean("light-throttling.redelaying", false);
++        lightThrottlingAllowBlockRelight = getBoolean("light-throttling.allow-block-relight", true);
++        if (oldQLU && !queueLightUpdates) {
++            ReaperLightingQueue.processQueueAnyway();
++        }
++    }
+ }
+diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
+index 4060fd274831088b55477def553c57ef867fd690..32e19de3fbcb24829f296d194597ed8916c8d133 100644
+--- a/src/main/java/net/minecraft/server/Chunk.java
++++ b/src/main/java/net/minecraft/server/Chunk.java
+@@ -70,7 +70,8 @@ public class Chunk {
+             return removed;
+         }
+     }
+-    final PaperLightingQueue.LightingQueue lightingQueue = new PaperLightingQueue.LightingQueue(this);
++    // final PaperLightingQueue.LightingQueue lightingQueue = new PaperLightingQueue.LightingQueue(this); // Reaper - Remove Paper lighting queue
++    final ReaperLightingQueue.LightingQueue lightingQueue = new ReaperLightingQueue.LightingQueue(this); // Reaper
+     // Paper end
+     private boolean done;
+     private boolean lit;
+@@ -544,22 +545,22 @@ public class Chunk {
+                 if (flag) {
+                     this.initLighting();
+                 } else {
+-                    this.runOrQueueLightUpdate(() -> { // Paper - Queue light update
++                    // this.runOrQueueLightUpdate(() -> { // Reaper - Remove Paper lighting queue // Paper - Queue light update
+                     int j1 = iblockdata.c();
+                     int k1 = iblockdata1.c();
+ 
+                     if (j1 > 0) {
+                         if (j >= i1) {
+-                            this.c(i, j + 1, k);
++                            this.runOrQueueLightUpdate(i, j + 1, k, 1); // Reaper
+                         }
+                     } else if (j == i1 - 1) {
+-                        this.c(i, j, k);
++                        this.runOrQueueLightUpdate(i, j, k, 1); // Reaper
+                     }
+ 
+                     if (j1 != k1 && (j1 < k1 || this.getBrightness(EnumSkyBlock.SKY, blockposition) > 0 || this.getBrightness(EnumSkyBlock.BLOCK, blockposition) > 0)) {
+-                        this.d(i, k);
++                        this.runOrQueueLightUpdate(i, 0, k, 2); // Reaper
+                     }
+-                    }); // Paper
++                    // }); // Reaper - Remove Paper lighting queue // Paper
+                 }
+ 
+                 TileEntity tileentity;
+@@ -1534,14 +1535,37 @@ public class Chunk {
+ 
+     // Paper start
+     public void runOrQueueLightUpdate(Runnable runnable) {
++        /* // Reaper start - Remove Paper lighting queue
+         if (this.world.paperConfig.queueLightUpdates) {
+             lightingQueue.add(runnable);
+         } else {
+             runnable.run();
+         }
++        */
++        runnable.run();
++        // Reaper end
+     }
+     // Paper end
++    // Reaper start
++    public void runOrQueueLightUpdate(int x, int y, int z, int type) {
++        if (me.core.lamius.Lamius.LamiusConfig.queueLightUpdates
++                && (type != 0 || !me.core.lamius.Lamius.LamiusConfig.lightThrottlingAllowBlockRelight)) {
++            lightingQueue.schedule(x, y, z, type);
++        } else {
++            runLightTaskByType(x, y, z, type);
++        }
++    }
+ 
++    void runLightTaskByType(int x, int y, int z, int type) {
++        if (type == 0) {
++            this.world.w(new BlockPosition(x, y, z));
++        } else if (type == 1) {
++            this.c(x, y, z);
++        } else if (type == 2) {
++            this.d(x, z);
++        }
++    }
++    // Reaper end
+     public static enum EnumTileEntityState {
+ 
+         IMMEDIATE, QUEUED, CHECK;
+diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+index ad5485908d3795e73f5fa13c0d553b7fde17c189..904b86a5e190bef466a9934e4c54abf9d35285fa 100644
+--- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
++++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+@@ -253,6 +253,7 @@ public class ChunkProviderServer implements IChunkProvider {
+ 
+     public void saveChunk(Chunk chunk, boolean unloaded) { // Spigot
+         try (co.aikar.timings.Timing timed = world.timings.chunkSaveData.startTiming()) {
++            chunk.lightingQueue.processQueueAnyway(); // Reaper
+             chunk.setLastSaved(this.world.getTime());
+             this.chunkLoader.saveChunk(this.world, chunk, unloaded); // Spigot
+         } catch (IOException ioexception) {
+diff --git a/src/main/java/net/minecraft/server/MinecraftServer.java b/src/main/java/net/minecraft/server/MinecraftServer.java
+index 91ada86076da373c9d8009453ef6577d7507e88e..b89ea42b0272a534764ba212f084ad8cd9f47a28 100644
+--- a/src/main/java/net/minecraft/server/MinecraftServer.java
++++ b/src/main/java/net/minecraft/server/MinecraftServer.java
+@@ -481,6 +481,10 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+         // CraftBukkit end
+         MinecraftServer.LOGGER.info("Stopping server");
+         MinecraftTimings.stopServer(); // Paper
++        // Reaper start
++        MinecraftServer.LOGGER.info("Flushing lighting queue");
++        ReaperLightingQueue.processQueueAnyway();
++        // Reaper end
+         // CraftBukkit start
+         if (this.server != null) {
+             this.server.disablePlugins();
+@@ -830,7 +834,8 @@ public abstract class MinecraftServer implements ICommandListener, Runnable, IAs
+         this.methodProfiler.b();
+ 
+         org.spigotmc.WatchdogThread.tick(); // Spigot
+-        PaperLightingQueue.processQueue(startTime); // Paper
++        // PaperLightingQueue.processQueue(i); // Paper // Reaper - Inline
++        ReaperLightingQueue.processQueue(i); // Reaper
+         this.slackActivityAccountant.tickEnded(tickNanos); // Spigot
+         co.aikar.timings.TimingsManager.FULL_SERVER_TICK.stopTiming(); // Paper
+     }
+diff --git a/src/main/java/net/minecraft/server/PaperLightingQueue.java b/src/main/java/net/minecraft/server/PaperLightingQueue.java
+index f1c013116fc05b7abe7184eae01b715c02c7a058..e69de29bb2d1d6434b8b29ae775ad8c2e48c5391 100644
+--- a/src/main/java/net/minecraft/server/PaperLightingQueue.java
++++ b/src/main/java/net/minecraft/server/PaperLightingQueue.java
+@@ -1,97 +0,0 @@
+-package net.minecraft.server;
+-
+-import co.aikar.timings.Timing;
+-import it.unimi.dsi.fastutil.objects.ObjectCollection;
+-
+-import java.util.ArrayDeque;
+-
+-class PaperLightingQueue {
+-    private static final long MAX_TIME = (long) (1000000000 / 20 * 1.15);
+-
+-    static void processQueue(long curTime) {
+-        final long startTime = System.nanoTime();
+-        final long maxTickTime = MAX_TIME - (startTime - curTime);
+-
+-        if (maxTickTime <= 0) {
+-            return;
+-        }
+-
+-        START:
+-        for (World world : MinecraftServer.getServer().worlds) {
+-            if (!world.paperConfig.queueLightUpdates) {
+-                continue;
+-            }
+-
+-            ObjectCollection<Chunk> loadedChunks = ((WorldServer) world).getChunkProviderServer().chunks.values();
+-            for (Chunk chunk : loadedChunks.toArray(new Chunk[0])) {
+-                if (chunk.lightingQueue.processQueue(startTime, maxTickTime)) {
+-                    break START;
+-                }
+-            }
+-        }
+-    }
+-
+-    static class LightingQueue extends ArrayDeque<Runnable> {
+-        final private Chunk chunk;
+-
+-        LightingQueue(Chunk chunk) {
+-            super();
+-            this.chunk = chunk;
+-        }
+-
+-        /**
+-         * Processes the lighting queue for this chunk
+-         *
+-         * @param startTime If start Time is 0, we will not limit execution time
+-         * @param maxTickTime Maximum time to spend processing lighting updates
+-         * @return true to abort processing furthur lighting updates
+-         */
+-        private boolean processQueue(long startTime, long maxTickTime) {
+-            if (this.isEmpty()) {
+-                return false;
+-            }
+-            if (isOutOfTime(maxTickTime, startTime)) {
+-                return true;
+-            }
+-            try (Timing ignored = chunk.world.timings.lightingQueueTimer.startTiming()) {
+-                Runnable lightUpdate;
+-                while ((lightUpdate = this.poll()) != null) {
+-                    lightUpdate.run();
+-                    if (isOutOfTime(maxTickTime, startTime)) {
+-                        return true;
+-                    }
+-                }
+-            }
+-
+-            return false;
+-        }
+-
+-        /**
+-         * Flushes lighting updates to unload the chunk
+-         */
+-        void processUnload() {
+-            if (!chunk.world.paperConfig.queueLightUpdates) {
+-                return;
+-            }
+-            processQueue(0, 0); // No timeout
+-
+-            final int radius = 1;
+-            for (int x = chunk.locX - radius; x <= chunk.locX + radius; ++x) {
+-                for (int z = chunk.locZ - radius; z <= chunk.locZ + radius; ++z) {
+-                    if (x == chunk.locX && z == chunk.locZ) {
+-                        continue;
+-                    }
+-
+-                    Chunk neighbor = MCUtil.getLoadedChunkWithoutMarkingActive(chunk.world, x, z);
+-                    if (neighbor != null) {
+-                        neighbor.lightingQueue.processQueue(0, 0); // No timeout
+-                    }
+-                }
+-            }
+-        }
+-    }
+-
+-    private static boolean isOutOfTime(long maxTickTime, long startTime) {
+-        return startTime > 0 && System.nanoTime() - startTime > maxTickTime;
+-    }
+-}
+diff --git a/src/main/java/net/minecraft/server/ReaperLightingQueue.java b/src/main/java/net/minecraft/server/ReaperLightingQueue.java
+new file mode 100644
+index 0000000000000000000000000000000000000000..35ba6ba6ff81a2d21e09bf372fb7e6230b45b966
+--- /dev/null
++++ b/src/main/java/net/minecraft/server/ReaperLightingQueue.java
+@@ -0,0 +1,221 @@
++package net.minecraft.server;
++
++import co.aikar.timings.Timing;
++import it.unimi.dsi.fastutil.longs.Long2ObjectMap;
++import it.unimi.dsi.fastutil.longs.Long2ObjectOpenHashMap;
++import it.unimi.dsi.fastutil.objects.ObjectCollection;
++
++import java.util.ArrayDeque;
++
++public class ReaperLightingQueue {
++    private static final long MAX_TIME = (long) (1000000000 / 20 * 1.15);
++
++    public static void processQueue(long curTime) {
++        if (!me.core.lamius.Lamius.LamiusConfig.queueLightUpdates) return;
++        final long startTime = System.nanoTime();
++        final long maxTickTime = MAX_TIME - (startTime - curTime);
++
++        if (maxTickTime <= 0) {
++            return;
++        }
++
++        START:
++        for (WorldServer world : MinecraftServer.getServer().worlds) {
++            ObjectCollection<Chunk> loadedChunks = world.getChunkProviderServer().chunks.values();
++            for (Chunk chunk : loadedChunks) {
++                if (chunk.lightingQueue.processQueue(startTime, maxTickTime)) {
++                    break START;
++                }
++            }
++        }
++    }
++
++    public static void processQueueAnyway() {
++        for (WorldServer world : MinecraftServer.getServer().worlds) {
++            ObjectCollection<Chunk> loadedChunks = world.getChunkProviderServer().chunks.values();
++            for (Chunk chunk : loadedChunks) {
++                chunk.lightingQueue.processQueueAnyway();
++            }
++        }
++    }
++
++    static class LightingQueue extends ArrayDeque<LightingTask> {
++        final private Chunk chunk;
++        private Long2ObjectMap<LightingTask> uniqueTasks = new Long2ObjectOpenHashMap<>();
++        private int nextAllowedTick = 0;
++
++        LightingQueue(Chunk chunk) {
++            super();
++            this.chunk = chunk;
++        }
++
++        public void schedule(int x, int y, int z, int type) {
++            LightingTask existed = getUnique(x, y, z, type);
++            if (existed == null) {
++                LightingTask task = new LightingTask(x, y, z, type);
++                addUnique(task);
++                super.addLast(task);
++            }
++
++            if (me.core.lamius.Lamius.LamiusConfig.lightThrottlingRedelaying && isDelayed()) {
++                setDelay();
++            }
++        }
++
++        private LightingTask getUnique(int x, int y, int z, int type) {
++            return uniqueTasks.get(LightingTask.genTaskHashCode(x, y, z, type));
++        }
++
++        private LightingTask addUnique(LightingTask task) {
++            return uniqueTasks.put(task.hashCode(), task);
++        }
++
++        private void removeUnique(LightingTask task) {
++            uniqueTasks.remove(task.hashCode());
++        }
++
++        /**
++         * Processes the lighting queue for this chunk
++         *
++         * @param startTime   If start Time is 0, we will not limit execution time
++         * @param maxTickTime Maximum time to spend processing lighting updates
++         * @return true to abort processing furthur lighting updates
++         */
++        boolean processQueue(long startTime, long maxTickTime) {
++            if (this.isEmpty()) {
++                return false;
++            }
++            if (isDelayed() || isOutOfTime(maxTickTime, startTime)) {
++                return true;
++            }
++            try (Timing ignored = chunk.world.timings.lightingQueueTimer.startTiming()) {
++                LightingTask task;
++                while ((task = this.poll()) != null) {
++                    removeUnique(task);
++                    chunk.runLightTaskByType(task.getX(), task.getY(), task.getZ(), task.getType());
++                    if (isOutOfTime(maxTickTime, startTime)) {
++                        setDelay();
++                        return true;
++                    }
++                }
++            }
++
++            return false;
++        }
++
++        /**
++         * Processes the lighting queue for this chunk with no timeout
++         */
++        void processQueueAnyway() {
++            if (this.isEmpty()) {
++                return;
++            }
++            try (Timing ignored = chunk.world.timings.lightingQueueTimer.startTiming()) {
++                LightingTask task;
++                while ((task = this.poll()) != null) {
++                    removeUnique(task);
++                    chunk.runLightTaskByType(task.getX(), task.getY(), task.getZ(), task.getType());
++                }
++            }
++        }
++
++        private boolean isDelayed() {
++            return nextAllowedTick > MinecraftServer.getServer().aq();
++        }
++
++        private void setDelay() {
++            int skipDelay = me.core.lamius.Lamius.LamiusConfig.lightThrottlingDelay;
++            if (skipDelay > 0) {
++                nextAllowedTick = MinecraftServer.getServer().aq() + skipDelay;
++            }
++        }
++
++        /**
++         * Flushes lighting updates to unload the chunk
++         */
++        void processUnload() {
++            nextAllowedTick = 0;
++            processQueueAnyway(); // No timeout
++
++            final int radius = 1;
++            for (int x = chunk.locX - radius; x <= chunk.locX + radius; ++x) {
++                for (int z = chunk.locZ - radius; z <= chunk.locZ + radius; ++z) {
++                    if (x == chunk.locX && z == chunk.locZ) {
++                        continue;
++                    }
++
++                    Chunk neighbor = MCUtil.getLoadedChunkWithoutMarkingActive(chunk.world, x, z);
++                    if (neighbor != null) {
++                        neighbor.lightingQueue.nextAllowedTick = 0;
++                        neighbor.lightingQueue.processQueueAnyway(); // No timeout
++                    }
++                }
++            }
++        }
++    }
++
++    static boolean isOutOfTime(long maxTickTime, long startTime) {
++        if (startTime <= 0) return false;
++        return System.nanoTime() - startTime > maxTickTime;
++    }
++
++    public static class LightingTask {
++        private final int x;
++        private final int y;
++        private final int z;
++        private final int type;
++
++        public LightingTask(int x, int y, int z, int type) {
++            this.x = x;
++            this.y = y;
++            this.z = z;
++            this.type = type;
++        }
++
++        public int getX() {
++            return x;
++        }
++
++        public int getY() {
++            return y;
++        }
++
++        public int getZ() {
++            return z;
++        }
++
++        public int getType() {
++            return type;
++        }
++
++        @Override
++        public boolean equals(Object o) {
++            if (this == o) return true;
++            if (o == null || getClass() != o.getClass()) return false;
++
++            LightingTask task = (LightingTask) o;
++
++            if (x != task.x) return false;
++            if (y != task.y) return false;
++            if (z != task.z) return false;
++            return type == task.type;
++        }
++
++        @Override
++        public int hashCode() {
++            int result = x;
++            result = 31 * result + y;
++            result = 31 * result + z;
++            result = 31 * result + type;
++            return result;
++        }
++
++        public static int genTaskHashCode(int x, int y, int z, int type) {
++            int result = x;
++            result = 31 * result + y;
++            result = 31 * result + z;
++            result = 31 * result + type;
++            return result;
++        }
++    }
++}
