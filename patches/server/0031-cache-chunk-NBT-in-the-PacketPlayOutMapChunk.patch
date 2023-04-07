@@ -1,0 +1,61 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Fri, 7 Apr 2023 23:54:35 +0500
+Subject: [PATCH] cache-chunk-NBT-in-the-PacketPlayOutMapChunk
+
+
+diff --git a/src/main/java/net/minecraft/server/PacketPlayOutMapChunk.java b/src/main/java/net/minecraft/server/PacketPlayOutMapChunk.java
+index 4fe7c9956533bac5036c6499daa3a8ddd82d788b..3658c0e6c4690ee09edba7452e7fde301dfd4f35 100644
+--- a/src/main/java/net/minecraft/server/PacketPlayOutMapChunk.java
++++ b/src/main/java/net/minecraft/server/PacketPlayOutMapChunk.java
+@@ -20,6 +20,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
+     private byte[] d;
+     private List<NBTTagCompound> e;
+     private boolean f;
++    private byte[] nbtData; // Reaper - Cache chunk NBT
+     private volatile boolean ready = false; // Paper - Async-Anti-Xray - Ready flag for the network manager
+ 
+     // Paper start - Async-Anti-Xray - Set the ready flag to true
+@@ -75,6 +76,21 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
+                 this.e.add(nbttagcompound);
+             }
+         }
++        // Reaper start - Cache chunk NBT
++        if (!this.e.isEmpty()) {
++            try {
++                java.io.ByteArrayOutputStream baos = new java.io.ByteArrayOutputStream();
++                java.io.DataOutputStream dos = new java.io.DataOutputStream(baos);
++                List<NBTTagCompound> nbtTagCompounds = this.e;
++                for (int j = 0; j < nbtTagCompounds.size(); j++) {
++                    NBTCompressedStreamTools.writeNBT(nbtTagCompounds.get(j), dos);
++                }
++                this.nbtData = baos.toByteArray();
++            } catch (Exception e) {
++                e.printStackTrace();
++            }
++        }
++        // Reaper end
+ 
+         chunk.world.chunkPacketBlockController.modifyBlocks(this, packetPlayOutMapChunkInfo); // Paper - Anti-Xray - Modify blocks
+     }
+@@ -120,6 +136,7 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
+         packetdataserializer.d(this.d.length);
+         packetdataserializer.writeBytes(this.d);
+         packetdataserializer.d(this.e.size());
++        /* // Reaper start - Cache chunk NBT
+         Iterator iterator = this.e.iterator();
+ 
+         while (iterator.hasNext()) {
+@@ -127,7 +144,11 @@ public class PacketPlayOutMapChunk implements Packet<PacketListenerPlayOut> {
+ 
+             packetdataserializer.a(nbttagcompound);
+         }
+-
++        */
++        if (nbtData != null) {
++            packetdataserializer.writeBytes(this.nbtData);
++        }
++        // Reaper end
+     }
+ 
+     public void a(PacketListenerPlayOut packetlistenerplayout) {
