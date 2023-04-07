@@ -1,0 +1,116 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sat, 8 Apr 2023 00:54:33 +0500
+Subject: [PATCH] Fix-World-Border-Lag
+
+
+diff --git a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+index 7ca73e292d66119341284bd87a8e48cd6013d63e..c87d3e8d14e9dab4b0d7637712cc8a0073f19ed8 100644
+--- a/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
++++ b/src/main/java/me/core/lamius/Lamius/LamiusConfig.java
+@@ -150,4 +150,10 @@ public class LamiusConfig {
+             ReaperLightingQueue.processQueueAnyway();
+         }
+     }
++
++    public static Boolean preventWorldBorderLag = true;
++    private static void preventWorldBorderLag() {
++        preventWorldBorderLag = getBoolean("fix-world-border-lag", true);
++    }
++
+ }
+diff --git a/src/main/java/net/minecraft/server/ChunkProviderServer.java b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+index 904b86a5e190bef466a9934e4c54abf9d35285fa..92658d7dc757c825fb8eb8be17464e93645432d3 100644
+--- a/src/main/java/net/minecraft/server/ChunkProviderServer.java
++++ b/src/main/java/net/minecraft/server/ChunkProviderServer.java
+@@ -14,6 +14,7 @@ import java.util.List;
+ import java.util.Set;
+ import javax.annotation.Nullable;
+ import com.destroystokyo.paper.exception.ServerInternalException;
++import me.core.lamius.Lamius.LamiusConfig;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ 
+@@ -131,8 +132,10 @@ public class ChunkProviderServer implements IChunkProvider {
+             chunk = this.loadChunk(i, j);
+             if (chunk != null) {
+                 this.chunks.put(ChunkCoordIntPair.a(i, j), chunk);
+-                chunk.addEntities();
+-                chunk.loadNearby(this, this.chunkGenerator, false); // CraftBukkit
++                if(!LamiusConfig.preventWorldBorderLag || (chunk.locX <= 1875000 && chunk.locZ <= 1875000 && chunk.locX >= -1875000 && chunk.locZ >= -1875000)){ // Papaya - Patch retarded lag exploit at world border
++                    chunk.loadNearby(this, this.chunkGenerator, true); // CraftBukkit
++                    chunk.addEntities();
++                }
+             }
+         }
+ 
+@@ -209,8 +212,10 @@ public class ChunkProviderServer implements IChunkProvider {
+             }
+ 
+             this.chunks.put(k, chunk);
+-            chunk.addEntities();
+-            chunk.loadNearby(this, this.chunkGenerator, true); // CraftBukkit
++            if(!LamiusConfig.preventWorldBorderLag || (chunk.locX <= 1875000 && chunk.locZ <= 1875000 && chunk.locX >= -1875000 && chunk.locZ >= -1875000)){ // Papaya - Patch retarded lag exploit at world border
++                chunk.loadNearby(this, this.chunkGenerator, true); // CraftBukkit
++                chunk.addEntities();
++            }
+             world.timings.syncChunkLoadTimer.stopTiming(); // Spigot
+         }
+ 
+diff --git a/src/main/java/net/minecraft/server/PlayerChunk.java b/src/main/java/net/minecraft/server/PlayerChunk.java
+index 01c646769e526716c16773d4f141610b3ae49c95..c0114fee7bea2c389f0bf53aa7d524a0520d6eeb 100644
+--- a/src/main/java/net/minecraft/server/PlayerChunk.java
++++ b/src/main/java/net/minecraft/server/PlayerChunk.java
+@@ -6,6 +6,8 @@ import com.google.common.collect.Lists;
+ import java.util.Iterator;
+ import java.util.List;
+ import javax.annotation.Nullable;
++
++import me.core.lamius.Lamius.LamiusConfig;
+ import org.apache.logging.log4j.LogManager;
+ import org.apache.logging.log4j.Logger;
+ // CraftBukkit Start
+@@ -48,12 +50,14 @@ public class PlayerChunk {
+     public PlayerChunk(PlayerChunkMap playerchunkmap, int i, int j) {
+         this.playerChunkMap = playerchunkmap;
+         this.location = new ChunkCoordIntPair(i, j);
+-        // CraftBukkit start
+-        loadInProgress = true;
+-        this.chunk = playerchunkmap.getWorld().getChunkProviderServer().getChunkAt(i, j, loadedRunnable, false);
+-        this.chunkExists = this.chunk != null || ChunkIOExecutor.hasQueuedChunkLoad(playerChunkMap.getWorld(), i, j); // Paper
+-        markChunkUsed(); // Paper - delay chunk unloads
+-        // CraftBukkit end
++        if(!LamiusConfig.preventWorldBorderLag || (location.x <= 1875000 && location.z <= 1875000 && location.x >= -1875000 && location.z >= -1875000)) { // Papaya - Patch retarded lag exploit at world border
++            // CraftBukkit start
++            loadInProgress = true;
++            this.chunk = playerchunkmap.getWorld().getChunkProviderServer().getChunkAt(i, j, loadedRunnable, false);
++            this.chunkExists = this.chunk != null || ChunkIOExecutor.hasQueuedChunkLoad(playerChunkMap.getWorld(), i, j); // Paper
++            markChunkUsed(); // Paper - delay chunk unloads
++            // CraftBukkit end
++        }
+     }
+ 
+     public ChunkCoordIntPair a() {
+diff --git a/src/main/java/org/bukkit/craftbukkit/chunkio/ChunkIOProvider.java b/src/main/java/org/bukkit/craftbukkit/chunkio/ChunkIOProvider.java
+index cdf3b614c78fe2684e586263aa9c1688e146f8d7..6a03c1218a45695c8c403756408ad8c12295c013 100644
+--- a/src/main/java/org/bukkit/craftbukkit/chunkio/ChunkIOProvider.java
++++ b/src/main/java/org/bukkit/craftbukkit/chunkio/ChunkIOProvider.java
+@@ -3,6 +3,7 @@ package org.bukkit.craftbukkit.chunkio;
+ import java.io.IOException;
+ 
+ import co.aikar.timings.Timing;
++import me.core.lamius.Lamius.LamiusConfig;
+ import net.minecraft.server.Chunk;
+ import net.minecraft.server.ChunkCoordIntPair;
+ import net.minecraft.server.ChunkRegionLoader;
+@@ -56,7 +57,9 @@ class ChunkIOProvider implements AsynchronousExecutor.CallBackProvider<QueuedChu
+             queuedChunk.provider.chunkGenerator.recreateStructures(chunk, queuedChunk.x, queuedChunk.z);
+         }
+ 
+-        chunk.loadNearby(queuedChunk.provider, queuedChunk.provider.chunkGenerator, false);
++        if(!LamiusConfig.preventWorldBorderLag || (chunk.locX <= 1875000 && chunk.locZ <= 1875000 && chunk.locX >= -1875000 && chunk.locZ >= -1875000)){ // Papaya - Patch retarded lag exploit at world border
++                chunk.loadNearby(queuedChunk.provider, queuedChunk.provider.chunkGenerator, false);
++            }
+         } // Paper
+     }
+ 
