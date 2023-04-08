@@ -1,0 +1,114 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 02:22:46 +0500
+Subject: [PATCH] Dionysus-Improve-performance-of-book-meta-pages
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+index ffdb7ec8290c035fa0dea92622fbdd9a9cd9cd50..ee924d608884fab7787dd54a6438ec6244f9b967 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBook.java
+@@ -30,6 +30,12 @@ import net.md_5.bungee.chat.ComponentSerializer;
+ import net.minecraft.server.ChatBaseComponent;
+ // Spigot end
+ 
++// Dionysus start
++import com.google.common.collect.ForwardingList;
++import org.apache.commons.lang3.tuple.Pair;
++import java.util.concurrent.atomic.AtomicBoolean;
++// Dionysus end
++
+ @DelegateDeserialization(SerializableMeta.class)
+ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
+     static final ItemMetaKey BOOK_TITLE = new ItemMetaKey("title");
+@@ -44,7 +50,42 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
+ 
+     protected String title;
+     protected String author;
+-    public List<IChatBaseComponent> pages = new ArrayList<IChatBaseComponent>();
++    // Dionysus start - Increase Book Page Performance
++    protected enum PageType {RESOLVED, UNRESOLVED}
++    protected final List<Pair<PageType, String>> pagePreStore = new ArrayList<>();
++    private final AtomicBoolean delegated = new AtomicBoolean(false);
++    public List<IChatBaseComponent> pages = new ForwardingList<IChatBaseComponent>() {
++        private List<IChatBaseComponent> delegate;
++        @Override
++        protected List<IChatBaseComponent> delegate() {
++            if (delegate == null) {
++                doDelegate();
++            }
++            return delegate;
++        }
++
++        private synchronized void doDelegate() {
++            if (delegate != null) {
++                return;
++            }
++            List<IChatBaseComponent> list = new ArrayList<>();
++            for (Pair<PageType, String> page : pagePreStore) {
++                if (page.getLeft() == PageType.RESOLVED) {
++                    list.add(ChatSerializer.a(page.getRight()));
++                } else if (page.getLeft() == PageType.UNRESOLVED) {
++                    list.add(CraftChatMessage.fromString(page.getRight(), true)[0]);
++                }
++            }
++            delegate = list;
++            delegated.set(true);
++        }
++
++        @Override
++        public int size() {
++            return pagePreStore.size();
++        }
++    };
++    // Dionysus end
+     protected Integer generation;
+ 
+     CraftMetaBook(CraftMetaItem meta) {
+@@ -90,7 +131,7 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
+                 String page = pages.getString(i);
+                 if (resolved) {
+                     try {
+-                        this.pages.add(ChatSerializer.a(page));
++                        this.pagePreStore.add(Pair.of(PageType.RESOLVED, page)); // Dionysus - Increase Book Page Performance
+                         continue;
+                     } catch (Exception e) {
+                         // Ignore and treat as an old book
+@@ -254,8 +295,13 @@ public class CraftMetaBook extends CraftMetaItem implements BookMeta {
+             } else if (page.length() > MAX_PAGE_LENGTH && !OVERRIDE_CHECKS) { // Paper - Add override
+                 page = page.substring(0, MAX_PAGE_LENGTH);
+             }
+-
++            // Dionysus start
++            if (delegated.get()) {
+             this.pages.add(CraftChatMessage.fromString(page, true)[0]);
++            } else {
++                this.pagePreStore.add(Pair.of(PageType.UNRESOLVED, page));
++            }
++            // Dionysus end
+         }
+     }
+ 
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+index ace7c418efafda72cff5445483d75fffc4cd1b84..2cb76558bc66c01f2c72ec57365ea45c5e1d30e5 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+@@ -15,6 +15,9 @@ import com.google.common.collect.ImmutableMap.Builder;
+ import net.minecraft.server.IChatBaseComponent.ChatSerializer;
+ import net.minecraft.server.IChatBaseComponent;
+ import net.minecraft.server.NBTTagString;
++// Dionysus start
++import org.apache.commons.lang3.tuple.Pair;
++// Dionysus end
+ 
+ @DelegateDeserialization(SerializableMeta.class)
+ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+@@ -43,7 +46,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+                 String page = pages.getString(i);
+                 if (resolved) {
+                     try {
+-                        this.pages.add(ChatSerializer.a(page));
++                        this.pagePreStore.add(Pair.of(PageType.RESOLVED, page)); // Dionysus - Increase Book Page Performance
+                         continue;
+                     } catch (Exception e) {
+                         // Ignore and treat as an old book
