@@ -1,0 +1,24 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 04:16:45 +0500
+Subject: [PATCH] Paper-vehicle-tracking-issue
+
+
+diff --git a/src/main/java/net/minecraft/server/EntityPlayer.java b/src/main/java/net/minecraft/server/EntityPlayer.java
+index 3e47ba5e947d72524cdc34b84aaf42d3ead7a828..caa27d4f443bf3842d8945385d45b5c903f8d2ae 100644
+--- a/src/main/java/net/minecraft/server/EntityPlayer.java
++++ b/src/main/java/net/minecraft/server/EntityPlayer.java
+@@ -1096,7 +1096,12 @@ public class EntityPlayer extends EntityHuman implements ICrafting {
+             this.stopRiding();
+         }
+         // Paper end
+-
++        
++        // Paper start - Workaround an issue where the vehicle doesn't track the passenger disconnection dismount.
++        if (this.isPassenger() && this.getVehicle() instanceof EntityPlayer) {
++            this.stopRiding();
++        }
++        // Paper end
+         if (this.sleeping) {
+             this.a(true, false, false);
+         }

@@ -1,0 +1,27 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 04:02:56 +0500
+Subject: [PATCH] Paper-Optimize-Captured-TileEntity-Lookup
+
+
+diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
+index 9990b53ba3e697a339309976e22444803cb64d21..76da61fc6298a16476a15f9f150a82708fb3d13c 100644
+--- a/src/main/java/net/minecraft/server/World.java
++++ b/src/main/java/net/minecraft/server/World.java
+@@ -2120,12 +2120,13 @@ public abstract class World implements IBlockAccess {
+             return null;
+         } else {
+             // CraftBukkit start
+-            if (capturedTileEntities.containsKey(blockposition)) {
+-                return capturedTileEntities.get(blockposition);
++            TileEntity tileentity = null; // Paper
++            if (!capturedTileEntities.isEmpty() && (tileentity = capturedTileEntities.get(blockposition)) != null) { // Paper
++                return tileentity; // Paper
+             }
+             // CraftBukkit end
+ 
+-            TileEntity tileentity = null;
++            //TileEntity tileentity = null; // Paper - move up
+ 
+             if (this.O) {
+                 tileentity = this.F(blockposition);
