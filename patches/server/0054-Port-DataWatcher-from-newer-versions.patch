@@ -1,0 +1,111 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 16 Mar 2023 22:51:40 +0500
+Subject: [PATCH] Port-DataWatcher-from-newer-versions
+
+
+diff --git a/src/main/java/net/minecraft/server/DataWatcher.java b/src/main/java/net/minecraft/server/DataWatcher.java
+index 27a468d100f37dda1f1a177d6dabc3a44e5007dd..9a7b325dc6ab71b9e2d367ce29933ffb9e065531 100644
+--- a/src/main/java/net/minecraft/server/DataWatcher.java
++++ b/src/main/java/net/minecraft/server/DataWatcher.java
+@@ -75,8 +75,9 @@ public class DataWatcher {
+             return datawatcherserializer.a(i);
+         }
+     }
+-
++    boolean registrationLocked; // Spigot
+     public <T> void register(DataWatcherObject<T> datawatcherobject, Object t0) { // CraftBukkit T -> Object
++        if (this.registrationLocked) throw new IllegalStateException("Registering datawatcher object after entity initialization"); // Spigot
+         int i = datawatcherobject.a();
+ 
+         if (i > 254) {
+@@ -93,13 +94,14 @@ public class DataWatcher {
+     private <T> void registerObject(DataWatcherObject<T> datawatcherobject, Object t0) { // CraftBukkit Object
+         DataWatcher.Item datawatcher_item = new DataWatcher.Item(datawatcherobject, t0);
+ 
+-        this.e.writeLock().lock();
++        // this.e.writeLock().lock(); // Spigot - not required
+         this.d.put(datawatcherobject.a(), datawatcher_item); // Lamius - FastUtil optimization
+         this.f = false;
+-        this.e.writeLock().unlock();
++        // this.e.writeLock().unlock(); // Spigot - not required
+     }
+ 
+     private <T> DataWatcher.Item<T> c(DataWatcherObject<T> datawatcherobject) {
++        /* // Spigot - not required
+         this.e.readLock().lock();
+ 
+         DataWatcher.Item datawatcher_item;
+@@ -115,7 +117,8 @@ public class DataWatcher {
+         }
+ 
+         this.e.readLock().unlock();
+-        return datawatcher_item;
++        return datawatcher_item;*/
++        return (DataWatcher.Item) this.d.get(Integer.valueOf(datawatcherobject.a()));
+     }
+ 
+     public <T> T get(DataWatcherObject<T> datawatcherobject) {
+@@ -162,7 +165,7 @@ public class DataWatcher {
+         ArrayList arraylist = null;
+ 
+         if (this.g) {
+-            this.e.readLock().lock();
++            // this.e.readLock().lock(); // Spigot - not required
+             Iterator iterator = this.d.values().iterator();
+ 
+             while (iterator.hasNext()) {
+@@ -178,7 +181,7 @@ public class DataWatcher {
+                 }
+             }
+ 
+-            this.e.readLock().unlock();
++            // this.e.readLock().unlock(); // Spigot - not required
+         }
+ 
+         this.g = false;
+@@ -195,7 +198,7 @@ public class DataWatcher {
+             a(packetdataserializer, datawatcher_item);
+         }
+ 
+-        this.e.readLock().unlock();
++        // this.e.readLock().lock(); // Spigot - not required
+         packetdataserializer.writeByte(255);
+     }
+ 
+@@ -203,7 +206,7 @@ public class DataWatcher {
+     public List<DataWatcher.Item<?>> c() {
+         ArrayList arraylist = null;
+ 
+-        this.e.readLock().lock();
++        // this.e.readLock().lock(); // Spigot - not required
+ 
+         DataWatcher.Item datawatcher_item;
+ 
+@@ -214,7 +217,7 @@ public class DataWatcher {
+             }
+         }
+ 
+-        this.e.readLock().unlock();
++        // this.e.readLock().unlock(); // Spigot - not required
+         return arraylist;
+     }
+ 
+@@ -261,7 +264,7 @@ public class DataWatcher {
+ 
+     public void e() {
+         this.g = false;
+-        this.e.readLock().lock();
++        // this.e.readLock().lock(); // Spigot - not required
+         Iterator iterator = this.d.values().iterator();
+ 
+         while (iterator.hasNext()) {
+@@ -270,7 +273,7 @@ public class DataWatcher {
+             datawatcher_item.a(false);
+         }
+ 
+-        this.e.readLock().unlock();
++        // this.e.readLock().lock(); // Spigot - not required
+     }
+ 
+     public static class Item<T> {
