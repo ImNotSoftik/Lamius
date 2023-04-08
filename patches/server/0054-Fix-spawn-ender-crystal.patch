@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 03:58:36 +0500
+Subject: [PATCH] Fix-spawn-ender-crystal
+
+
+diff --git a/src/main/java/net/minecraft/server/ItemEndCrystal.java b/src/main/java/net/minecraft/server/ItemEndCrystal.java
+index aa93d93baeb11e03820e548fbf58157800c431a9..91ccf210d341bedee2c21f4cad8676d3f9a6f5ad 100644
+--- a/src/main/java/net/minecraft/server/ItemEndCrystal.java
++++ b/src/main/java/net/minecraft/server/ItemEndCrystal.java
+@@ -37,7 +37,7 @@ public class ItemEndCrystal extends Item {
+                         return EnumInteractionResult.FAIL;
+                     } else {
+                         if (!world.isClientSide) {
+-                            EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(world, (double) ((float) blockposition.getX() + 0.5F), (double) (blockposition.getY() + 1), (double) ((float) blockposition.getZ() + 0.5F));
++                            EntityEnderCrystal entityendercrystal = new EntityEnderCrystal(world, blockposition.getX() + 0.5D, blockposition.getY() + 1, blockposition.getZ() + 0.5D);
+ 
+                             entityendercrystal.setShowingBottom(false);
+                             world.addEntity(entityendercrystal);
