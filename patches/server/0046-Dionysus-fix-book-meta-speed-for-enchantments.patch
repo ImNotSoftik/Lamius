@@ -1,0 +1,130 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 02:19:08 +0500
+Subject: [PATCH] Dionysus-fix-book-meta-speed-for-enchantments
+
+
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
+index decdccdc76a09c1da62aef6d4d4542b92242788b..d04a2f4ac22a29cc14d2f91e9d7250645d10c0f7 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftItemStack.java
+@@ -212,12 +212,12 @@ public final class CraftItemStack extends ItemStack {
+ 
+     @Override
+     public boolean containsEnchantment(Enchantment ench) {
+-        return hasItemMeta() && getItemMeta().hasEnchant(ench); // Paper - use meta
++        return hasItemMeta() && getItemMeta(false).hasEnchant(ench); // Paper - use meta
+     }
+ 
+     @Override
+     public int getEnchantmentLevel(Enchantment ench) {
+-        return hasItemMeta() ? getItemMeta().getEnchantLevel(ench) : 0; // Pape - replace entire method with meta
++        return hasItemMeta() ? getItemMeta(false).getEnchantLevel(ench) : 0; // Pape - replace entire method with meta
+     }
+ 
+     @Override
+@@ -236,7 +236,7 @@ public final class CraftItemStack extends ItemStack {
+ 
+     @Override
+     public Map<Enchantment, Integer> getEnchantments() {
+-        return hasItemMeta() ? getItemMeta().getEnchants() : ImmutableMap.<Enchantment, Integer>of(); // Paper - use Item Meta
++        return hasItemMeta() ? getItemMeta(false).getEnchants() : ImmutableMap.<Enchantment, Integer>of(); // Paper - use Item Meta // Dionysus - Increase Book Meta Performance
+     }
+ 
+     static Map<Enchantment, Integer> getEnchantments(net.minecraft.server.ItemStack item) {
+@@ -275,16 +275,24 @@ public final class CraftItemStack extends ItemStack {
+     public ItemMeta getItemMeta() {
+         return getItemMeta(handle);
+     }
+-
++    // Dionysus start - Increase Book Meta Performance
++    public ItemMeta getItemMeta(boolean resolveFurther) {
++        return getItemMeta(handle, resolveFurther);
++    }
+     public static ItemMeta getItemMeta(net.minecraft.server.ItemStack item) {
++        return getItemMeta(item, true);
++    }
++    // Dionysus end
++
++    public static ItemMeta getItemMeta(net.minecraft.server.ItemStack item, boolean resolveFurther) { // Dionysus - Increase Book Meta Performance
+         if (!hasItemMeta(item)) {
+             return CraftItemFactory.instance().getItemMeta(getType(item));
+         }
+         switch (getType(item)) {
+             case WRITTEN_BOOK:
+-                return new CraftMetaBookSigned(item.getTag());
++                return new CraftMetaBookSigned(item.getTag(), resolveFurther); // Dionysus - Increase Book Meta Performance
+             case BOOK_AND_QUILL:
+-                return new CraftMetaBook(item.getTag());
++                return new CraftMetaBook(item.getTag(), resolveFurther); // Dionysus - Increase Book Meta Performance
+             case SKULL_ITEM:
+                 return new CraftMetaSkull(item.getTag());
+             case LEATHER_HELMET:
+@@ -425,4 +433,4 @@ public final class CraftItemStack extends ItemStack {
+     static boolean hasItemMeta(net.minecraft.server.ItemStack item) {
+         return !(item == null || item.getTag() == null || item.getTag().isEmpty());
+     }
+-}
++}
+\ No newline at end of file
+diff --git a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+index bffbe9013bbe5d60295f4b8d9f84b21eb1942f4a..ace7c418efafda72cff5445483d75fffc4cd1b84 100644
+--- a/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
++++ b/src/main/java/org/bukkit/craftbukkit/inventory/CraftMetaBookSigned.java
+@@ -22,8 +22,13 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+     CraftMetaBookSigned(CraftMetaItem meta) {
+         super(meta);
+     }
+-
++    // Dionysus start - Increase Book Meta Performance
+     CraftMetaBookSigned(NBTTagCompound tag) {
++        this(tag, true);
++    }
++    // Dionysus end
++
++    CraftMetaBookSigned(NBTTagCompound tag, boolean handlePages) { // Dionysus - Increase Book Meta Performance
+         super(tag, false);
+ 
+         boolean resolved = true;
+@@ -31,7 +36,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+             resolved = tag.getBoolean(RESOLVED.NBT);
+         }
+ 
+-        if (tag.hasKey(BOOK_PAGES.NBT)) {
++        if (tag.hasKey(BOOK_PAGES.NBT) && handlePages) { // Dionysus - Increase Book Meta Performance
+             NBTTagList pages = tag.getList(BOOK_PAGES.NBT, CraftMagicNumbers.NBT.TAG_STRING);
+ 
+             for (int i = 0; i < Math.min(pages.size(), MAX_PAGES); i++) {
+@@ -73,7 +78,7 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+             NBTTagList list = new NBTTagList();
+             for (IChatBaseComponent page : pages) {
+                 list.add(new NBTTagString(
+-                    ChatSerializer.a(page)
++                        ChatSerializer.a(page)
+                 ));
+             }
+             itemData.set(BOOK_PAGES.NBT, list);
+@@ -95,11 +100,11 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+     @Override
+     boolean applicableTo(Material type) {
+         switch (type) {
+-        case WRITTEN_BOOK:
+-        case BOOK_AND_QUILL:
+-            return true;
+-        default:
+-            return false;
++            case WRITTEN_BOOK:
++            case BOOK_AND_QUILL:
++                return true;
++            default:
++                return false;
+         }
+     }
+ 
+@@ -131,4 +136,4 @@ class CraftMetaBookSigned extends CraftMetaBook implements BookMeta {
+         super.serialize(builder);
+         return builder;
+     }
+-}
++}
+\ No newline at end of file
