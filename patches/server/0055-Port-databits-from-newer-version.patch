@@ -1,0 +1,36 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Thu, 16 Mar 2023 22:46:54 +0500
+Subject: [PATCH] Port-databits-from-newer-version
+
+
+diff --git a/src/main/java/net/minecraft/server/DataBits.java b/src/main/java/net/minecraft/server/DataBits.java
+index fa0fd8a9c8a805641d974e1c37f9837a0805a218..4dadc914f2dcbe3a597a7d0e8ef039df0270fe38 100644
+--- a/src/main/java/net/minecraft/server/DataBits.java
++++ b/src/main/java/net/minecraft/server/DataBits.java
+@@ -21,9 +21,9 @@ public class DataBits {
+         //Validate.inclusiveBetween(0L, (long) (this.d - 1), (long) i); // Paper
+         //Validate.inclusiveBetween(0L, this.c, (long) j); // Paper
+         int k = i * this.b;
+-        int l = k / 64;
+-        int i1 = ((i + 1) * this.b - 1) / 64;
+-        int j1 = k % 64;
++        int l = k >> 6; // Lamius
++        int i1 = (i + 1) * this.b - 1 >> 6; // Lamius
++        int j1 = k ^ l << 6; // Lamius
+ 
+         this.a[l] = this.a[l] & ~(this.c << j1) | ((long) j & this.c) << j1;
+         if (l != i1) {
+@@ -38,9 +38,9 @@ public class DataBits {
+     public int a(int i) {
+         //Validate.inclusiveBetween(0L, (long) (this.d - 1), (long) i); // Paper
+         int j = i * this.b;
+-        int k = j / 64;
+-        int l = ((i + 1) * this.b - 1) / 64;
+-        int i1 = j % 64;
++        int k = j >> 6; // Lamius
++        int l = (i + 1) * this.b - 1 >> 6; // Lamius
++        int i1 = j ^ k << 6; // Lamius
+ 
+         if (k == l) {
+             return (int) (this.a[k] >>> i1 & this.c);
