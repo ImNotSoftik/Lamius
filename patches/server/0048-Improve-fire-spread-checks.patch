@@ -1,0 +1,30 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Fri, 31 Mar 2023 13:53:02 +0500
+Subject: [PATCH] Improve-fire-spread-checks
+
+Credits to Dionysus: https://github.com/nopjmp/Dionysus/blob/dev/patches/server/0134-Improve-fire-spread-checks.patch
+
+
+diff --git a/src/main/java/net/minecraft/server/BlockStationary.java b/src/main/java/net/minecraft/server/BlockStationary.java
+index 44cb0efeb407b566488dc29c112792a384edea0b..d3c274aae00590a182d0ae33b8d5ebd2e659e5fe 100644
+--- a/src/main/java/net/minecraft/server/BlockStationary.java
++++ b/src/main/java/net/minecraft/server/BlockStationary.java
+@@ -103,6 +103,16 @@ public class BlockStationary extends BlockFluids {
+     }
+ 
+     private boolean d(World world, BlockPosition blockposition) {
+-        return blockposition.getY() >= 0 && blockposition.getY() < 256 && !world.isLoaded(blockposition) ? false : world.getType(blockposition).getMaterial().isBurnable();
++        // Dionysus start - improve fire spread checks
++        if (blockposition.getY() >= 0 && blockposition.getY() < 256) {
++            IBlockData blockData = world.getTypeIfLoaded(blockposition);
++
++            if (blockData != null) {
++                return blockData.getMaterial().isBurnable();
++            }
++        }
++
++        return false;
++        // Dionysus end
+     }
+ }
