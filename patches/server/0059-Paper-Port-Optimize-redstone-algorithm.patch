@@ -24,11 +24,11 @@ index c87d3e8d14e9dab4b0d7637712cc8a0073f19ed8..488d8812c97b79b7b0e790932633445b
 +    public static boolean useEigencraftRedstone = false;
 +    private void useEigencraftRedstone() {
 +        useEigencraftRedstone = this.getBoolean("use-faster-eigencraft-redstone", false);
-+        if (useEigencraftRedstone) {
-+            log("Using Eigencraft redstone algorithm by theosib.");
-+        } else {
-+            log("Using vanilla redstone algorithm.");
-+        }
++        //if (useEigencraftRedstone) {
++            //log("Using Eigencraft redstone algorithm by theosib.");
++        //} else {
++            //log("Using vanilla redstone algorithm.");
++        //}
 +    }
 +
  }
