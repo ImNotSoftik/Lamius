@@ -1,0 +1,19 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 16:24:04 +0500
+Subject: [PATCH] Add-Default-Boolean-isDestroyable
+
+
+diff --git a/src/main/java/net/minecraft/server/IBlockData.java b/src/main/java/net/minecraft/server/IBlockData.java
+index 6881d3dcb5e17fa2ac89dd1b1f85129cc85bba18..b569531df6bbe9b88b795e194b1f3f9c72c8cc5d 100644
+--- a/src/main/java/net/minecraft/server/IBlockData.java
++++ b/src/main/java/net/minecraft/server/IBlockData.java
+@@ -16,4 +16,8 @@ public interface IBlockData extends IBlockPhysics, IBlockProperties {
+     ImmutableMap<IBlockState<?>, Comparable<?>> t();
+
+     Block getBlock();
++
++     default boolean isDestroyable(){
++         return getBlock().isDestroyable();
++     }
+ }
