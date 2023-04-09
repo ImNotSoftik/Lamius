@@ -1,0 +1,47 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 04:54:13 +0500
+Subject: [PATCH] Paper-Optimize-Light-Recalculations
+
+
+diff --git a/src/main/java/net/minecraft/server/Chunk.java b/src/main/java/net/minecraft/server/Chunk.java
+index 32e19de3fbcb24829f296d194597ed8916c8d133..9a444a9398e13d8c74ccec75b5c03b2342c080b0 100644
+--- a/src/main/java/net/minecraft/server/Chunk.java
++++ b/src/main/java/net/minecraft/server/Chunk.java
+@@ -328,7 +328,7 @@ public class Chunk {
+     private void a(int i, int j, int k, int l) {
+         if (l > k && this.areNeighborsLoaded(1)) { // Paper
+             for (int i1 = k; i1 < l; ++i1) {
+-                this.world.c(EnumSkyBlock.SKY, new BlockPosition(i, i1, j));
++                this.world.updateBrightness(EnumSkyBlock.SKY, new BlockPosition(i, i1, j), this); // Paper
+             }
+ 
+             this.s = true;
+diff --git a/src/main/java/net/minecraft/server/World.java b/src/main/java/net/minecraft/server/World.java
+index 19714ce5176843f7f2448ce3f8134f93b268b749..4686d0826f9c2677ba761ddf47d2ea6d3638c98f 100644
+--- a/src/main/java/net/minecraft/server/World.java
++++ b/src/main/java/net/minecraft/server/World.java
+@@ -513,8 +513,9 @@ public abstract class World implements IBlockAccess {
+         }
+ 
+         if (this.worldProvider.m()) {
+-            for (i1 = k; i1 <= l; ++i1) {
+-                this.c(EnumSkyBlock.SKY, new BlockPosition(i, i1, j));
++            Chunk chunk = getChunkIfLoaded(i >> 4, j >> 4); // Paper
++            for (i1 = k; chunk != null && i1 <= l; ++i1) { // Paper
++                this.updateBrightness(EnumSkyBlock.SKY, new BlockPosition(i, i1, j), chunk); // Paper
+             }
+         }
+ 
+@@ -2475,6 +2476,11 @@ public abstract class World implements IBlockAccess {
+     public boolean c(EnumSkyBlock enumskyblock, BlockPosition blockposition) {
+         // CraftBukkit start - Use neighbor cache instead of looking up
+         Chunk chunk = this.getChunkIfLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4);
++        // Paper start - optimize light updates where chunk is known
++        return updateBrightness(enumskyblock, blockposition, chunk);
++    }
++    public boolean updateBrightness(EnumSkyBlock enumskyblock, BlockPosition blockposition, Chunk chunk) {
++        // Paper end
+         if (chunk == null || !chunk.areNeighborsLoaded(1) /*!this.areChunksLoaded(blockposition, 17, false)*/) {
+             // CraftBukkit end
+             return false;

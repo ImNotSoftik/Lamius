@@ -1,0 +1,22 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: SoftikLord <dimap9986@gmail.com>
+Date: Sun, 9 Apr 2023 04:48:28 +0500
+Subject: [PATCH] Paper-Don-t-allow-digging-into-unloaded-chunks
+
+
+diff --git a/src/main/java/net/minecraft/server/PlayerConnection.java b/src/main/java/net/minecraft/server/PlayerConnection.java
+index d8d4e1820c5d377d94cdd3d07bf597694f4759cf..ec30d3b24e8cfba7a90c381f49247fc767d6d0fb 100644
+--- a/src/main/java/net/minecraft/server/PlayerConnection.java
++++ b/src/main/java/net/minecraft/server/PlayerConnection.java
+@@ -944,6 +944,11 @@ public class PlayerConnection implements PacketListenerPlayIn, ITickable {
+                 return;
+             }
+             // Paper end
++            // Paper start - Don't allow digging in unloaded chunks
++            if (!worldserver.isChunkLoaded(blockposition.getX() >> 4, blockposition.getZ() >> 4, true)) {
++                return;
++            }
++            // Paper end - Don't allow digging in unloaded chunks
+             double d0 = this.player.locX - ((double) blockposition.getX() + 0.5D);
+             double d1 = this.player.locY - ((double) blockposition.getY() + 0.5D) + 1.5D;
+             double d2 = this.player.locZ - ((double) blockposition.getZ() + 0.5D);
